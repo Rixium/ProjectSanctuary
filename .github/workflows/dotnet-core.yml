@@ -1,8 +1,5 @@
 name: .NET Core
 
-env:
-  PACKAGE_PATH: './release'
-
 on:
   push:
     branches: [ main ]
@@ -26,17 +23,3 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Publish
-      run: dotnet publish --configuration Release --no-build --output ${{ env.PACKAGE_PATH }}
-      
-  upload:
-    
-    runs-on: ubuntu-latest
-    
-    needs: build
-    
-    steps:
-    - uses: actions/upload-artifact@v2
-      with:
-        name: game
-        path: ${{ env.PACKAGE_PATH }}
