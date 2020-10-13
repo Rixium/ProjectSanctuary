@@ -2,9 +2,7 @@
 {
     public interface IScene
     {
-        
         void Update();
         void Draw();
-
     }
 }
