@@ -11,7 +11,7 @@ namespace ProjectSanctuary.View.Scenes
 
         public void AddScene(IScene scene) => _scenes.Add(scene);
 
-        public void SetScene<T>() where T : IScene =>
+        public void SetNextScene<T>() where T : IScene =>
             _nextScene = _scenes.FirstOrDefault(scene => scene.GetType() == typeof(T));
 
         public void Update()
