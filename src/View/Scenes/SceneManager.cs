@@ -5,7 +5,7 @@ namespace ProjectSanctuary.View.Scenes
 {
     internal class SceneManager : ISceneManager
     {
-        private HashSet<IScene> _scenes = new HashSet<IScene>();
+        private readonly HashSet<IScene> _scenes = new HashSet<IScene>();
         private IScene _activeScene;
         private IScene _nextScene;
 
@@ -16,12 +16,12 @@ namespace ProjectSanctuary.View.Scenes
 
         public void Update()
         {
-            _activeScene.Update();
+            _activeScene?.Update();
         }
 
         public void Draw()
         {
-            _activeScene.Draw();
+            _activeScene?.Draw();
         }
     }
 }
