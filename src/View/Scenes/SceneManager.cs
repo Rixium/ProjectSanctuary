@@ -14,6 +14,9 @@ namespace ProjectSanctuary.View.Scenes
         public void SetNextScene<T>() where T : IScene =>
             _nextScene = _scenes.FirstOrDefault(scene => scene.GetType() == typeof(T));
 
+        public void RemoveScene<T>() where T : IScene =>
+            _scenes.RemoveWhere(scene => scene.GetType() == typeof(T));
+
         public void Update()
         {
             _activeScene?.Update();

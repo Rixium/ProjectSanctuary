@@ -4,6 +4,7 @@
     {
         void AddScene(IScene scene);
         void SetNextScene<T>() where T : IScene;
+        void RemoveScene<T>() where T : IScene;
         void Update();
         void Draw();
     }
