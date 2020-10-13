@@ -23,3 +23,13 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+      
+  upload:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/upload-artifact@v2
+      with:
+        name: game
+        path: release/game/netcoreapp3.1
