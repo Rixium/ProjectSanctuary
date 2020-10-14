@@ -15,7 +15,6 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
 
-        private Options _options;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
