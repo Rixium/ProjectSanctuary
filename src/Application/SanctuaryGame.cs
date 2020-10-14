@@ -66,7 +66,9 @@ namespace Application
             // Also create the default file for settings files if they don't exist.
             _applicationFolder = new ApplicationFolder(GameName);
             _applicationFolder.Create();
-            _applicationFolder.Save("controls.xml", new ControlOptions(), false);
+            
+            var controlOptions = new ControlOptions();
+            controlOptions.Save(_applicationFolder, false);
         }
 
         private void UpdateWindowTitle() => Window.Title = $"{GameName} - {GameVersion()}";

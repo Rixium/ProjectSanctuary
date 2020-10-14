@@ -15,7 +15,7 @@ namespace Application.Configuration
 
         public void Initialize()
         {
-            ControlOptions = ControlOptions.LoadFrom(_applicationFolder.Create());
+            ControlOptions = ControlOptions.Load(_applicationFolder);
         }
         
     }
