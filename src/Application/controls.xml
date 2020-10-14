@@ -3,22 +3,31 @@
         
         <InputBinding>
             <Name>MoveUp</Name>
-            <Key>W</Key>
+            <KeyBindings>
+                <Key>W</Key>
+                <Key>Up</Key>
+            </KeyBindings>
         </InputBinding>
         
         <InputBinding>
             <Name>MoveDown</Name>
-            <Key>S</Key>
+            <KeysBindings>
+                <Key>S</Key>
+            </KeysBindings>
         </InputBinding>
         
         <InputBinding>
             <Name>MoveLeft</Name>
-            <Key>A</Key>
+            <KeysBindings>
+                <Key>A</Key>
+            </KeysBindings>
         </InputBinding>
         
         <InputBinding>
             <Name>MoveRight</Name>
-            <Key>D</Key>
+            <KeysBindings>
+                <Key>D</Key>
+            </KeysBindings>
         </InputBinding>
         
     </Bindings>

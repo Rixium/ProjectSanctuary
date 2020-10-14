@@ -37,7 +37,7 @@ namespace Application
             UpdateWindowTitle();
 
             var options = ControlOptions.LoadFrom("controls.xml");
-            
+
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
 
