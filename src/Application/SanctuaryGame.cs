@@ -63,7 +63,7 @@ namespace Application
         private void InitializeApplicationFolder()
         {
             // Create the AppData folder.
-            // Also create the default file for controls.xml if it doesn't exist.
+            // Also create the default file for settings files if they don't exist.
             _applicationFolder = new ApplicationFolder(GameName);
             _applicationFolder.Create();
             _applicationFolder.Save("controls.xml", new ControlOptions(), false);
