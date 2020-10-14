@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Xml.Serialization;
 using Application.Configuration;
+using Application.FileSystem;
 using Application.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +20,8 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
 
+        private IApplicationFolder _applicationFolder;
+        private IOptionsManager _optionsManager;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
@@ -39,8 +43,13 @@ namespace Application
         protected override void Initialize()
         {
             UpdateWindowTitle();
+            
+            _applicationFolder = new ApplicationFolder(GameName);
+            _applicationFolder.Create();
+            _applicationFolder.Save("controls.xml", new ControlOptions(), false);
 
-            _options = ControlOptions.LoadFrom("controls.xml");
+            _optionsManager = new OptionsManager(_applicationFolder);
+            _optionsManager.Initialize();
 
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
@@ -59,7 +68,7 @@ namespace Application
                 Exit();
 
             _viewManager.Update();
-            
+
             base.Update(gameTime);
         }
 
@@ -68,7 +77,7 @@ namespace Application
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _viewManager.Draw(_spriteBatch);
-            
+
             base.Draw(gameTime);
         }
 
