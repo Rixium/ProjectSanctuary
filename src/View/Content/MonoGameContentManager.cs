@@ -2,7 +2,7 @@
 
 namespace ProjectSanctuary.View.Content
 {
-    internal class MonoGameContentManager : IContentManager
+    public class MonoGameContentManager : IContentManager
     {
         private readonly ContentManager _contentManager;
 

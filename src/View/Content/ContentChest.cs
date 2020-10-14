@@ -1,6 +1,6 @@
 ﻿namespace ProjectSanctuary.View.Content
 {
-    internal class ContentChest : IContentChest
+    public class ContentChest : IContentChest
     {
         private readonly IContentManager _content;
 
