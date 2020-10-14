@@ -4,7 +4,7 @@ using ProjectSanctuary.View.Scenes;
 
 namespace ProjectSanctuary.View
 {
-    public class ViewManager
+    public class ViewManager : IViewManager
     {
         public static Viewport ViewPort;
         
