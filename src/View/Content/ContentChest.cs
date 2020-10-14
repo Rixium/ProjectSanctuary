@@ -4,8 +4,13 @@
     {
         private readonly IContentManager _content;
 
-        public ContentChest(IContentManager content) =>
+        public static ContentChest Instance { get; private set; }
+
+        public ContentChest(IContentManager content)
+        {
+            Instance = this;
             _content = content;
+        }
 
         public void Preload<T>(params string[] assets)
         {

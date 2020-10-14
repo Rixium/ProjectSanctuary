@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using ProjectSanctuary.View;
 using ProjectSanctuary.View.Content;
 using ProjectSanctuary.View.Scenes;
 
@@ -13,8 +14,8 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
 
+        private ViewManager _viewManager;
         private IContentChest _contentChest;
-        private ISceneManager _sceneManager;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -34,8 +35,10 @@ namespace Application
         {
             UpdateWindowTitle();
 
-            _contentChest = new ContentChest(new MonoGameContentManager(Content));
-            _sceneManager = new SceneManager();
+            _viewManager = new ViewManager(_graphics);
+            _viewManager.Initialize();
+
+            _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
             base.Initialize();
         }
@@ -48,8 +51,8 @@ namespace Application
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            _sceneManager.Update();
-
+            _viewManager.Update();
+            
             base.Update(gameTime);
         }
 
@@ -57,8 +60,8 @@ namespace Application
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _sceneManager.Draw();
-
+            _viewManager.Draw(_spriteBatch);
+            
             base.Draw(gameTime);
         }
 

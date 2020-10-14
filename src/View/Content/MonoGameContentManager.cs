@@ -6,9 +6,10 @@ namespace ProjectSanctuary.View.Content
     {
         private readonly ContentManager _contentManager;
 
-        public MonoGameContentManager(ContentManager contentManager)
+        public MonoGameContentManager(ContentManager contentManager, string rootDirectory)
         {
             _contentManager = contentManager;
+            _contentManager.RootDirectory = rootDirectory;
         }
 
         public T Load<T>(string assetName) => _contentManager.Load<T>(assetName);

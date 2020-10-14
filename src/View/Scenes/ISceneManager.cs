@@ -9,8 +9,8 @@ namespace ProjectSanctuary.View.Scenes
         IEnumerable<IScene> GetScenes();
         void AddScene(IScene scene);
         void SetNextScene<T>() where T : IScene;
+        void SwitchToNextScene();
         void RemoveScene<T>() where T : IScene;
-        void Update();
-        void Draw();
+        
     }
 }

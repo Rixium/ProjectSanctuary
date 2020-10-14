@@ -1,4 +1,5 @@
-﻿using NSubstitute;
+﻿using Microsoft.Xna.Framework.Graphics;
+using NSubstitute;
 using NUnit.Framework;
 using Shouldly;
 using ProjectSanctuary.View.Scenes;
@@ -65,9 +66,11 @@ namespace ProjectSanctuary.View.Tests.Scenes
             {
             }
 
-            public void Draw()
+            public void Draw(SpriteBatch spriteBatch)
             {
+                
             }
+
         }
         
     }
