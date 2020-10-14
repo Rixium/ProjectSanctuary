@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ProjectSanctuary.View.Scenes
 {
-    internal class SceneManager : ISceneManager
+    public class SceneManager : ISceneManager
     {
         private readonly HashSet<IScene> _scenes = new HashSet<IScene>();
         public IScene NextScene { get; private set; }
