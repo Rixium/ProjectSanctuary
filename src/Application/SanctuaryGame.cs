@@ -43,11 +43,12 @@ namespace Application
         protected override void Initialize()
         {
             UpdateWindowTitle();
-            
-            _applicationFolder = new ApplicationFolder(GameName);
-            _applicationFolder.Create();
-            _applicationFolder.Save("controls.xml", new ControlOptions(), false);
 
+            InitializeApplicationFolder();
+
+            // Now we've created the app data folder,
+            // and saved the defaults if required,
+            // The options can be loaded using it.
             _optionsManager = new OptionsManager(_applicationFolder);
             _optionsManager.Initialize();
 
@@ -57,6 +58,15 @@ namespace Application
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
             base.Initialize();
+        }
+
+        private void InitializeApplicationFolder()
+        {
+            // Create the AppData folder.
+            // Also create the default file for controls.xml if it doesn't exist.
+            _applicationFolder = new ApplicationFolder(GameName);
+            _applicationFolder.Create();
+            _applicationFolder.Save("controls.xml", new ControlOptions(), false);
         }
 
         private void UpdateWindowTitle() => Window.Title = $"{GameName} - {GameVersion()}";
