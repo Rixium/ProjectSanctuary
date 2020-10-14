@@ -13,7 +13,7 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
         
-        private ISceneManager _sceneManager = new SceneManager();
+        private readonly ISceneManager _sceneManager = new SceneManager();
         
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
