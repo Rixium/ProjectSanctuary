@@ -1,4 +1,7 @@
-﻿using Application.Configuration;
+﻿using System;
+using System.Linq;
+using Application.Configuration;
+using Application.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,6 +23,7 @@ namespace Application
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private ControlOptions _options;
 
         public SanctuaryGame()
         {
@@ -36,7 +40,7 @@ namespace Application
         {
             UpdateWindowTitle();
 
-            var options = ControlOptions.LoadFrom("controls.xml");
+            _options = ControlOptions.LoadFrom("controls.xml");
 
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
