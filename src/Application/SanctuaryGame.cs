@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Xml.Serialization;
 using Application.Configuration;
 using Application.FileSystem;
@@ -36,6 +39,43 @@ namespace Application
                 PreferredBackBufferWidth = 1280,
                 PreferredBackBufferHeight = 720
             };
+
+            Window.AllowUserResizing = true;
+            Window.ClientSizeChanged += WindowOnClientSizeChanged;
+            
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        }
+
+        private void WindowOnClientSizeChanged(object? sender, EventArgs e)
+        {
+            Window.ClientSizeChanged -= WindowOnClientSizeChanged;
+
+            int w = _graphics.IsFullScreen ? _graphics.PreferredBackBufferWidth : Window.ClientBounds.Width;
+            int h = _graphics.IsFullScreen ? _graphics.PreferredBackBufferHeight : Window.ClientBounds.Height;
+            
+            if (w < 1280)
+            {
+                _graphics.PreferredBackBufferWidth = 1280;
+                w = 1280;
+            }
+            if (h < 720)
+            {
+                _graphics.PreferredBackBufferHeight = 720;
+                h = 720;
+            }
+            
+            _graphics.ApplyChanges();
+            
+            if (_graphics.IsFullScreen)
+            {
+                _graphics.GraphicsDevice.Viewport = new Viewport(new Microsoft.Xna.Framework.Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
+            }
+            else
+            {
+                _graphics.GraphicsDevice.Viewport = new Viewport(new Microsoft.Xna.Framework.Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height));
+            }
+            
+            Window.ClientSizeChanged += WindowOnClientSizeChanged;
         }
 
         protected override void LoadContent()
@@ -43,10 +83,20 @@ namespace Application
             _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
+        protected override void UnloadContent()
+        {
+            _spriteBatch.Dispose();
+            _contentChest.Unload();
+            base.UnloadContent();
+        }
+
         protected override void Initialize()
         {
-            _graphics.SynchronizeWithVerticalRetrace = true;
+            IsFixedTimeStep = true;
             
+            _graphics.SynchronizeWithVerticalRetrace = true;
+            _graphics.ApplyChanges();
+
             UpdateWindowTitle();
 
             InitializeApplicationFolder();
@@ -62,8 +112,6 @@ namespace Application
 
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
-            _graphics.ApplyChanges();
-            
             base.Initialize();
         }
 
