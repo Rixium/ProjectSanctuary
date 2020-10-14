@@ -1,0 +1,25 @@
+﻿<ControlOptions>
+    <Bindings>
+        
+        <InputBinding>
+            <Name>MoveUp</Name>
+            <Key>W</Key>
+        </InputBinding>
+        
+        <InputBinding>
+            <Name>MoveDown</Name>
+            <Key>S</Key>
+        </InputBinding>
+        
+        <InputBinding>
+            <Name>MoveLeft</Name>
+            <Key>A</Key>
+        </InputBinding>
+        
+        <InputBinding>
+            <Name>MoveRight</Name>
+            <Key>D</Key>
+        </InputBinding>
+        
+    </Bindings>
+</ControlOptions>

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Application.Configuration;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ProjectSanctuary.View;
@@ -14,6 +15,7 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
 
+        private Options _options;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
@@ -35,6 +37,8 @@ namespace Application
         {
             UpdateWindowTitle();
 
+            var options = ControlOptions.LoadFrom("controls.xml");
+            
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
 
