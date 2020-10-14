@@ -31,8 +31,11 @@ namespace Application
 
         public SanctuaryGame()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            IsMouseVisible = true;
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 1280,
+                PreferredBackBufferHeight = 720
+            };
         }
 
         protected override void LoadContent()
@@ -42,6 +45,8 @@ namespace Application
 
         protected override void Initialize()
         {
+            _graphics.SynchronizeWithVerticalRetrace = true;
+            
             UpdateWindowTitle();
 
             InitializeApplicationFolder();
@@ -57,6 +62,8 @@ namespace Application
 
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
+            _graphics.ApplyChanges();
+            
             base.Initialize();
         }
 
@@ -86,7 +93,7 @@ namespace Application
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
 
             _viewManager.Draw(_spriteBatch);
 
