@@ -69,7 +69,7 @@ namespace ProjectSanctuary.View.Menus
         {
             var mouse = Mouse.GetState();
             var mousePosition = new Vector2(mouse.X, mouse.Y);
-            mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_camera.TranslationMatrix));
+            mousePosition = _camera.ScreenToWorld(mousePosition);
 
             var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
 
