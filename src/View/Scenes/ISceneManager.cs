@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 namespace ProjectSanctuary.View.Scenes
 {
@@ -6,6 +7,7 @@ namespace ProjectSanctuary.View.Scenes
     {
         IScene NextScene { get; }
         IScene ActiveScene { get; }
+        Color BackgroundColor { get; }
         IEnumerable<IScene> GetScenes();
         void AddScene(IScene scene);
         void SetNextScene<T>() where T : IScene;

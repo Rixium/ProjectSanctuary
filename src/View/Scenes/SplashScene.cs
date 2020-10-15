@@ -6,10 +6,11 @@ namespace ProjectSanctuary.View.Scenes
 {
     public class SplashScene : IScene
     {
-
-        private const float TimeToShow = 3f;
-        private float _timeShown = 0f;
+        public Color BackgroundColor => Color.Black;
         
+        private const float TimeToShow = 3f;
+        private float _timeShown;
+
         public void Update(float delta)
         {
             if (SceneManager.Instance.NextScene != null)
@@ -19,11 +20,13 @@ namespace ProjectSanctuary.View.Scenes
             
             _timeShown += delta;
 
-            if (_timeShown > TimeToShow)
+            if (_timeShown < TimeToShow)
             {
-                SceneManager.Instance.AddScene(new MenuScene());
-                SceneManager.Instance.SetNextScene<MenuScene>();
+                return;
             }
+            
+            SceneManager.Instance.AddScene(new MenuScene());
+            SceneManager.Instance.SetNextScene<MenuScene>();
         }
 
         public void Draw(SpriteBatch spriteBatch)

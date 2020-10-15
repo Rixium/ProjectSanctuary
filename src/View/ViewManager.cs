@@ -28,8 +28,6 @@ namespace ProjectSanctuary.View
             
             _sceneManager.AddScene(new SplashScene());
             _sceneManager.SetNextScene<SplashScene>();
-            _sceneManager.SwitchToNextScene();
-
         }
 
         public void Update(float delta)
@@ -40,6 +38,7 @@ namespace ProjectSanctuary.View
             
         public void Draw(SpriteBatch spriteBatch)
         {
+            _graphics.GraphicsDevice.Clear(_sceneManager.BackgroundColor);
             _sceneManager.ActiveScene?.Draw(spriteBatch);
             _transitionManager.Draw(spriteBatch);
         }

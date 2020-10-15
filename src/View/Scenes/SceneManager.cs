@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using Microsoft.Xna.Framework;
 
 namespace ProjectSanctuary.View.Scenes
 {
@@ -9,6 +10,7 @@ namespace ProjectSanctuary.View.Scenes
         private readonly HashSet<IScene> _scenes = new HashSet<IScene>();
         public IScene NextScene { get; private set; }
         public IScene ActiveScene { get; private set; }
+        public Color BackgroundColor => ActiveScene == null ? Color.Black : ActiveScene.BackgroundColor;
         public static SceneManager Instance { get; private set; }
 
         public SceneManager()
