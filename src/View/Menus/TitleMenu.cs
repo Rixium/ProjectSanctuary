@@ -6,7 +6,7 @@ using ProjectSanctuary.View.Utils;
 
 namespace ProjectSanctuary.View.Menus
 {
-    public class TitleMenu : IMenu
+    public class TitleMenu : Menu
     {
         
         private const int SelectedXOffset = 48;
@@ -33,7 +33,7 @@ namespace ProjectSanctuary.View.Menus
             _exitButtonSource = new Rectangle(0, 52, 48, 17);
         }
         
-        public void Update(float delta)
+        public override void Update(float delta)
         {
             var keyboardState = Keyboard.GetState();
             var mouseState = Mouse.GetState();
@@ -63,9 +63,11 @@ namespace ProjectSanctuary.View.Menus
             }
             
             _lastKeyboardState = keyboardState;
+            
+            base.Update(delta);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
