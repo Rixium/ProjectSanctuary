@@ -37,6 +37,7 @@ namespace Application
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
 
+            IsMouseVisible = true;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
