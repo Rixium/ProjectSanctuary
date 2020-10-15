@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectSanctuary.View.Content;
 using ProjectSanctuary.View.Scenes;
@@ -15,9 +16,12 @@ namespace ProjectSanctuary.View
         private ITransitionManager _transitionManager;
         private ISceneManager _sceneManager;
         
+        public static ViewManager Instance { get; private set; } 
+        
         public ViewManager(GraphicsDeviceManager graphics)
         {
             _graphics = graphics;
+            Instance = this;
         }
 
         public void Initialize()
@@ -27,8 +31,8 @@ namespace ProjectSanctuary.View
             _sceneManager = new SceneManager();
             _transitionManager = new TransitionManager(_sceneManager, ContentChest.Instance);
             
-            _sceneManager.AddScene(new SplashScene());
-            _sceneManager.SetNextScene<SplashScene>();
+            _sceneManager.AddScene(new MenuScene());
+            _sceneManager.SetNextScene<MenuScene>();
         }
 
         public void Update(float delta)
@@ -43,5 +47,9 @@ namespace ProjectSanctuary.View
             _sceneManager.ActiveScene?.Draw(spriteBatch);
             _transitionManager.Draw(spriteBatch);
         }
+
+        public void RequestExit() => OnExitRequest?.Invoke();
+
+        public Action OnExitRequest { get; set; }
     }
 }

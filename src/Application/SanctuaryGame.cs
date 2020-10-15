@@ -59,14 +59,14 @@ namespace Application
                 _graphics.PreferredBackBufferHeight = 720;
                 h = 720;
             }
-            
+
             _graphics.GraphicsDevice.Viewport = new Viewport(new Rectangle(0, 0, w,
-               h));
-            
+                h));
+
             ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _graphics.ApplyChanges();
 
-            
+
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
         }
 
@@ -92,7 +92,7 @@ namespace Application
             UpdateWindowTitle();
 
             InitializeApplicationFolder();
-            
+
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
             // Now we've created the app data folder,
@@ -104,9 +104,15 @@ namespace Application
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
             ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
-
+            _viewManager.OnExitRequest += OnExit;
 
             base.Initialize();
+        }
+
+        private void OnExit()
+        {
+            Console.WriteLine("Game is closing down.");
+            Exit();
         }
 
         private void InitializeApplicationFolder()
