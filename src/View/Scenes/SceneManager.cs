@@ -9,6 +9,12 @@ namespace ProjectSanctuary.View.Scenes
         private readonly HashSet<IScene> _scenes = new HashSet<IScene>();
         public IScene NextScene { get; private set; }
         public IScene ActiveScene { get; private set; }
+        public static SceneManager Instance { get; private set; }
+
+        public SceneManager()
+        {
+            Instance = this;
+        }
 
         public IEnumerable<IScene> GetScenes() => _scenes.ToImmutableHashSet();
 
@@ -17,7 +23,11 @@ namespace ProjectSanctuary.View.Scenes
         public void SetNextScene<T>() where T : IScene =>
             NextScene = _scenes.FirstOrDefault(scene => scene.GetType() == typeof(T));
 
-        public void SwitchToNextScene() => ActiveScene = NextScene;
+        public void SwitchToNextScene()
+        {
+            ActiveScene = NextScene;
+            NextScene = null;
+        }
 
         public void RemoveScene<T>() where T : IScene =>
             _scenes.RemoveWhere(scene => scene.GetType() == typeof(T));

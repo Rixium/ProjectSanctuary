@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectSanctuary.View.Scenes;
+using ProjectSanctuary.View.Transitions;
 
 namespace ProjectSanctuary.View
 {
@@ -9,7 +10,9 @@ namespace ProjectSanctuary.View
         public static Viewport ViewPort;
         
         private readonly GraphicsDeviceManager _graphics;
-        private SceneManager _sceneManager;
+        
+        private ITransitionManager _transitionManager;
+        private ISceneManager _sceneManager;
         
         public ViewManager(GraphicsDeviceManager graphics)
         {
@@ -21,21 +24,24 @@ namespace ProjectSanctuary.View
             ViewPort = new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             
             _sceneManager = new SceneManager();
-
+            _transitionManager = new TransitionManager(_sceneManager);
+            
             _sceneManager.AddScene(new SplashScene());
             _sceneManager.SetNextScene<SplashScene>();
             _sceneManager.SwitchToNextScene();
 
         }
 
-        public void Update()
+        public void Update(float delta)
         {
-            _sceneManager.ActiveScene?.Update();   
+            _sceneManager.ActiveScene?.Update(delta);
+            _transitionManager.Update(delta);
         }
             
         public void Draw(SpriteBatch spriteBatch)
         {
             _sceneManager.ActiveScene?.Draw(spriteBatch);
+            _transitionManager.Draw(spriteBatch);
         }
     }
 }

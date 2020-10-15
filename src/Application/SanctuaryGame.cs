@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Threading;
-using System.Xml.Serialization;
 using Application.Configuration;
 using Application.FileSystem;
-using Application.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using ProjectSanctuary.View;
 using ProjectSanctuary.View.Content;
-using ProjectSanctuary.View.Scenes;
 
 namespace Application
 {
@@ -42,7 +36,7 @@ namespace Application
 
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
-            
+
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
@@ -50,30 +44,27 @@ namespace Application
         {
             Window.ClientSizeChanged -= WindowOnClientSizeChanged;
 
-            int w = _graphics.IsFullScreen ? _graphics.PreferredBackBufferWidth : Window.ClientBounds.Width;
-            int h = _graphics.IsFullScreen ? _graphics.PreferredBackBufferHeight : Window.ClientBounds.Height;
-            
+            var w = Window.ClientBounds.Width;
+            var h = Window.ClientBounds.Height;
+
             if (w < 1280)
             {
                 _graphics.PreferredBackBufferWidth = 1280;
                 w = 1280;
             }
+
             if (h < 720)
             {
                 _graphics.PreferredBackBufferHeight = 720;
                 h = 720;
             }
             
-            _graphics.ApplyChanges();
+            _graphics.GraphicsDevice.Viewport = new Viewport(new Rectangle(0, 0, w,
+               h));
             
-            if (_graphics.IsFullScreen)
-            {
-                _graphics.GraphicsDevice.Viewport = new Viewport(new Microsoft.Xna.Framework.Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight));
-            }
-            else
-            {
-                _graphics.GraphicsDevice.Viewport = new Viewport(new Microsoft.Xna.Framework.Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height));
-            }
+            ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
+            _graphics.ApplyChanges();
+
             
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
         }
@@ -93,13 +84,15 @@ namespace Application
         protected override void Initialize()
         {
             IsFixedTimeStep = true;
-            
+
             _graphics.SynchronizeWithVerticalRetrace = true;
             _graphics.ApplyChanges();
 
             UpdateWindowTitle();
 
             InitializeApplicationFolder();
+            
+            _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
             // Now we've created the app data folder,
             // and saved the defaults if required,
@@ -110,7 +103,6 @@ namespace Application
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
 
-            _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
             base.Initialize();
         }
@@ -121,7 +113,7 @@ namespace Application
             // Also create the default file for settings files if they don't exist.
             _applicationFolder = new ApplicationFolder(GameName);
             _applicationFolder.Create();
-            
+
             var controlOptions = new ControlOptions();
             controlOptions.Save(_applicationFolder, false);
         }
@@ -130,11 +122,8 @@ namespace Application
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-                Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            _viewManager.Update();
+            var delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+            _viewManager.Update(delta);
 
             base.Update(gameTime);
         }

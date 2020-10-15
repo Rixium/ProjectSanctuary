@@ -6,8 +6,24 @@ namespace ProjectSanctuary.View.Scenes
 {
     public class SplashScene : IScene
     {
-        public void Update()
+
+        private const float TimeToShow = 3f;
+        private float _timeShown = 0f;
+        
+        public void Update(float delta)
         {
+            if (SceneManager.Instance.NextScene != null)
+            {
+                return;
+            }
+            
+            _timeShown += delta;
+
+            if (_timeShown > TimeToShow)
+            {
+                SceneManager.Instance.AddScene(new MenuScene());
+                SceneManager.Instance.SetNextScene<MenuScene>();
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

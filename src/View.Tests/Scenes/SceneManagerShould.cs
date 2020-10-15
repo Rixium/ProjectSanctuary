@@ -62,8 +62,9 @@ namespace ProjectSanctuary.View.Tests.Scenes
         
         private class MockScene : IScene
         {
-            public void Update()
+            public void Update(float delta)
             {
+                
             }
 
             public void Draw(SpriteBatch spriteBatch)

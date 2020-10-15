@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace ProjectSanctuary.View
+namespace ProjectSanctuary.View.Transitions
 {
-    public interface IViewManager
+    public interface ITransitionManager
     {
-        void Initialize();
         void Update(float delta);
         void Draw(SpriteBatch spriteBatch);
     }
