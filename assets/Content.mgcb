@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Music/MenuSong.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/MenuSong.mp3
+
 #begin splash.png
 /importer:TextureImporter
 /processor:TextureProcessor

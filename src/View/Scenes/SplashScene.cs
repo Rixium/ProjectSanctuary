@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using ProjectSanctuary.View.Content;
 
 namespace ProjectSanctuary.View.Scenes
@@ -17,7 +18,7 @@ namespace ProjectSanctuary.View.Scenes
             {
                 return;
             }
-            
+
             _timeShown += delta;
 
             if (_timeShown < TimeToShow)
@@ -25,6 +26,8 @@ namespace ProjectSanctuary.View.Scenes
                 return;
             }
             
+            ContentChest.Instance.Preload<Song>("Music/MenuSong");
+            MediaPlayer.Play(ContentChest.Instance.Get<Song>("Music/MenuSong"));
             SceneManager.Instance.AddScene(new MenuScene());
             SceneManager.Instance.SetNextScene<MenuScene>();
         }
