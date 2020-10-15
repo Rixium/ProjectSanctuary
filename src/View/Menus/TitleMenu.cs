@@ -1,9 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ProjectSanctuary.View.Content;
@@ -17,16 +14,19 @@ namespace ProjectSanctuary.View.Menus
     {
         private readonly Sprite _signTopSprite;
         private readonly Vector2 _signTopPosition;
-        private readonly Camera _camera = new Camera();
+        private readonly Camera _camera;
         private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
         private readonly Rectangle _titleImageSource;
-        
+
         private float _titleYOffset;
         private MouseState _lastMouse;
 
         public TitleMenu()
         {
+            _camera = new Camera(ViewManager.ViewPort.Center());
+            _camera.AdjustZoom(3);
+            
             _background = ContentChest.Instance.Get<Texture2D>("background");
             _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
@@ -34,44 +34,33 @@ namespace ProjectSanctuary.View.Menus
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
 
             _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 48, 22));
-            _signTopPosition = ViewManager.ViewPort.Center();
+            _signTopPosition = new Vector2(_camera.ViewportWorldBoundary().Center.X,
+                _camera.ViewportWorldBoundary().Center.Y);
 
             var newButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 22, 48, 14)),
                 new Sprite(_menuButtons, new Rectangle(48, 22, 48, 14)),
                 _signTopPosition + new Vector2(0, 18));
 
-            newButton.OnClick += () =>
-            {
-                
-            };
+            newButton.OnClick += () => { };
 
             var loadButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 36, 48, 16)),
                 new Sprite(_menuButtons, new Rectangle(48, 36, 48, 16)),
                 _signTopPosition + new Vector2(0, 19 + newButton.Height));
 
-            loadButton.OnClick += () =>
-            {
-                
-            };
+            loadButton.OnClick += () => { };
 
             var exitButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 52, 48, 16)),
                 new Sprite(_menuButtons, new Rectangle(48, 52, 48, 16)),
                 _signTopPosition + new Vector2(0, 19 + newButton.Height + loadButton.Height));
 
-            exitButton.OnClick += () =>
-            {
-                ViewManager.Instance.RequestExit();
-            };
+            exitButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
 
             Clickables.Add(newButton);
             Clickables.Add(loadButton);
             Clickables.Add(exitButton);
-
-            _camera.Position = ViewManager.ViewPort.Center();
-            _camera.Zoom = 5;
 
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
         }
@@ -80,7 +69,7 @@ namespace ProjectSanctuary.View.Menus
         {
             var mouse = Mouse.GetState();
             var mousePosition = new Vector2(mouse.X, mouse.Y);
-            mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_camera.GetMatrix()));
+            mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_camera.TranslationMatrix));
 
             var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
 
@@ -126,7 +115,7 @@ namespace ProjectSanctuary.View.Menus
                 new Vector2(_titleImageSource.Width, _titleImageSource.Height) / 2.0f, 3f, SpriteEffects.None, 0.2f);
             spriteBatch.End();
 
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _camera.GetMatrix());
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _camera.TranslationMatrix);
 
             foreach (var clickable in Clickables.Reverse())
             {
