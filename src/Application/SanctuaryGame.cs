@@ -103,6 +103,7 @@ namespace Application
 
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
+            ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
 
 
             base.Initialize();
