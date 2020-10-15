@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ProjectSanctuary.View.Content;
 using ProjectSanctuary.View.Scenes;
 using ProjectSanctuary.View.Transitions;
 
@@ -24,7 +25,7 @@ namespace ProjectSanctuary.View
             ViewPort = new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
             
             _sceneManager = new SceneManager();
-            _transitionManager = new TransitionManager(_sceneManager);
+            _transitionManager = new TransitionManager(_sceneManager, ContentChest.Instance);
             
             _sceneManager.AddScene(new SplashScene());
             _sceneManager.SetNextScene<SplashScene>();

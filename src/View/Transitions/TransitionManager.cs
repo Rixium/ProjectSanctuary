@@ -9,6 +9,7 @@ namespace ProjectSanctuary.View.Transitions
     {
         
         private ISceneManager _sceneManager;
+        private readonly IContentChest _contentChest;
 
         private bool _fadingToBlack;
         private bool _fadingToTransparent;
@@ -17,10 +18,11 @@ namespace ProjectSanctuary.View.Transitions
         private float _currentFade;
         private Texture2D _pixel;
 
-        public TransitionManager(ISceneManager sceneManager)
+        public TransitionManager(ISceneManager sceneManager, IContentChest contentChest)
         {
             _sceneManager = sceneManager;
-            _pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
+            _contentChest = contentChest;
+            _pixel = contentChest.Get<Texture2D>("Utils/pixel");
         }
         public void Update(float delta)
         {

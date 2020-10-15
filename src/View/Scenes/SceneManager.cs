@@ -10,7 +10,7 @@ namespace ProjectSanctuary.View.Scenes
         private readonly HashSet<IScene> _scenes = new HashSet<IScene>();
         public IScene NextScene { get; private set; }
         public IScene ActiveScene { get; private set; }
-        public Color BackgroundColor => ActiveScene == null ? Color.Black : ActiveScene.BackgroundColor;
+        public Color BackgroundColor => ActiveScene?.BackgroundColor ?? Color.Black;
         public static SceneManager Instance { get; private set; }
 
         public SceneManager()
