@@ -14,7 +14,7 @@ namespace ProjectSanctuary.View.Transitions
         private bool _fadingToTransparent;
         
         private const float FadeSpeed = 1f;
-        private float _currentFade = 0f;
+        private float _currentFade;
         private Texture2D _pixel;
 
         public TransitionManager(ISceneManager sceneManager)

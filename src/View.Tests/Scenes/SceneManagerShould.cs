@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NSubstitute;
 using NUnit.Framework;
 using Shouldly;
@@ -62,6 +63,8 @@ namespace ProjectSanctuary.View.Tests.Scenes
         
         private class MockScene : IScene
         {
+            public Color BackgroundColor { get; }
+
             public void Update(float delta)
             {
                 
