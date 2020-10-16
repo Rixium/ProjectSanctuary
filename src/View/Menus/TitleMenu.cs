@@ -39,39 +39,34 @@ namespace ProjectSanctuary.View.Menus
 
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
 
-            _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 48, 22));
+            _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 96, 44));
             _signTopPosition = new Vector2(_camera.ViewportWorldBoundary().Center.X,
-                _camera.ViewportWorldBoundary().Center.Y);
+                _camera.ViewportWorldBoundary().Center.Y - _camera.ViewportWorldBoundary().Height / 4f);
 
+            var newButtonPosition = _signTopPosition + new Vector2(0, 44 / 2 + 32 / 2);
+            
             var newButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 22, 48, 14)),
-                new Sprite(_menuButtons, new Rectangle(48, 22, 48, 14)),
-                _signTopPosition + new Vector2(0, 18));
+                new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
+                new Sprite(_menuButtons, new Rectangle(96, 44, 96, 32)),
+                newButtonPosition);
 
             newButton.OnClick += () => { };
 
             NewGameButton = newButton;
             
             var loadButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 36, 48, 16)),
-                new Sprite(_menuButtons, new Rectangle(48, 36, 48, 16)),
-                _signTopPosition + new Vector2(0, 19 + newButton.Height));
+                new Sprite(_menuButtons, new Rectangle(0, 44 + 32, 96, 32)),
+                new Sprite(_menuButtons, new Rectangle(96, 44 + 32, 96, 32)),
+                newButtonPosition + new Vector2(0, newButton.Height));
 
             loadButton.OnClick += () => { };
 
             LoadGameButton = loadButton;
 
-            var optionsButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 68, 48, 16)),
-                new Sprite(_menuButtons, new Rectangle(48, 68, 48, 16)),
-                _signTopPosition + new Vector2(0, 19 + newButton.Height + loadButton.Height));
-
-            OptionsMenuButton = optionsButton;
-            
             var exitButton = new TexturedButton(
-            new Sprite(_menuButtons, new Rectangle(0, 52, 48, 16)),
-            new Sprite(_menuButtons, new Rectangle(48, 52, 48, 16)),
-            _signTopPosition + new Vector2(0, 19 + newButton.Height + loadButton.Height + optionsButton.Height));
+            new Sprite(_menuButtons, new Rectangle(0, 44 + 32 + 32, 96, 32)),
+            new Sprite(_menuButtons, new Rectangle(96, 44 + 32 + 32, 96, 32)),
+            newButtonPosition + new Vector2(0, newButton.Height + loadButton.Height));
 
             exitButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
 
@@ -79,7 +74,6 @@ namespace ProjectSanctuary.View.Menus
 
             Clickables.Add(newButton);
             Clickables.Add(loadButton);
-            Clickables.Add(optionsButton);
             Clickables.Add(exitButton);
             
 
