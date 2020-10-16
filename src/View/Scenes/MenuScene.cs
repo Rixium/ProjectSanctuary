@@ -8,7 +8,8 @@ namespace ProjectSanctuary.View.Scenes
     {
         private TitleMenu _mainTitleMenu;
         private MainOptionsMenu _mainOptionsMenu;
-        
+        private IMenu _activeMenu;
+
         public Color BackgroundColor => Color.White;
 
         public MenuScene()
@@ -16,18 +17,16 @@ namespace ProjectSanctuary.View.Scenes
             _mainTitleMenu = new TitleMenu();
             _mainOptionsMenu = new MainOptionsMenu();
 
+            _activeMenu = _mainTitleMenu;
+
+            _mainTitleMenu.LoadGameButton.OnClick += () =>
+            {
+                _activeMenu = _mainOptionsMenu;
+            };
         }
 
-        public void Update(float delta)
-        {
-            _mainTitleMenu.Update(delta);
-            _mainOptionsMenu.Update(delta);
-        }
+        public void Update(float delta) => _activeMenu.Update(delta);
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            _mainTitleMenu.Draw(spriteBatch);
-            _mainOptionsMenu.Draw(spriteBatch);
-        }
+        public void Draw(SpriteBatch spriteBatch) => _activeMenu.Draw(spriteBatch);
     }
 }
