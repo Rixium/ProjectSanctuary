@@ -21,6 +21,7 @@ namespace ProjectSanctuary.View.Menus
 
         private float _titleYOffset;
         private MouseState _lastMouse;
+        private float _buttonScale;
 
         public IClickable OptionsMenuButton { get; private set; }
         public IClickable NewGameButton { get; private set; }
@@ -39,30 +40,32 @@ namespace ProjectSanctuary.View.Menus
             _signTopPosition = new Vector2(ViewManager.ViewPort.Center().X,
                 ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 4f);
 
-            var newButtonPosition = _signTopPosition + new Vector2(0, 44 / 2 + 32 / 2);
-            
+            _buttonScale = 2f;
+            var newButtonPosition = _signTopPosition + new Vector2(0, 44 / 2f * _buttonScale + 32 / 2f * _buttonScale);
+
             var newButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
                 new Sprite(_menuButtons, new Rectangle(96, 44, 96, 32)),
-                newButtonPosition);
+                newButtonPosition, _buttonScale);
 
             newButton.OnClick += () => { };
 
             NewGameButton = newButton;
-            
+
             var loadButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44 + 32, 96, 32)),
                 new Sprite(_menuButtons, new Rectangle(96, 44 + 32, 96, 32)),
-                newButtonPosition + new Vector2(0, newButton.Height));
+                newButtonPosition + new Vector2(0, newButton.Height * _buttonScale), _buttonScale);
 
             loadButton.OnClick += () => { };
 
             LoadGameButton = loadButton;
 
             var exitButton = new TexturedButton(
-            new Sprite(_menuButtons, new Rectangle(0, 44 + 32 + 32, 96, 32)),
-            new Sprite(_menuButtons, new Rectangle(96, 44 + 32 + 32, 96, 32)),
-            newButtonPosition + new Vector2(0, newButton.Height + loadButton.Height));
+                new Sprite(_menuButtons, new Rectangle(0, 44 + 32 + 32, 96, 32)),
+                new Sprite(_menuButtons, new Rectangle(96, 44 + 32 + 32, 96, 32)),
+                newButtonPosition + new Vector2(0, newButton.Height * _buttonScale + loadButton.Height * _buttonScale),
+                _buttonScale);
 
             exitButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
 
@@ -71,7 +74,7 @@ namespace ProjectSanctuary.View.Menus
             Clickables.Add(newButton);
             Clickables.Add(loadButton);
             Clickables.Add(exitButton);
-            
+
 
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
         }
@@ -103,7 +106,8 @@ namespace ProjectSanctuary.View.Menus
                 button.Hovering = true;
             }
 
-            if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed && _lastMouse.LeftButton == ButtonState.Released)
+            if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed &&
+                _lastMouse.LeftButton == ButtonState.Released)
             {
                 hoveringButton?.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
@@ -131,16 +135,21 @@ namespace ProjectSanctuary.View.Menus
             {
                 clickable.Draw(spriteBatch);
 
-                if (IsDebug)
+                if (!IsDebug)
                 {
                     clickable.DrawDebug(spriteBatch);
                 }
             }
 
             spriteBatch.Draw(_signTopSprite.Texture, _signTopPosition, _signTopSprite.Source, Color.White, 0f,
-                _signTopSprite.Origin, 1f,
+                _signTopSprite.Origin, _buttonScale,
                 SpriteEffects.None, 0);
 
+            var size = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont").MeasureString("by YetiFace");
+            
+            spriteBatch.DrawString(ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont"), "by YetiFace",
+                new Vector2(ViewManager.ViewPort.Center().X - size.X / 2f, ViewManager.ViewPort.Bounds.Bottom - 10 - size.Y), 
+                    Color.Black);
             spriteBatch.End();
         }
 

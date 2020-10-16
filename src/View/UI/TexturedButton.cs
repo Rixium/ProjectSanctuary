@@ -11,12 +11,14 @@ namespace ProjectSanctuary.View.UI
         private readonly Sprite _texture;
         private readonly Sprite _hoverTexture;
         private readonly Vector2 _position;
+        private readonly float _scale;
 
-        public TexturedButton(Sprite texture, Sprite hoverTexture, Vector2 position)
+        public TexturedButton(Sprite texture, Sprite hoverTexture, Vector2 position, float scale)
         {
             _texture = texture;
             _hoverTexture = hoverTexture;
             _position = position;
+            _scale = scale;
         }
 
         public int Height => _texture.Source.Height;
@@ -34,12 +36,12 @@ namespace ProjectSanctuary.View.UI
             if (Hovering)
             {
                 spriteBatch.Draw(_hoverTexture.Texture, _position, _hoverTexture.Source, Color.White, 0f,
-                    _hoverTexture.Origin, 1.1f,
+                    _hoverTexture.Origin, _scale * 1.1f,
                     SpriteEffects.None, 0);
             }
             else
             {
-                spriteBatch.Draw(_texture.Texture, _position, _texture.Source, Color.White, 0f, _texture.Origin, 1f,
+                spriteBatch.Draw(_texture.Texture, _position, _texture.Source, Color.White, 0f, _texture.Origin, _scale,
                     SpriteEffects.None, 0);
             }
         }
@@ -56,9 +58,14 @@ namespace ProjectSanctuary.View.UI
 
         public void Click() => OnClick?.Invoke();
 
-        public Rectangle Bounds => new Rectangle((int) (_position.X - _texture.Origin.X), (int)(_position.Y - _texture.Origin.Y), _texture.Source.Width,
-            _texture.Source.Height);
-        
+        public Rectangle Bounds => 
+            new Rectangle(
+                (int) (_position.X - _texture.Origin.X * _scale),
+                (int) (_position.Y - _texture.Origin.Y * _scale), 
+                (int) (_texture.Source.Width * _scale), 
+                (int) (_texture.Source.Height * _scale)
+            );
+
         public bool Intersects(Rectangle rectangle) =>
             rectangle.Intersects(Bounds);
     }

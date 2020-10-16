@@ -32,8 +32,8 @@ namespace ProjectSanctuary.View
             _sceneManager = new SceneManager();
             _transitionManager = new TransitionManager(_sceneManager, ContentChest.Instance);
             
-            _sceneManager.AddScene(new MenuScene());
-            _sceneManager.SetNextScene<MenuScene>();
+            _sceneManager.AddScene(new SplashScene());
+            _sceneManager.SetNextScene<SplashScene>();
         }
 
         public void Update(float delta)

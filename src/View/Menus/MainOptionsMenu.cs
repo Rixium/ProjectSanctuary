@@ -31,17 +31,6 @@ namespace ProjectSanctuary.View.Menus
             _signTopPosition = new Vector2(ViewManager.ViewPort.Center().X,
                 ViewManager.ViewPort.Center().Y);
 
-            _newButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 22, 96, 14)),
-                new Sprite(_menuButtons, new Rectangle(96, 22, 96, 14)),
-                _signTopPosition + new Vector2(0, 18));
-
-            _newButton.OnClick += () => { };
-
-            BackButton = _newButton;
-
-            Clickables.Add(BackButton);
-
             _interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
         }
 
