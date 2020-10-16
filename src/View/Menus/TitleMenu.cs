@@ -15,7 +15,6 @@ namespace ProjectSanctuary.View.Menus
     {
         private readonly Sprite _signTopSprite;
         private readonly Vector2 _signTopPosition;
-        private readonly Camera _camera;
         private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
         private readonly Rectangle _titleImageSource;
@@ -30,9 +29,6 @@ namespace ProjectSanctuary.View.Menus
 
         public TitleMenu()
         {
-            _camera = new Camera(ViewManager.ViewPort.Center());
-            _camera.AdjustZoom(3);
-            
             _background = ContentChest.Instance.Get<Texture2D>("background");
             _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
@@ -40,8 +36,8 @@ namespace ProjectSanctuary.View.Menus
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
 
             _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 96, 44));
-            _signTopPosition = new Vector2(_camera.ViewportWorldBoundary().Center.X,
-                _camera.ViewportWorldBoundary().Center.Y - _camera.ViewportWorldBoundary().Height / 4f);
+            _signTopPosition = new Vector2(ViewManager.ViewPort.Center().X,
+                ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 4f);
 
             var newButtonPosition = _signTopPosition + new Vector2(0, 44 / 2 + 32 / 2);
             
@@ -84,7 +80,6 @@ namespace ProjectSanctuary.View.Menus
         {
             var mouse = Mouse.GetState();
             var mousePosition = new Vector2(mouse.X, mouse.Y);
-            mousePosition = _camera.ScreenToWorld(mousePosition);
 
             var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
 
@@ -130,7 +125,7 @@ namespace ProjectSanctuary.View.Menus
                 new Vector2(_titleImageSource.Width, _titleImageSource.Height) / 2.0f, 3f, SpriteEffects.None, 0.2f);
             spriteBatch.End();
 
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _camera.TranslationMatrix);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             foreach (var clickable in Clickables.Reverse())
             {
