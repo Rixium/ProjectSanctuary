@@ -6,22 +6,20 @@ namespace ProjectSanctuary.View.Scenes
 {
     public class MenuScene : IScene
     {
-        private TitleMenu _mainTitleMenu;
-        private MainOptionsMenu _mainOptionsMenu;
         private IMenu _activeMenu;
 
         public Color BackgroundColor => Color.White;
 
         public MenuScene()
         {
-            _mainTitleMenu = new TitleMenu();
-            _mainOptionsMenu = new MainOptionsMenu();
+            var mainTitleMenu = new TitleMenu();
+            var mainOptionsMenu = new MainOptionsMenu();
 
-            _activeMenu = _mainTitleMenu;
+            _activeMenu = mainTitleMenu;
 
-            _mainTitleMenu.LoadGameButton.OnClick += () =>
+            mainTitleMenu.OptionsMenuButton.OnClick += () =>
             {
-                _activeMenu = _mainOptionsMenu;
+                _activeMenu = mainOptionsMenu;
             };
         }
 

@@ -60,11 +60,18 @@ namespace ProjectSanctuary.View.Menus
             loadButton.OnClick += () => { };
 
             LoadGameButton = loadButton;
+
+            var optionsButton = new TexturedButton(
+                new Sprite(_menuButtons, new Rectangle(0, 68, 48, 16)),
+                new Sprite(_menuButtons, new Rectangle(48, 68, 48, 16)),
+                _signTopPosition + new Vector2(0, 19 + newButton.Height + loadButton.Height));
+
+            OptionsMenuButton = optionsButton;
             
             var exitButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 52, 48, 16)),
-                new Sprite(_menuButtons, new Rectangle(48, 52, 48, 16)),
-                _signTopPosition + new Vector2(0, 19 + newButton.Height + loadButton.Height));
+            new Sprite(_menuButtons, new Rectangle(0, 52, 48, 16)),
+            new Sprite(_menuButtons, new Rectangle(48, 52, 48, 16)),
+            _signTopPosition + new Vector2(0, 19 + newButton.Height + loadButton.Height + optionsButton.Height));
 
             exitButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
 
@@ -72,7 +79,9 @@ namespace ProjectSanctuary.View.Menus
 
             Clickables.Add(newButton);
             Clickables.Add(loadButton);
+            Clickables.Add(optionsButton);
             Clickables.Add(exitButton);
+            
 
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
         }
@@ -105,7 +114,7 @@ namespace ProjectSanctuary.View.Menus
                 button.Hovering = true;
             }
 
-            if (mouse.LeftButton == ButtonState.Pressed && _lastMouse.LeftButton == ButtonState.Released)
+            if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed && _lastMouse.LeftButton == ButtonState.Released)
             {
                 hoveringButton?.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();

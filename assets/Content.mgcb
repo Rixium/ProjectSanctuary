@@ -25,6 +25,16 @@
 /processorParam:TextureFormat=Color
 /build:background.png
 
+#begin Fonts/coolvetica rg.ttf
+/copy:Fonts/coolvetica rg.ttf
+
+#begin Fonts/InterfaceFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=False
+/processorParam:TextureFormat=NoChange
+/build:Fonts/InterfaceFont.spritefont
+
 #begin Music/MenuSong.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

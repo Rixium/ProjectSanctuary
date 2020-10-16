@@ -19,12 +19,13 @@ namespace ProjectSanctuary.View.Menus
         private Vector2 _signTopPosition;
         private TexturedButton _newButton;
         private MouseState _lastMouse;
+        private SpriteFont _interfaceFont;
 
         public MainOptionsMenu()
         {
             _camera = new Camera(ViewManager.ViewPort.Center());
             _camera.AdjustZoom(3);
-            
+
             _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
 
@@ -42,9 +43,12 @@ namespace ProjectSanctuary.View.Menus
             _newButton.OnClick += () => { };
 
             BackButton = _newButton;
-            
+
             Clickables.Add(BackButton);
+
+            _interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
         }
+
         public override void Update(float delta)
         {
             var mouse = Mouse.GetState();
@@ -57,7 +61,7 @@ namespace ProjectSanctuary.View.Menus
             {
                 _titleYOffset = MathHelper.Lerp(_titleYOffset, 0, delta);
             }
-            
+
             IClickable hoveringButton = null;
 
             foreach (var button in Clickables)
@@ -73,7 +77,8 @@ namespace ProjectSanctuary.View.Menus
                 button.Hovering = true;
             }
 
-            if (mouse.LeftButton == ButtonState.Pressed && _lastMouse.LeftButton == ButtonState.Released)
+            if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed &&
+                _lastMouse.LeftButton == ButtonState.Released)
             {
                 hoveringButton?.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
@@ -88,15 +93,16 @@ namespace ProjectSanctuary.View.Menus
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _camera.TranslationMatrix);
+
+            _newButton.Draw(spriteBatch);
+
+            var i = 0;
+            foreach (var control in ViewManager.Instance.GetControls())
+            {
+                spriteBatch.DrawString(_interfaceFont, control, new Vector2(_signTopPosition.X,  _signTopPosition.Y + ++i * 15), Color.Black);                
+            }
             
-            _newButton.Draw(spriteBatch);            
-
-            spriteBatch.Draw(_signTopSprite.Texture, _signTopPosition, _signTopSprite.Source, Color.White, 0f,
-                _signTopSprite.Origin, 1f,
-                SpriteEffects.None, 0);
-
             spriteBatch.End();
         }
-
     }
 }

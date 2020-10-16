@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Threading;
 using Application.Configuration;
 using Application.FileSystem;
+using Application.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectSanctuary.View;
@@ -105,6 +106,7 @@ namespace Application
             _viewManager.Initialize();
             ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _viewManager.OnExitRequest += OnExit;
+            _viewManager.RequestControls += () => Enum.GetNames(typeof(InputAction));
 
             base.Initialize();
         }

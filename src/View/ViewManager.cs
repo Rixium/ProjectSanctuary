@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ProjectSanctuary.View.Content;
@@ -51,5 +52,13 @@ namespace ProjectSanctuary.View
         public void RequestExit() => OnExitRequest?.Invoke();
 
         public Action OnExitRequest { get; set; }
+
+        public IEnumerable<string> GetControls()
+        {
+            var controls = RequestControls?.Invoke();
+            return controls;
+        }
+
+        public Func<IList<string>> RequestControls { get; set; }
     }
 }
