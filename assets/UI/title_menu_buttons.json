@@ -1,0 +1,27 @@
+{ "frames": {
+   "title_menu_buttons.png": {
+    "frame": { "x": 0, "y": 0, "w": 516, "h": 614 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 516, "h": 614 },
+    "sourceSize": { "w": 516, "h": 614 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.25-x64",
+  "format": "RGBA8888",
+  "size": { "w": 516, "h": 614 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+   { "name": "newgame", "color": "#0000ffff", "data": "button", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 44, "w": 96, "h": 32 } }] },
+   { "name": "newgame_hover", "color": "#0000ffff", "data": "button", "keys": [{ "frame": 0, "bounds": {"x": 96, "y": 44, "w": 96, "h": 32 } }] }
+  ]
+ }
+}
