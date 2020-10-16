@@ -13,16 +13,15 @@ namespace ProjectSanctuary.View.Menus
 {
     public class TitleMenu : Menu
     {
-        private readonly Sprite _signTopSprite;
-        private readonly Vector2 _signTopPosition;
         private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
         private readonly Rectangle _titleImageSource;
+        private readonly float _buttonScale;
 
         private float _titleYOffset;
         private MouseState _lastMouse;
-        private float _buttonScale;
-
+        public Image SignTopImage { get; private set; }
+        
         public IClickable OptionsMenuButton { get; private set; }
         public IClickable NewGameButton { get; private set; }
         public IClickable LoadGameButton { get; private set; }
@@ -33,49 +32,43 @@ namespace ProjectSanctuary.View.Menus
             _background = ContentChest.Instance.Get<Texture2D>("background");
             _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
+            _buttonScale = 2f;
 
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
+            
+            SignTopImage = new Image(
+                new Sprite(_menuButtons, new Rectangle(0, 0, 96, 44)),
+                new Vector2(ViewManager.ViewPort.Center().X,
+                    ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 4f), _buttonScale);
+            
+            var newButtonPosition = SignTopImage.Position + new Vector2(0, 44 / 2f * _buttonScale + 32 / 2f * _buttonScale);
 
-            _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 96, 44));
-            _signTopPosition = new Vector2(ViewManager.ViewPort.Center().X,
-                ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 4f);
-
-            _buttonScale = 2f;
-            var newButtonPosition = _signTopPosition + new Vector2(0, 44 / 2f * _buttonScale + 32 / 2f * _buttonScale);
-
-            var newButton = new TexturedButton(
+            NewGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
                 new Sprite(_menuButtons, new Rectangle(96, 44, 96, 32)),
                 newButtonPosition, _buttonScale);
 
-            newButton.OnClick += () => { };
+            NewGameButton.OnClick += () => { };
 
-            NewGameButton = newButton;
-
-            var loadButton = new TexturedButton(
+            LoadGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44 + 32, 96, 32)),
                 new Sprite(_menuButtons, new Rectangle(96, 44 + 32, 96, 32)),
-                newButtonPosition + new Vector2(0, newButton.Height * _buttonScale), _buttonScale);
+                newButtonPosition + new Vector2(0, NewGameButton.Height * _buttonScale), _buttonScale);
 
-            loadButton.OnClick += () => { };
+            LoadGameButton.OnClick += () => { };
 
-            LoadGameButton = loadButton;
-
-            var exitButton = new TexturedButton(
+            ExitGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44 + 32 + 32, 96, 32)),
                 new Sprite(_menuButtons, new Rectangle(96, 44 + 32 + 32, 96, 32)),
-                newButtonPosition + new Vector2(0, newButton.Height * _buttonScale + loadButton.Height * _buttonScale),
+                newButtonPosition + new Vector2(0, NewGameButton.Height * _buttonScale + LoadGameButton.Height * _buttonScale),
                 _buttonScale);
 
-            exitButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
+            ExitGameButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
 
-            ExitGameButton = exitButton;
-
-            Clickables.Add(newButton);
-            Clickables.Add(loadButton);
-            Clickables.Add(exitButton);
-
-
+            Clickables.Add(NewGameButton);
+            Clickables.Add(LoadGameButton);
+            Clickables.Add(ExitGameButton);
+            
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
         }
 
@@ -141,10 +134,9 @@ namespace ProjectSanctuary.View.Menus
                 }
             }
 
-            spriteBatch.Draw(_signTopSprite.Texture, _signTopPosition, _signTopSprite.Source, Color.White, 0f,
-                _signTopSprite.Origin, _buttonScale,
-                SpriteEffects.None, 0);
-
+            SignTopImage.Draw(spriteBatch);
+            SignTopImage.DrawDebug(spriteBatch);
+            
             var size = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont").MeasureString("by YetiFace");
             
             spriteBatch.DrawString(ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont"), "by YetiFace",
