@@ -6,7 +6,7 @@ namespace ProjectSanctuary.View.UI
 {
     public interface IClickable
     {
-        Action OnClick { get; }
+        Action OnClick { get; set; }
         int Width { get; }
         int Height { get; }
         bool Hovering { get; set; }
