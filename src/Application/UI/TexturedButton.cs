@@ -35,13 +35,13 @@ namespace Application.UI
         {
             if (Hovering)
             {
-                spriteBatch.Draw(_hoverTexture.Texture, _position, _hoverTexture.Source, Color.White, 0f,
-                    _hoverTexture.Origin, _scale * 1.1f,
+                spriteBatch.Draw(_hoverTexture.Texture, Bounds, _hoverTexture.Source, Color.White, 0f,
+                    Vector2.Zero,
                     SpriteEffects.None, 0);
             }
             else
             {
-                spriteBatch.Draw(_texture.Texture, _position, _texture.Source, Color.White, 0f, _texture.Origin, _scale,
+                spriteBatch.Draw(_texture.Texture, Bounds, _texture.Source, Color.White, 0f, Vector2.Zero,
                     SpriteEffects.None, 0);
             }
         }

@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.UI
 {
-    internal class ScrollBox
+    public class ScrollBox
     {
         private readonly string _textContent;
         private readonly Rectangle _bounds;

@@ -23,7 +23,7 @@ namespace Application.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture.Texture, _position, _texture.Source, Color.White, 0f, _texture.Origin, _scale,
+            spriteBatch.Draw(_texture.Texture, Bounds, _texture.Source, Color.White, 0f, Vector2.Zero, 
                 SpriteEffects.None, 0);
         }
 

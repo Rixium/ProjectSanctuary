@@ -26,23 +26,32 @@ namespace Application.Menus
         public IClickable NewGameButton { get; private set; }
         public IClickable LoadGameButton { get; private set; }
         public IClickable ExitGameButton { get; private set; }
+        
+        public ScrollBox ScrollBox { get; private set; }
 
         public TitleMenu()
         {
             _background = ContentChest.Instance.Get<Texture2D>("background");
             _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
-            _buttonScale = 2f;
+            _buttonScale = 3f;
 
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             
             SignTopImage = new Image(
-                new Sprite(_menuButtons, new Rectangle(0, 0, 96, 44)),
+                new Sprite(_menuButtons, new Rectangle(0, 0, 192, 44)),
                 new Vector2(ViewManager.ViewPort.Center().X,
                     ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 4f), _buttonScale);
             
-            var newButtonPosition = SignTopImage.Position + new Vector2(0, 44 / 2f * _buttonScale + 32 / 2f * _buttonScale);
+            var newButtonPosition = new Vector2(SignTopImage.Bounds.Left + 96 / 2f * _buttonScale, SignTopImage.Bounds.Bottom + 32 / 2f * _buttonScale);
+            var newsPanelPosition = new Vector2(SignTopImage.Bounds.Right - 96 / 2f * _buttonScale, SignTopImage.Bounds.Bottom + 96 / 2f * _buttonScale);
 
+            NewsPanelImage = new Image(
+                new Sprite(_menuButtons, new Rectangle(192, 45, 96, 96)),
+                newsPanelPosition, _buttonScale);
+            
+            ScrollBox = new ScrollBox("Welcome to Project Sanctuary!\nBuild your Sanctuary, Save Animals and Change the World!", NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -5 * _buttonScale, -14 * _buttonScale));
+            
             NewGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
                 new Sprite(_menuButtons, new Rectangle(96, 44, 96, 32)),
@@ -73,6 +82,8 @@ namespace Application.Menus
             
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
         }
+
+        public Image NewsPanelImage { get; set; }
 
         public override void Update(float delta)
         {
@@ -130,14 +141,22 @@ namespace Application.Menus
             {
                 clickable.Draw(spriteBatch);
 
-                if (!IsDebug)
+                if (IsDebug)
                 {
                     clickable.DrawDebug(spriteBatch);
                 }
             }
 
             SignTopImage.Draw(spriteBatch);
-            SignTopImage.DrawDebug(spriteBatch);
+            NewsPanelImage.Draw(spriteBatch);
+            
+            ScrollBox.Draw(spriteBatch);
+            
+            if (IsDebug)
+            {
+                SignTopImage.DrawDebug(spriteBatch);
+                NewsPanelImage.DrawDebug(spriteBatch);
+            }
             
             var size = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont").MeasureString("by YetiFace");
             
