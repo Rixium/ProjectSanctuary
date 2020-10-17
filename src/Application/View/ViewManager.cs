@@ -6,7 +6,7 @@ using Application.Transitions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Application
+namespace Application.View
 {
     public class ViewManager : IViewManager
     {

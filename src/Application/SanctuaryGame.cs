@@ -5,6 +5,7 @@ using Application.Configuration;
 using Application.Content;
 using Application.FileSystem;
 using Application.Input;
+using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

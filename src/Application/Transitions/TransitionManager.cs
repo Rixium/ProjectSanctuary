@@ -1,5 +1,6 @@
 ﻿using Application.Content;
 using Application.Scenes;
+using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

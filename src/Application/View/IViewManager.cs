@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Application
+namespace Application.View
 {
     public interface IViewManager
     {

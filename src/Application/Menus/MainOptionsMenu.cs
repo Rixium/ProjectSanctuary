@@ -2,6 +2,7 @@
 using Application.Graphics;
 using Application.UI;
 using Application.Utils;
+using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
