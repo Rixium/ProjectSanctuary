@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Application.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,49 +16,97 @@ namespace Application.UI
         private IClickable _upArrow;
         private IClickable _downArrow;
         private Image _scrollNib;
-        private SpriteFont _font;
+        private readonly SpriteFont _font;
+        private IList<string> _lines = new List<string>();
+        private int _visibleLine = 0;
+        private int _maxVisibleLine;
 
         public ScrollBox(string textContent, Rectangle bounds)
         {
             _font = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
             _textContent = textContent;
             _bounds = bounds;
+
+            _lines = WrapString(textContent);
+
+            _maxVisibleLine = _lines.Count;
         }
 
         public void Update(float delta)
         {
-            
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            var wrappedString = WrapString(_textContent);
-            spriteBatch.DrawString(_font, wrappedString, new Vector2(_bounds.X, _bounds.Y), Color.Black);
+            var currentY = 0f;
+
+            for(var i = _visibleLine; i < _maxVisibleLine; i++)
+            {
+                var line = _lines[i];
+                if (line.Contains("{line}"))
+                {
+                    var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
+                    var (x, y, width, height) = _bounds;
+                    
+                    currentY += 15;
+                    
+                    if (_bounds.Y + currentY > _bounds.Bottom)
+                    {
+                        break;
+                    }
+                    
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X, (int) (_bounds.Y + currentY), width, 2), Color.Black);
+                    currentY += 15;
+                }
+                else
+                {
+                    var ySize = _font.MeasureString(line).Y;
+                    
+                    if (_bounds.Y + currentY + ySize > _bounds.Bottom)
+                    {
+                        break;
+                    }
+                    
+                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X, _bounds.Y + currentY), Color.Black);
+                    currentY += ySize;
+                }
+
+            }
         }
 
         public void DrawDebug(SpriteBatch spriteBatch)
         {
             var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
-            var bounds = _bounds;
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y, bounds.Width, 1), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y, 1, bounds.Height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X + bounds.Width, bounds.Y, 1, bounds.Height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y + bounds.Height, bounds.Width, 1), Color.Red);
+            var (x, y, width, height) = _bounds;
+            spriteBatch.Draw(pixel, new Rectangle(x, y, width, 1), Color.Red);
+            spriteBatch.Draw(pixel, new Rectangle(x, y, 1, height), Color.Red);
+            spriteBatch.Draw(pixel, new Rectangle(x + width, y, 1, height), Color.Red);
+            spriteBatch.Draw(pixel, new Rectangle(x, y + height, width, 1), Color.Red);
         }
-        
-        private string WrapString(string textContent)
+
+        private IList<string> WrapString(string textContent)
         {
-            var wrappedString = new StringBuilder(textContent.Length);
+            _lines.Clear();
+
             var currentLine = "";
-            
+
             var words = textContent.Split(' ');
 
             foreach (var word in words)
             {
                 var currentLineSize = _font.MeasureString(currentLine + word);
+
+                if (word.Contains("{line}"))
+                {
+                    _lines.Add(currentLine);
+                    currentLine = "";
+                    _lines.Add(word);
+                    continue;
+                }
+                
                 if (currentLineSize.X > _bounds.Width)
                 {
-                    wrappedString.Append(currentLine + "\n");
+                    _lines.Add(currentLine);
                     currentLine = word + " ";
                 }
                 else
@@ -64,9 +115,15 @@ namespace Application.UI
                 }
             }
 
-            wrappedString.Append(currentLine + "\n");
+            _lines.Add(currentLine);
 
-            return wrappedString.ToString();
+            return _lines;
+        }
+
+        public void ScrollLine(int lineCount)
+        {
+            _visibleLine += lineCount;
+            _visibleLine = MathHelper.Clamp(_visibleLine, 0, _lines.Count);
         }
     }
 }

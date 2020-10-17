@@ -49,9 +49,9 @@ namespace Application.Menus
             NewsPanelImage = new Image(
                 new Sprite(_menuButtons, new Rectangle(192, 45, 96, 96)),
                 newsPanelPosition, _buttonScale);
-            
-            ScrollBox = new ScrollBox("Welcome to Project Sanctuary!\nBuild your Sanctuary, Save Animals and Change the World!", NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -5 * _buttonScale, -14 * _buttonScale));
-            
+
+
+            ScrollBox = new ScrollBox("Welcome to Project Sanctuary! {line} Build your Sanctuary, Save Animals and Change the World! Your village needs you.\nThe times are changing and they need your guidance.\nThe animals will thank you.\n\nCrafted with love by YetiFace.", NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -11 * _buttonScale, -14 * _buttonScale));
             NewGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
                 new Sprite(_menuButtons, new Rectangle(96, 44, 96, 32)),
@@ -112,11 +112,21 @@ namespace Application.Menus
                 button.Hovering = true;
             }
 
-            if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed &&
+            if (mouse.LeftButton == ButtonState.Pressed &&
                 _lastMouse.LeftButton == ButtonState.Released)
             {
-                hoveringButton?.Click();
-                ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
+                if (hoveringButton != null)
+                {
+                    hoveringButton?.Click();
+                    ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
+                }
+                else
+                {
+                    ScrollBox.ScrollLine(1);
+                }
+            } else if (mouse.RightButton == ButtonState.Pressed && _lastMouse.RightButton == ButtonState.Released)
+            {
+                ScrollBox.ScrollLine(-1);
             }
 
             _lastMouse = mouse;
