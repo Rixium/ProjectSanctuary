@@ -120,7 +120,7 @@ namespace Application.Menus
             {
                 if (hoveringButton != null)
                 {
-                    hoveringButton?.Click();
+                    hoveringButton.Click();
                     ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
                 }
                 else
@@ -162,23 +162,12 @@ namespace Application.Menus
             foreach (var clickable in Clickables.Reverse())
             {
                 clickable.Draw(spriteBatch);
-
-                if (IsDebug)
-                {
-                    clickable.DrawDebug(spriteBatch);
-                }
             }
 
             SignTopImage.Draw(spriteBatch);
             NewsPanelImage.Draw(spriteBatch);
 
             ScrollBox.Draw(spriteBatch);
-
-            if (IsDebug)
-            {
-                SignTopImage.DrawDebug(spriteBatch);
-                NewsPanelImage.DrawDebug(spriteBatch);
-            }
 
             var size = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont").MeasureString("by YetiFace");
 

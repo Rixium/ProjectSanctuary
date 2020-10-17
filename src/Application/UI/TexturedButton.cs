@@ -44,6 +44,11 @@ namespace Application.UI
                 spriteBatch.Draw(_texture.Texture, Bounds, _texture.Source, Color.White, 0f, Vector2.Zero,
                     SpriteEffects.None, 0);
             }
+
+            if (SanctuaryGame.Debug)
+            {
+                DrawDebug(spriteBatch);
+            }
         }
 
         public void DrawDebug(SpriteBatch spriteBatch)

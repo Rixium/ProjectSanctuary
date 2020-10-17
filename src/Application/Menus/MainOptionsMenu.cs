@@ -67,11 +67,7 @@ namespace Application.Menus
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-
             _scrollBox.Draw(spriteBatch);
-            _scrollBox.DrawDebug(spriteBatch);
-
-
             spriteBatch.End();
         }
     }

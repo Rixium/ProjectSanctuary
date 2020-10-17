@@ -40,7 +40,7 @@ namespace Application.UI
         {
             var currentY = 0f;
 
-            for(var i = _visibleLine; i < _maxVisibleLine; i++)
+            for(var i = _visibleLine; i < _lines.Count; i++)
             {
                 var line = _lines[i];
                 if (line.Contains("{line}"))
@@ -56,7 +56,7 @@ namespace Application.UI
                     }
                     
                     
-                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y - 1+ currentY), width, 2), Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y - 1 + currentY), width, 2), Color.Black);
                     spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y + 1 + currentY), width, 2), Color.Black);
                     spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y - 1 + currentY), width, 2), Color.Black);
                     spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y + 1 + currentY), width, 2), Color.Black);
@@ -81,6 +81,11 @@ namespace Application.UI
                     currentY += ySize;
                 }
 
+            }
+
+            if (SanctuaryGame.Debug)
+            {
+                DrawDebug(spriteBatch);
             }
         }
 

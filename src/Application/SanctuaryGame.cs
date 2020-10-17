@@ -42,6 +42,8 @@ namespace Application
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
+        public static bool Debug { get; set; } = true;
+
         private void WindowOnClientSizeChanged(object? sender, EventArgs e)
         {
             Window.ClientSizeChanged -= WindowOnClientSizeChanged;
