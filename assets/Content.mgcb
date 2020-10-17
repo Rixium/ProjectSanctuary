@@ -31,7 +31,7 @@
 #begin Fonts/InterfaceFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=False
+/processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=NoChange
 /build:Fonts/InterfaceFont.spritefont
 

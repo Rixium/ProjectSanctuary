@@ -16,11 +16,6 @@ namespace ProjectSanctuary.View.Scenes
             var mainOptionsMenu = new MainOptionsMenu();
 
             _activeMenu = mainTitleMenu;
-
-            mainTitleMenu.OptionsMenuButton.OnClick += () =>
-            {
-                _activeMenu = mainOptionsMenu;
-            };
         }
 
         public void Update(float delta) => _activeMenu.Update(delta);

@@ -11,7 +11,6 @@ namespace ProjectSanctuary.View.Menus
 {
     internal class MainOptionsMenu : Menu
     {
-        private Camera _camera;
         private Rectangle _titleImageSource;
         private float _titleYOffset;
         private Texture2D _menuButtons;
@@ -23,28 +22,14 @@ namespace ProjectSanctuary.View.Menus
 
         public MainOptionsMenu()
         {
-            _camera = new Camera(ViewManager.ViewPort.Center());
-            _camera.AdjustZoom(3);
-
             _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
 
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
 
-            _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 48, 22));
-            _signTopPosition = new Vector2(_camera.ViewportWorldBoundary().Center.X,
-                _camera.ViewportWorldBoundary().Center.Y);
-
-            _newButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 22, 48, 14)),
-                new Sprite(_menuButtons, new Rectangle(48, 22, 48, 14)),
-                _signTopPosition + new Vector2(0, 18));
-
-            _newButton.OnClick += () => { };
-
-            BackButton = _newButton;
-
-            Clickables.Add(BackButton);
+            _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 96, 44));
+            _signTopPosition = new Vector2(ViewManager.ViewPort.Center().X,
+                ViewManager.ViewPort.Center().Y);
 
             _interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
         }
@@ -53,7 +38,6 @@ namespace ProjectSanctuary.View.Menus
         {
             var mouse = Mouse.GetState();
             var mousePosition = new Vector2(mouse.X, mouse.Y);
-            mousePosition = _camera.ScreenToWorld(mousePosition);
 
             var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
 
@@ -92,16 +76,17 @@ namespace ProjectSanctuary.View.Menus
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: _camera.TranslationMatrix);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
             _newButton.Draw(spriteBatch);
 
             var i = 0;
             foreach (var control in ViewManager.Instance.GetControls())
             {
-                spriteBatch.DrawString(_interfaceFont, control, new Vector2(_signTopPosition.X,  _signTopPosition.Y + ++i * 15), Color.Black);                
+                spriteBatch.DrawString(_interfaceFont, control,
+                    new Vector2(_signTopPosition.X, _signTopPosition.Y + ++i * 15), Color.Black);
             }
-            
+
             spriteBatch.End();
         }
     }
