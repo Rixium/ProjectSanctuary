@@ -16,6 +16,11 @@ namespace Application.Scenes
             var mainOptionsMenu = new MainOptionsMenu();
 
             _activeMenu = mainTitleMenu;
+
+            mainTitleMenu.LoadGameButton.OnClick += () =>
+            {
+                _activeMenu = mainOptionsMenu;
+            };
         }
 
         public void Update(float delta) => _activeMenu.Update(delta);

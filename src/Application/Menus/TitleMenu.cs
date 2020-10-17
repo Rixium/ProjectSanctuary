@@ -55,7 +55,9 @@ namespace Application.Menus
                 new Sprite(_menuButtons, new Rectangle(96, 44 + 32, 96, 32)),
                 newButtonPosition + new Vector2(0, NewGameButton.Height * _buttonScale), _buttonScale);
 
-            LoadGameButton.OnClick += () => { };
+            LoadGameButton.OnClick += () =>
+            {
+            };
 
             ExitGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44 + 32 + 32, 96, 32)),

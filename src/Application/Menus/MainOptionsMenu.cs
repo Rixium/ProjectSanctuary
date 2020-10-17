@@ -12,27 +12,18 @@ namespace Application.Menus
 {
     internal class MainOptionsMenu : Menu
     {
-        private Rectangle _titleImageSource;
         private float _titleYOffset;
-        private Texture2D _menuButtons;
-        private Sprite _signTopSprite;
-        private Vector2 _signTopPosition;
-        private TexturedButton _newButton;
         private MouseState _lastMouse;
-        private SpriteFont _interfaceFont;
+        private ScrollBox _scrollBox;
 
         public MainOptionsMenu()
         {
-            _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
 
-            _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
-
-            _signTopSprite = new Sprite(_menuButtons, new Rectangle(0, 0, 96, 44));
-            _signTopPosition = new Vector2(ViewManager.ViewPort.Center().X,
-                ViewManager.ViewPort.Center().Y);
-
-            _interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
+            _scrollBox =
+                new ScrollBox(
+                    "Hello everyone, thanks for purchasing this amazing game.\nProject Sanctuary is a game about raising animals that have long been forgotten.",
+                    new Rectangle(10, 10, 400, 400));
         }
 
         public override void Update(float delta)
@@ -73,20 +64,13 @@ namespace Application.Menus
             base.Update(delta);
         }
 
-        public IClickable BackButton { get; set; }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            _newButton.Draw(spriteBatch);
+            _scrollBox.Draw(spriteBatch);
+            _scrollBox.DrawDebug(spriteBatch);
 
-            var i = 0;
-            foreach (var control in ViewManager.Instance.GetControls())
-            {
-                spriteBatch.DrawString(_interfaceFont, control,
-                    new Vector2(_signTopPosition.X, _signTopPosition.Y + ++i * 15), Color.Black);
-            }
 
             spriteBatch.End();
         }
