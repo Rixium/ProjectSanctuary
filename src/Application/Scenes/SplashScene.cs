@@ -27,8 +27,8 @@ namespace Application.Scenes
                 return;
             }
             
-            // ContentChest.Instance.Preload<Song>("Music/MenuSong");
-            // MediaPlayer.Play(ContentChest.Instance.Get<Song>("Music/MenuSong"));
+            ContentChest.Instance.Preload<Song>("Music/MenuSong");
+            MediaPlayer.Play(ContentChest.Instance.Get<Song>("Music/MenuSong"));
             
             SceneManager.Instance.AddScene(new MenuScene());
             SceneManager.Instance.SetNextScene<MenuScene>();

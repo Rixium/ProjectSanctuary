@@ -55,7 +55,12 @@ namespace Application.UI
                         break;
                     }
                     
-                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X, (int) (_bounds.Y + currentY), width, 2), Color.Black);
+                    
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y - 1+ currentY), width, 2), Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y + 1 + currentY), width, 2), Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y - 1 + currentY), width, 2), Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y + 1 + currentY), width, 2), Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X, (int) (_bounds.Y + currentY), width, 2), Color.White);
                     currentY += 15;
                 }
                 else
@@ -67,7 +72,12 @@ namespace Application.UI
                         break;
                     }
                     
-                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X, _bounds.Y + currentY), Color.Black);
+                    var width =  _font.MeasureString(line).X;
+                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f - 1, _bounds.Y + currentY + 1), Color.Black);
+                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f - 1, _bounds.Y + currentY - 1), Color.Black);
+                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f + 1, _bounds.Y + currentY + 1), Color.Black);
+                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f + 1, _bounds.Y + currentY - 1), Color.Black);
+                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f, _bounds.Y + currentY), Color.White);
                     currentY += ySize;
                 }
 
@@ -104,9 +114,9 @@ namespace Application.UI
                     continue;
                 }
                 
-                if (currentLineSize.X > _bounds.Width)
+                if (currentLineSize.X > _bounds.Width || currentLine.Contains("\n"))
                 {
-                    _lines.Add(currentLine);
+                    _lines.Add(currentLine.Replace("\n", ""));
                     currentLine = word + " ";
                 }
                 else
