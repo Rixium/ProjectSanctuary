@@ -12,7 +12,7 @@ namespace Application.Menus
     {
         private float _titleYOffset;
         private MouseState _lastMouse;
-        private ScrollBox _scrollBox;
+        private readonly ScrollBox _scrollBox;
 
         public MainOptionsMenu()
         {
