@@ -7,7 +7,7 @@ namespace Application.Menus
 {
     public class CharacterCreationMenu : Menu
     {
-        private Texture2D _background;
+        private readonly Texture2D _background;
 
         public CharacterCreationMenu()
         {
