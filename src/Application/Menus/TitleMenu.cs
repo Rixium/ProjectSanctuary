@@ -52,7 +52,7 @@ namespace Application.Menus
             SignTopImage = new Image(
                 new Sprite(_menuButtons, new Rectangle(0, 0, 192, 44)),
                 new Vector2(ViewManager.ViewPort.Center().X,
-                    ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 4f), _buttonScale);
+                    ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 6f), _buttonScale);
 
             var newButtonPosition = new Vector2(SignTopImage.Bounds.Left + 96 / 2f * _buttonScale,
                 SignTopImage.Bounds.Bottom + 32 / 2f * _buttonScale);
@@ -200,7 +200,7 @@ namespace Application.Menus
                 title,
                 new Vector2(ViewManager.ViewPort.Center().X - font.MeasureString(title).X / 2,
                     SignTopImage.Bounds.Top + _titleYOffset -
-                    font.MeasureString(title).Y / 2),
+                    font.MeasureString(title).Y),
                 Color.Black);
 
             spriteBatch.Draw(_menuButtons,
@@ -226,8 +226,6 @@ namespace Application.Menus
                 Color.Black);
             spriteBatch.End();
         }
-
-        public bool IsDebug { get; set; }
 
         public void WindowResized()
         {
