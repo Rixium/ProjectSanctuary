@@ -10,12 +10,13 @@ namespace Application.UI
     {
         private readonly Rectangle _bounds;
 
-        private IClickable _upArrow;
-        private IClickable _downArrow;
         private readonly SpriteFont _font;
-        private IList<string> _lines = new List<string>();
+        // ReSharper disable once MemberInitializerValueIgnored
+        private readonly IList<string> _lines = new List<string>();
         private int _visibleLine;
-        private Sprite _nibSprite;
+        private readonly Sprite _nibSprite;
+        private Sprite _upArrowSprite;
+        private Sprite _downArrowSprite;
         public bool Dragging { get; set; }
         
         public ScrollBox(string textContent, Rectangle bounds)
@@ -23,7 +24,9 @@ namespace Application.UI
             _font = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
             _bounds = bounds;
             _lines = WrapString(textContent);
-            _nibSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), new Rectangle(0, 0, 1, 1));
+            _nibSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"), new Rectangle(192, 14, 10, 30));
+            _upArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"), new Rectangle(192, 4, 10, 10));
+            _downArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"), new Rectangle(202, 4, 10, 10));
         }
 
         public void Update(float delta)
@@ -93,13 +96,13 @@ namespace Application.UI
                 }
             }
 
-            spriteBatch.Draw(_nibSprite.Texture, new Rectangle(_bounds.Right - 10, _bounds.Top, 10, _bounds.Height),
-                Color.Green);
+            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), new Rectangle(_bounds.Right - 10, _bounds.Top, 10, _bounds.Height),
+                new Color(221, 190, 137));
             var scrollBounds = ScrollBarBounds();
 
-            spriteBatch.Draw(_nibSprite.Texture, TopNibBounds(), Color.Red);
-            spriteBatch.Draw(_nibSprite.Texture, BottomNibBounds(), Color.Red);
-            spriteBatch.Draw(_nibSprite.Texture, scrollBounds, Color.Yellow);
+            spriteBatch.Draw(_upArrowSprite.Texture, TopNibBounds(), _upArrowSprite.Source, Color.White);
+            spriteBatch.Draw(_downArrowSprite.Texture, BottomNibBounds(), _downArrowSprite.Source, Color.White);
+            spriteBatch.Draw(_nibSprite.Texture, scrollBounds, _nibSprite.Source, Color.White);
 
             if (SanctuaryGame.Debug)
             {
