@@ -1,4 +1,5 @@
 ﻿using Application.Content;
+using Application.Graphics;
 using Application.UI;
 using Application.View;
 using Microsoft.Xna.Framework;
@@ -14,17 +15,38 @@ namespace Application.Menus
         private MouseState _lastMouse;
         private readonly ScrollBox _scrollBox;
         private readonly Texture2D _background;
+        private readonly float _buttonScale;
+        private readonly Texture2D _menuButtons;
+        public IClickable BackButton { get; private set; }
 
         public MainOptionsMenu()
         {
             _background = ContentChest.Instance.Get<Texture2D>("background");
-            
+
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
-        
+
             _scrollBox =
                 new ScrollBox(
                     "Hello everyone, thanks for purchasing this amazing game.\nProject Sanctuary is a game about raising animals that have long been forgotten.",
                     new Rectangle(10, 10, 400, 400));
+
+            _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
+            _buttonScale = 3f;
+
+            SetupButtons();
+        }
+
+        private void SetupButtons()
+        {
+            Clickables.Clear();
+            
+            BackButton = new TexturedButton(
+                new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
+                new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
+                new Vector2(ViewManager.ViewPort.Bounds.Left + 10 + 96 * _buttonScale / 2f,
+                    ViewManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
+
+            Clickables.Add(BackButton);
         }
 
         public override void Update(float delta)
@@ -57,7 +79,7 @@ namespace Application.Menus
             if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed &&
                 _lastMouse.LeftButton == ButtonState.Released)
             {
-                hoveringButton?.Click();
+                hoveringButton.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
 
@@ -71,6 +93,12 @@ namespace Application.Menus
             spriteBatch.Draw(_background, new Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height),
                 Color.White * 0.2f);
             _scrollBox.Draw(spriteBatch);
+
+            foreach (var clickable in Clickables)
+            {
+                clickable.Draw(spriteBatch);
+            }
+            
             spriteBatch.End();
         }
     }
