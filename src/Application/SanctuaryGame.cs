@@ -8,6 +8,7 @@ using Application.Input;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Application
 {
@@ -26,6 +27,7 @@ namespace Application
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private ControlOptions _options;
+        private KeyboardState _lastKeyboardState;
 
         public SanctuaryGame()
         {
@@ -134,10 +136,17 @@ namespace Application
 
         protected override void Update(GameTime gameTime)
         {
+            var keyState = Keyboard.GetState();
             var delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
             _viewManager.Update(delta);
 
+            if (keyState.IsKeyDown(Keys.OemTilde) && _lastKeyboardState.IsKeyUp(Keys.OemTilde))
+            {
+                Debug = !Debug;
+            }
+
             base.Update(gameTime);
+            _lastKeyboardState = keyState;
         }
 
         protected override void Draw(GameTime gameTime)
