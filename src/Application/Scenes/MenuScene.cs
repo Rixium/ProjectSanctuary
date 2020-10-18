@@ -24,6 +24,7 @@ namespace Application.Scenes
             _mainTitleMenu.NewGameButton.OnClick += () => _activeMenu = _characterCreationMenu;
             _mainTitleMenu.LoadGameButton.OnClick += () => _activeMenu = _mainOptionsMenu;
             _mainOptionsMenu.BackButton.OnClick += () => _activeMenu = _mainTitleMenu;
+            _characterCreationMenu.BackButton.OnClick += () => _activeMenu = _mainTitleMenu;
         }
 
         public void Update(float delta) => _activeMenu.Update(delta);

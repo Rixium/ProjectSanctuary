@@ -61,7 +61,11 @@ namespace Application.UI
             spriteBatch.Draw(pixel, new Rectangle(x, y + height, width, 1), Color.Red);
         }
 
-        public void Click() => OnClick?.Invoke();
+        public void Click()
+        {
+            OnClick?.Invoke();
+            Hovering = false;
+        }
 
         public Rectangle Bounds => 
             new Rectangle(
