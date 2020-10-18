@@ -65,7 +65,7 @@ namespace Application.Menus
 
 
             ScrollBox = new ScrollBox(
-                "{line} Welcome to Project Sanctuary! {line} Build your Sanctuary, Save Animals and Change the World! Your village needs you. \n The times are changing and they need your guidance. \n The animals will thank you. {line} Crafted with love by YetiFace. {line} ",
+                "{line} Welcome to Project Sanctuary! {line} Build your Sanctuary, Save Animals and Change the World! \n \n Your village needs you. \n \n The times are changing and they need your guidance. \n \n The animals will thank you. {line} Crafted with love by YetiFace. {line} ",
                 NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -11 * _buttonScale, -20 * _buttonScale));
             NewGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
