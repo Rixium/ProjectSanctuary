@@ -54,11 +54,11 @@ namespace Application.UI
         public void DrawDebug(SpriteBatch spriteBatch)
         {
             var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
-            var bounds = Bounds;
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y, bounds.Width, 1), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y, 1, bounds.Height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X + bounds.Width, bounds.Y, 1, bounds.Height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y + bounds.Height, bounds.Width, 1), Color.Red);
+            var (x, y, width, height) = Bounds;
+            spriteBatch.Draw(pixel, new Rectangle(x, y, width, 1), Color.Red);
+            spriteBatch.Draw(pixel, new Rectangle(x, y, 1, height), Color.Red);
+            spriteBatch.Draw(pixel, new Rectangle(x + width, y, 1, height), Color.Red);
+            spriteBatch.Draw(pixel, new Rectangle(x, y + height, width, 1), Color.Red);
         }
 
         public void Click() => OnClick?.Invoke();
