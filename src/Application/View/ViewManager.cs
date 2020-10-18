@@ -60,5 +60,7 @@ namespace Application.View
         }
 
         public Func<IList<string>> RequestControls { get; set; }
+
+        public void WindowResized() => _sceneManager?.WindowResized();
     }
 }

@@ -18,6 +18,9 @@ namespace Application.Menus
         }
 
         public abstract void Draw(SpriteBatch spriteBatch);
-        
+        public virtual void WindowResized()
+        {
+            
+        }
     }
 }

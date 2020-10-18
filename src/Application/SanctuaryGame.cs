@@ -71,7 +71,8 @@ namespace Application
             ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _graphics.ApplyChanges();
 
-
+            ViewManager.Instance?.WindowResized();
+            
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
         }
 

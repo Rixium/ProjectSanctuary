@@ -17,7 +17,7 @@ namespace Application.Menus
         private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
         private readonly Rectangle _titleImageSource;
-        private readonly float _buttonScale;
+        private float _buttonScale;
 
         private float _titleYOffset;
         private MouseState _lastMouse;
@@ -36,9 +36,18 @@ namespace Application.Menus
             _background = ContentChest.Instance.Get<Texture2D>("background");
             _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = -(ViewManager.ViewPort.Height / 2.0f - 50);
-            _buttonScale = 3f;
-
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
+            ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
+            
+            SetupButtons();
+        }
+        
+        
+        private void SetupButtons()
+        {
+            Clickables.Clear();
+            
+            _buttonScale = 3f;
 
             SignTopImage = new Image(
                 new Sprite(_menuButtons, new Rectangle(0, 0, 192, 44)),
@@ -84,8 +93,6 @@ namespace Application.Menus
             Clickables.Add(NewGameButton);
             Clickables.Add(LoadGameButton);
             Clickables.Add(ExitGameButton);
-
-            ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
         }
 
         public Image NewsPanelImage { get; set; }
@@ -221,5 +228,11 @@ namespace Application.Menus
         }
 
         public bool IsDebug { get; set; }
+
+        public void WindowResized()
+        {
+            SetupButtons();
+        }
+
     }
 }

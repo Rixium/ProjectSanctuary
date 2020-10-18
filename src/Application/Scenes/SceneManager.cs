@@ -33,5 +33,13 @@ namespace Application.Scenes
 
         public void RemoveScene<T>() where T : IScene =>
             _scenes.RemoveWhere(scene => scene.GetType() == typeof(T));
+
+        public void WindowResized()
+        {
+            foreach (var scene in _scenes)
+            {
+                scene?.WindowResized();
+            }
+        }
     }
 }

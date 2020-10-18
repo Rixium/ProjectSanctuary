@@ -75,6 +75,10 @@ namespace ProjectSanctuary.Application.Tests.Scenes
                 
             }
 
+            public void WindowResized()
+            {
+                
+            }
         }
         
     }

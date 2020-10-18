@@ -13,6 +13,6 @@ namespace Application.Scenes
         void SetNextScene<T>() where T : IScene;
         void SwitchToNextScene();
         void RemoveScene<T>() where T : IScene;
-        
+        void WindowResized();
     }
 }

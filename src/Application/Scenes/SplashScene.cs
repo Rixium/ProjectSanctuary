@@ -52,5 +52,10 @@ namespace Application.Scenes
 
             spriteBatch.End();
         }
+
+        public void WindowResized()
+        {
+            
+        }
     }
 }

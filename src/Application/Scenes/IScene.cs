@@ -8,5 +8,6 @@ namespace Application.Scenes
         Color BackgroundColor { get; }
         void Update(float delta);
         void Draw(SpriteBatch spriteBatch);
+        void WindowResized();
     }
 }
