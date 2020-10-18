@@ -9,6 +9,7 @@ using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Steamworks;
 
 namespace Application
 {
@@ -48,6 +49,15 @@ namespace Application
 
         private void InitializeSteam()
         {
+            try
+            {
+                SteamAPI.Init();
+            }
+            catch (Exception value)
+            {
+                Console.WriteLine(value);
+                Exit();
+            }
         }
 
         public static bool Debug { get; set; }
