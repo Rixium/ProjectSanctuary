@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Application.Content;
 using Application.Graphics;
 using Application.UI;
@@ -20,6 +21,7 @@ namespace Application.Menus
 
         private float _titleYOffset;
         private MouseState _lastMouse;
+        private float _lastDrag;
         public Image SignTopImage { get; private set; }
 
         public IClickable OptionsMenuButton { get; private set; }
@@ -115,8 +117,25 @@ namespace Application.Menus
                 button.Hovering = true;
             }
 
-            if (mouse.LeftButton == ButtonState.Pressed &&
-                _lastMouse.LeftButton == ButtonState.Released)
+
+            if (ScrollBox.Dragging)
+            {
+                if (MathHelper.Distance(mouse.Y, _lastDrag) > 10)
+                {
+                    if (mouse.Y < _lastDrag)
+                    {
+                        ScrollBox.ScrollLine(-1);
+                        _lastDrag = mouse.Y;
+                    }
+                    else
+                    {
+                        ScrollBox.ScrollLine(1);
+                        _lastDrag = mouse.Y;
+                    }
+                }
+            }
+            else if (mouse.LeftButton == ButtonState.Pressed &&
+                     _lastMouse.LeftButton == ButtonState.Released)
             {
                 if (hoveringButton != null)
                 {
@@ -125,12 +144,26 @@ namespace Application.Menus
                 }
                 else
                 {
-                    ScrollBox.ScrollLine(1);
+                    if (mouseRectangle.Intersects(ScrollBox.TopNibBounds()))
+                    {
+                        ScrollBox.ScrollLine(-1);
+                    }
+                    else if (mouseRectangle.Intersects(ScrollBox.BottomNibBounds()))
+                    {
+                        ScrollBox.ScrollLine(1);
+                    }
+                    else if (mouseRectangle.Intersects(ScrollBox.ScrollBarBounds()))
+                    {
+                        ScrollBox.Dragging = true;
+                        Console.WriteLine("BEGIN DRAG");
+                        _lastDrag = mouse.Y;
+                    }
                 }
             }
-            else if (mouse.RightButton == ButtonState.Pressed && _lastMouse.RightButton == ButtonState.Released)
+
+            if (mouse.LeftButton == ButtonState.Released)
             {
-                ScrollBox.ScrollLine(-1);
+                ScrollBox.Dragging = false;
             }
 
             _lastMouse = mouse;

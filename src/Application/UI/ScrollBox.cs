@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
 using Application.Content;
+using Application.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,26 +8,22 @@ namespace Application.UI
 {
     public class ScrollBox
     {
-        private readonly string _textContent;
         private readonly Rectangle _bounds;
 
         private IClickable _upArrow;
         private IClickable _downArrow;
-        private Image _scrollNib;
         private readonly SpriteFont _font;
         private IList<string> _lines = new List<string>();
-        private int _visibleLine = 0;
-        private int _maxVisibleLine;
-
+        private int _visibleLine;
+        private Sprite _nibSprite;
+        public bool Dragging { get; set; }
+        
         public ScrollBox(string textContent, Rectangle bounds)
         {
             _font = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
-            _textContent = textContent;
             _bounds = bounds;
-
             _lines = WrapString(textContent);
-
-            _maxVisibleLine = _lines.Count;
+            _nibSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), new Rectangle(0, 0, 1, 1));
         }
 
         public void Update(float delta)
@@ -39,54 +33,86 @@ namespace Application.UI
         public void Draw(SpriteBatch spriteBatch)
         {
             var currentY = 0f;
+            var scrollEndLine = _lines.Count;
 
-            for(var i = _visibleLine; i < _lines.Count; i++)
+            for (var i = _visibleLine; i < _lines.Count; i++)
             {
                 var line = _lines[i];
                 if (line.Contains("{line}"))
                 {
                     var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
-                    var (x, y, width, height) = _bounds;
-                    
+                    var (_, _, width, _) = _bounds;
+
                     currentY += 15;
-                    
+
                     if (_bounds.Y + currentY > _bounds.Bottom)
                     {
                         break;
                     }
-                    
-                    
-                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y - 1 + currentY), width, 2), Color.Black);
-                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y + 1 + currentY), width, 2), Color.Black);
-                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y - 1 + currentY), width, 2), Color.Black);
-                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y + 1 + currentY), width, 2), Color.Black);
-                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X, (int) (_bounds.Y + currentY), width, 2), Color.White);
+
+                    width -= 20;
+
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y - 1 + currentY), width, 2),
+                        Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X + 1, (int) (_bounds.Y + 1 + currentY), width, 2),
+                        Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y - 1 + currentY), width, 2),
+                        Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X - 1, (int) (_bounds.Y + 1 + currentY), width, 2),
+                        Color.Black);
+                    spriteBatch.Draw(pixel, new Rectangle(_bounds.X, (int) (_bounds.Y + currentY), width, 2),
+                        Color.White);
                     currentY += 15;
                 }
                 else
                 {
                     var ySize = _font.MeasureString(line).Y;
-                    
+
                     if (_bounds.Y + currentY + ySize > _bounds.Bottom)
                     {
+                        scrollEndLine = _lines.Count - i;
                         break;
                     }
-                    
-                    var width =  _font.MeasureString(line).X;
-                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f - 1, _bounds.Y + currentY + 1), Color.Black);
-                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f - 1, _bounds.Y + currentY - 1), Color.Black);
-                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f + 1, _bounds.Y + currentY + 1), Color.Black);
-                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f + 1, _bounds.Y + currentY - 1), Color.Black);
-                    spriteBatch.DrawString(_font, line, new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f, _bounds.Y + currentY), Color.White);
+
+                    var width = _font.MeasureString(line).X;
+                    spriteBatch.DrawString(_font, line,
+                        new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f - 1, _bounds.Y + currentY + 1),
+                        Color.Black);
+                    spriteBatch.DrawString(_font, line,
+                        new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f - 1, _bounds.Y + currentY - 1),
+                        Color.Black);
+                    spriteBatch.DrawString(_font, line,
+                        new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f + 1, _bounds.Y + currentY + 1),
+                        Color.Black);
+                    spriteBatch.DrawString(_font, line,
+                        new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f + 1, _bounds.Y + currentY - 1),
+                        Color.Black);
+                    spriteBatch.DrawString(_font, line,
+                        new Vector2(_bounds.X + _bounds.Width / 2f - width / 2f, _bounds.Y + currentY), Color.White);
                     currentY += ySize;
                 }
-
             }
+
+            spriteBatch.Draw(_nibSprite.Texture, new Rectangle(_bounds.Right - 10, _bounds.Top, 10, _bounds.Height),
+                Color.Green);
+            var scrollBounds = ScrollBarBounds();
+
+            spriteBatch.Draw(_nibSprite.Texture, TopNibBounds(), Color.Red);
+            spriteBatch.Draw(_nibSprite.Texture, BottomNibBounds(), Color.Red);
+            spriteBatch.Draw(_nibSprite.Texture, scrollBounds, Color.Yellow);
 
             if (SanctuaryGame.Debug)
             {
                 DrawDebug(spriteBatch);
             }
+        }
+
+        public Rectangle ScrollBarBounds()
+        {
+            var scrollY = TopNibBounds().Bottom + (BottomNibBounds().Top - TopNibBounds().Bottom - 30) * ((float)_visibleLine / _lines.Count);
+            return new Rectangle(TopNibBounds().Left,
+                (int) scrollY, 10,
+                30);
         }
 
         public void DrawDebug(SpriteBatch spriteBatch)
@@ -118,8 +144,8 @@ namespace Application.UI
                     _lines.Add(word);
                     continue;
                 }
-                
-                if (currentLineSize.X > _bounds.Width || currentLine.Contains("\n"))
+
+                if (currentLineSize.X > _bounds.Width - 20 || currentLine.Contains("\n"))
                 {
                     _lines.Add(currentLine.Replace("\n", ""));
                     currentLine = word + " ";
@@ -140,5 +166,8 @@ namespace Application.UI
             _visibleLine += lineCount;
             _visibleLine = MathHelper.Clamp(_visibleLine, 0, _lines.Count);
         }
+
+        public Rectangle TopNibBounds() => new Rectangle(_bounds.Right - 10, _bounds.Top, 10, 10);
+        public Rectangle BottomNibBounds() => new Rectangle(_bounds.Right - 10, _bounds.Bottom - 10, 10, 10);
     }
 }
