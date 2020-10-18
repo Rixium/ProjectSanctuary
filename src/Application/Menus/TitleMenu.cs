@@ -159,6 +159,15 @@ namespace Application.Menus
                         _lastDrag = mouse.Y;
                     }
                 }
+            } else if (mouseRectangle.Intersects(ScrollBox.Bounds))
+            {
+                if (mouse.ScrollWheelValue < _lastMouse.ScrollWheelValue)
+                {
+                    ScrollBox.ScrollLine(1);
+                } else if (mouse.ScrollWheelValue > _lastMouse.ScrollWheelValue)
+                {
+                    ScrollBox.ScrollLine(-1);
+                }
             }
 
             if (mouse.LeftButton == ButtonState.Released)

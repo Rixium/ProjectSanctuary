@@ -11,6 +11,7 @@ namespace Application.UI
         private readonly Rectangle _bounds;
 
         private readonly SpriteFont _font;
+
         // ReSharper disable once MemberInitializerValueIgnored
         private readonly IList<string> _lines = new List<string>();
         private int _visibleLine;
@@ -18,15 +19,18 @@ namespace Application.UI
         private Sprite _upArrowSprite;
         private Sprite _downArrowSprite;
         public bool Dragging { get; set; }
-        
+
         public ScrollBox(string textContent, Rectangle bounds)
         {
             _font = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
             _bounds = bounds;
             _lines = WrapString(textContent);
-            _nibSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"), new Rectangle(192, 14, 10, 30));
-            _upArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"), new Rectangle(192, 4, 10, 10));
-            _downArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"), new Rectangle(202, 4, 10, 10));
+            _nibSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+                new Rectangle(192, 14, 10, 30));
+            _upArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+                new Rectangle(192, 4, 10, 10));
+            _downArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+                new Rectangle(202, 4, 10, 10));
         }
 
         public void Update(float delta)
@@ -96,7 +100,8 @@ namespace Application.UI
                 }
             }
 
-            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), new Rectangle(_bounds.Right - 10, _bounds.Top, 10, _bounds.Height),
+            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
+                new Rectangle(_bounds.Right - 10, _bounds.Top, 10, _bounds.Height),
                 new Color(221, 190, 137));
             var scrollBounds = ScrollBarBounds();
 
@@ -112,7 +117,8 @@ namespace Application.UI
 
         public Rectangle ScrollBarBounds()
         {
-            var scrollY = TopNibBounds().Bottom + (BottomNibBounds().Top - TopNibBounds().Bottom - 30) * ((float)_visibleLine / _lines.Count);
+            var scrollY = TopNibBounds().Bottom + (BottomNibBounds().Top - TopNibBounds().Bottom - 30) *
+                ((float) _visibleLine / _lines.Count);
             return new Rectangle(TopNibBounds().Left,
                 (int) scrollY, 10,
                 30);
@@ -172,5 +178,6 @@ namespace Application.UI
 
         public Rectangle TopNibBounds() => new Rectangle(_bounds.Right - 10, _bounds.Top, 10, 10);
         public Rectangle BottomNibBounds() => new Rectangle(_bounds.Right - 10, _bounds.Bottom - 10, 10, 10);
+        public Rectangle Bounds => _bounds;
     }
 }
