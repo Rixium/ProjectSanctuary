@@ -42,6 +42,12 @@ namespace Application
 
             IsMouseVisible = true;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
+            InitializeSteam();
+        }
+
+        private void InitializeSteam()
+        {
         }
 
         public static bool Debug { get; set; }

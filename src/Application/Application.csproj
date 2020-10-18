@@ -35,4 +35,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Steamworks.NET, Version=14.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\libs\Steamworks.NET.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>
