@@ -28,7 +28,6 @@ namespace Application.Scenes
                 return;
             }
             
-            ContentChest.Instance.Preload<Song>("Music/MenuSong");
             var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
             MediaPlayer.Play(ContentChest.Instance.Get<Song>($"Music/MenuSong{num}"));
             
