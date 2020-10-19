@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System;
+using Application.Content;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,7 +29,8 @@ namespace Application.Scenes
             }
             
             ContentChest.Instance.Preload<Song>("Music/MenuSong");
-            MediaPlayer.Play(ContentChest.Instance.Get<Song>("Music/MenuSong"));
+            var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
+            MediaPlayer.Play(ContentChest.Instance.Get<Song>($"Music/MenuSong{num}"));
             
             SceneManager.Instance.AddScene(new MenuScene());
             SceneManager.Instance.SetNextScene<MenuScene>();
