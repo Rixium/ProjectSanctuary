@@ -1,5 +1,4 @@
 ﻿using System;
-using Application.Content;
 using Application.Graphics;
 using Application.Utils;
 using Microsoft.Xna.Framework;
