@@ -20,7 +20,10 @@ namespace Application.Scenes
             _mainOptionsMenu = new MainOptionsMenu();
 
             _activeMenu = _mainTitleMenu;
+        }
 
+        public void SetupButtons()
+        {
             _mainTitleMenu.NewGameButton.OnClick += () => _activeMenu = _characterCreationMenu;
             _mainTitleMenu.LoadGameButton.OnClick += () => _activeMenu = _mainOptionsMenu;
             _mainOptionsMenu.BackButton.OnClick += () => _activeMenu = _mainTitleMenu;
@@ -36,6 +39,8 @@ namespace Application.Scenes
             _mainTitleMenu.WindowResized();
             _mainOptionsMenu.WindowResized();
             _characterCreationMenu.WindowResized();
+            
+            SetupButtons();
         }
     }
 }

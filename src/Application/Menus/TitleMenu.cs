@@ -202,12 +202,7 @@ namespace Application.Menus
                     SignTopImage.Bounds.Top + _titleYOffset -
                     font.MeasureString(title).Y),
                 Color.Black);
-
-            spriteBatch.Draw(_menuButtons,
-                ViewManager.ViewPort.Center() - new Vector2(0, ViewManager.ViewPort.Center().Y / 2.0f + _titleYOffset),
-                _titleImageSource, Color.White, 0f,
-                new Vector2(_titleImageSource.Width, _titleImageSource.Height) / 2.0f, 3f, SpriteEffects.None, 0.2f);
-
+            
             foreach (var clickable in Clickables.Reverse())
             {
                 clickable.Draw(spriteBatch);
@@ -227,7 +222,7 @@ namespace Application.Menus
             spriteBatch.End();
         }
 
-        public void WindowResized()
+        public override void WindowResized()
         {
             SetupButtons();
         }

@@ -87,5 +87,11 @@ namespace Application.Menus
             
             spriteBatch.End();
         }
+
+        public override void WindowResized()
+        {
+            SetupButtons();
+            base.WindowResized();
+        }
     }
 }
