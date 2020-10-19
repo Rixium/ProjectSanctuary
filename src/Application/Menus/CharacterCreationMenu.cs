@@ -1,6 +1,7 @@
 ﻿using Application.Content;
 using Application.Graphics;
 using Application.UI;
+using Application.Utils;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -14,14 +15,15 @@ namespace Application.Menus
         private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
+
+        private TextBlock _characterCreationTitle;
         private MouseState _lastMouse;
 
         public TexturedButton BackButton { get; set; }
-        
+
         public CharacterCreationMenu()
         {
             _background = ContentChest.Instance.Get<Texture2D>("background");
-
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
 
@@ -31,7 +33,7 @@ namespace Application.Menus
         private void SetupButtons()
         {
             Clickables.Clear();
-            
+
             BackButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
                 new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
@@ -39,15 +41,26 @@ namespace Application.Menus
                     ViewManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
 
             Clickables.Add(BackButton);
+
+
+            var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
+            _characterCreationTitle =
+                new TextBlock("Character Creation",
+                    new Vector2(
+                        ViewManager.ViewPort.TitleSafeArea.Center.X - TextHelpers.TextWidth(font, "Character Creation").Half(),
+                        ViewManager.ViewPort.TitleSafeArea.Top + 10),
+                    font,
+                    Color.White,
+                    Color.Black
+                );
         }
-        
+
         public override void Update(float delta)
         {
             var mouse = Mouse.GetState();
-            var mousePosition = new Vector2(mouse.X, mouse.Y);
+            var (x, y) = new Vector2(mouse.X, mouse.Y);
+            var mouseRectangle = new Rectangle((int) x, (int) y, 1, 1);
 
-            var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
-            
             IClickable hoveringButton = null;
 
             foreach (var button in Clickables)
@@ -73,7 +86,7 @@ namespace Application.Menus
             _lastMouse = mouse;
             base.Update(delta);
         }
-        
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
@@ -84,7 +97,9 @@ namespace Application.Menus
             {
                 clickable.Draw(spriteBatch);
             }
-            
+
+            _characterCreationTitle.Draw(spriteBatch);
+
             spriteBatch.End();
         }
 

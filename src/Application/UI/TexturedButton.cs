@@ -1,6 +1,7 @@
 ﻿using System;
 using Application.Content;
 using Application.Graphics;
+using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -51,15 +52,7 @@ namespace Application.UI
             }
         }
 
-        public void DrawDebug(SpriteBatch spriteBatch)
-        {
-            var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
-            var (x, y, width, height) = Bounds;
-            spriteBatch.Draw(pixel, new Rectangle(x, y, width, 1), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(x, y, 1, height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(x + width, y, 1, height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(x, y + height, width, 1), Color.Red);
-        }
+        public void DrawDebug(SpriteBatch spriteBatch) => ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
 
         public void Click()
         {
@@ -67,11 +60,11 @@ namespace Application.UI
             Hovering = false;
         }
 
-        public Rectangle Bounds => 
+        public Rectangle Bounds =>
             new Rectangle(
                 (int) (_position.X - _texture.Origin.X * _scale),
-                (int) (_position.Y - _texture.Origin.Y * _scale), 
-                (int) (_texture.Source.Width * _scale), 
+                (int) (_position.Y - _texture.Origin.Y * _scale),
+                (int) (_texture.Source.Width * _scale),
                 (int) (_texture.Source.Height * _scale)
             );
 

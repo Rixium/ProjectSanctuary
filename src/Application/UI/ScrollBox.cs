@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Application.Content;
 using Application.Graphics;
+using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -124,15 +125,7 @@ namespace Application.UI
                 30);
         }
 
-        public void DrawDebug(SpriteBatch spriteBatch)
-        {
-            var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
-            var (x, y, width, height) = _bounds;
-            spriteBatch.Draw(pixel, new Rectangle(x, y, width, 1), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(x, y, 1, height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(x + width, y, 1, height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(x, y + height, width, 1), Color.Red);
-        }
+        public void DrawDebug(SpriteBatch spriteBatch) => ShapeHelpers.DrawRectangle(spriteBatch, _bounds, Color.Red);
 
         private IList<string> WrapString(string textContent)
         {

@@ -20,6 +20,8 @@ namespace Application.Scenes
             _mainOptionsMenu = new MainOptionsMenu();
 
             _activeMenu = _mainTitleMenu;
+            
+            SetupButtons();
         }
 
         public void SetupButtons()

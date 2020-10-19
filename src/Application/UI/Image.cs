@@ -1,5 +1,6 @@
 ﻿using Application.Content;
 using Application.Graphics;
+using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,7 +24,7 @@ namespace Application.UI
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_texture.Texture, Bounds, _texture.Source, Color.White, 0f, Vector2.Zero, 
+            spriteBatch.Draw(_texture.Texture, Bounds, _texture.Source, Color.White, 0f, Vector2.Zero,
                 SpriteEffects.None, 0);
 
             if (SanctuaryGame.Debug)
@@ -32,15 +33,7 @@ namespace Application.UI
             }
         }
 
-        public void DrawDebug(SpriteBatch spriteBatch)
-        {
-            var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
-            var bounds = Bounds;
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y, bounds.Width, 1), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y, 1, bounds.Height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X + bounds.Width, bounds.Y, 1, bounds.Height), Color.Red);
-            spriteBatch.Draw(pixel, new Rectangle(bounds.X, bounds.Y + bounds.Height, bounds.Width, 1), Color.Red);
-        }
+        public void DrawDebug(SpriteBatch spriteBatch) => ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
 
         public Rectangle Bounds =>
             new Rectangle(
