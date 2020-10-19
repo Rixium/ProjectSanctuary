@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System.Collections.Generic;
+using Application.Content;
 using Application.Graphics;
 using Application.UI;
 using Application.Utils;
@@ -15,6 +16,7 @@ namespace Application.Menus
         private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
+        private Panel _panel;
 
         private TextBlock _characterCreationTitle;
         private MouseState _lastMouse;
@@ -47,12 +49,32 @@ namespace Application.Menus
             _characterCreationTitle =
                 new TextBlock("Character Creation",
                     new Vector2(
-                        ViewManager.ViewPort.TitleSafeArea.Center.X - TextHelpers.TextWidth(font, "Character Creation").Half(),
+                        ViewManager.ViewPort.TitleSafeArea.Center.X -
+                        TextHelpers.TextWidth(font, "Character Creation").Half(),
                         ViewManager.ViewPort.TitleSafeArea.Top + 10),
                     font,
                     Color.White,
                     Color.Black
                 );
+
+            var nineSlice = new NineSlice(_menuButtons, new Dictionary<Segment, Rectangle>
+            {
+                {Segment.TopLeft, new Rectangle(1, 189, 8, 9)},
+                {Segment.Top, new Rectangle(10, 189, 1, 9)},
+                {Segment.TopRight, new Rectangle(12, 189, 8, 9)},
+                {Segment.Right, new Rectangle(12, 199, 8, 1)},
+                {Segment.BottomRight, new Rectangle(12, 201, 8, 8)},
+                {Segment.Bottom, new Rectangle(10, 201, 1, 8)},
+                {Segment.BottomLeft, new Rectangle(1, 201, 8, 8)},
+                {Segment.Left, new Rectangle(1, 199, 8, 1)},
+                {Segment.Center, new Rectangle(10, 199, 1, 1)}
+            });
+
+            _panel = new Panel(nineSlice,
+                new Rectangle(
+                    (int) (ViewManager.ViewPort.Center().X - 250),
+                    (int) (ViewManager.ViewPort.Center().Y - 250), 500,
+                    500), _buttonScale);
         }
 
         public override void Update(float delta)
@@ -99,6 +121,8 @@ namespace Application.Menus
             }
 
             _characterCreationTitle.Draw(spriteBatch);
+
+            _panel.Draw(spriteBatch);
 
             spriteBatch.End();
         }
