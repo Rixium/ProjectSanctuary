@@ -36,15 +36,6 @@ namespace Application.Menus
         {
             Clickables.Clear();
 
-            BackButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
-                new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
-                new Vector2(ViewManager.ViewPort.Bounds.Left + 10 + 96 * _buttonScale / 2f,
-                    ViewManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
-
-            Clickables.Add(BackButton);
-
-
             var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
             _characterCreationTitle =
                 new TextBlock("Character Creation",
@@ -70,11 +61,22 @@ namespace Application.Menus
                 {Segment.Center, new Rectangle(10, 199, 1, 1)}
             });
 
+            const int panelWidth = 400;
+
             _panel = new Panel(nineSlice,
                 new Rectangle(
-                    (int) (ViewManager.ViewPort.Center().X - 250),
-                    (int) (ViewManager.ViewPort.Center().Y - 250), 500,
+                    (int) (ViewManager.ViewPort.Center().X - panelWidth / 2f),
+                    (int) (ViewManager.ViewPort.Center().Y - 250), panelWidth,
                     500), _buttonScale);
+                
+            BackButton = new TexturedButton(
+                new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
+                new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
+                new Vector2(_panel.BottomLeft().X + 96 * _buttonScale / 2f,
+                    _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
+
+            Clickables.Add(BackButton);
+
         }
 
         public override void Update(float delta)

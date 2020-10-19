@@ -79,5 +79,7 @@ namespace Application.UI
         public void DrawDebug(SpriteBatch spriteBatch)
         {
         }
+
+        public Vector2 BottomLeft() => new Vector2(_bounds.X, _bounds.Y + _bounds.Height);
     }
 }
