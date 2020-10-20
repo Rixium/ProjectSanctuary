@@ -22,6 +22,7 @@ namespace Application.Menus
         private MouseState _lastMouse;
 
         public TexturedButton BackButton { get; set; }
+        public TextBox NameTextBox { get; set; }
 
         public CharacterCreationMenu()
         {
@@ -37,6 +38,8 @@ namespace Application.Menus
             Clickables.Clear();
 
             var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
+            var interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
+            
             _characterCreationTitle =
                 new TextBlock("Character Creation",
                     new Vector2(
@@ -75,9 +78,11 @@ namespace Application.Menus
                 new Vector2(_panel.BottomLeft().X + 96 * _buttonScale / 2f,
                     _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
 
+            NameTextBox = new TextBox(ViewManager.ViewPort.Center(), interfaceFont, 12);
             Clickables.Add(BackButton);
 
         }
+
 
         public override void Update(float delta)
         {
@@ -106,7 +111,7 @@ namespace Application.Menus
                 hoveringButton.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
-
+            
             _lastMouse = mouse;
             base.Update(delta);
         }
@@ -125,6 +130,8 @@ namespace Application.Menus
             _characterCreationTitle.Draw(spriteBatch);
 
             _panel.Draw(spriteBatch);
+            
+            NameTextBox.Draw(spriteBatch);
 
             spriteBatch.End();
         }

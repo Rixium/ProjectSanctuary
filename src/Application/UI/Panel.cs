@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Application.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.UI
@@ -74,10 +75,55 @@ namespace Application.UI
                     (int) (_bounds.Width - left.Width * _scale - right.Width * _scale),
                     (int) (_bounds.Height - top.Height * _scale - bottom.Height * _scale)), center,
                 Color.White);
+
+            if (SanctuaryGame.Debug)
+            {
+                DrawDebug(spriteBatch);
+            }
         }
 
         public void DrawDebug(SpriteBatch spriteBatch)
         {
+            var topLeft = _nineSlice.Get(Segment.TopLeft);
+            var top = _nineSlice.Get(Segment.Top);
+            var topRight = _nineSlice.Get(Segment.TopRight);
+            var right = _nineSlice.Get(Segment.Right);
+            var bottomRight = _nineSlice.Get(Segment.BottomRight);
+            var bottom = _nineSlice.Get(Segment.Bottom);
+            var bottomLeft = _nineSlice.Get(Segment.BottomLeft);
+            var left = _nineSlice.Get(Segment.Left);
+
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle(_bounds.Left, _bounds.Top,
+                (int) (topLeft.Width * _scale),
+                (int) (topLeft.Height * _scale)), Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle((int) (_bounds.Right - topRight.Width * _scale),
+                _bounds.Top,
+                (int) (topRight.Width * _scale), (int) (topRight.Height * _scale)), Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle(_bounds.Left,
+                (int) (_bounds.Bottom - bottomLeft.Height * _scale),
+                (int) (bottomLeft.Width * _scale), (int) (bottomLeft.Height * _scale)), Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle((int) (_bounds.Right - bottomRight.Width * _scale),
+                (int) (_bounds.Bottom - bottomRight.Height * _scale), (int) (bottomRight.Width * _scale),
+                (int) (bottomRight.Height * _scale)), Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle((int) (_bounds.Left + topLeft.Width * _scale),
+                _bounds.Top,
+                (int) (_bounds.Width - topLeft.Width * _scale - topRight.Width * _scale),
+                (int) (top.Height * _scale)), Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle((int) (_bounds.Left + bottomLeft.Width * _scale),
+                (int) (_bounds.Bottom - bottom.Height * _scale),
+                (int) (_bounds.Width - bottomLeft.Width * _scale - bottomRight.Width * _scale),
+                (int) (bottom.Height * _scale)), Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch,
+                new Rectangle(_bounds.Left, (int) (_bounds.Top + topLeft.Height * _scale), (int) (left.Width * _scale),
+                    (int) (_bounds.Height - topLeft.Height * _scale - bottomLeft.Height * _scale)), Color.Red);
+
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle((int) (_bounds.Right - right.Width * _scale),
+                (int) (_bounds.Top + topRight.Height * _scale), (int) (right.Width * _scale),
+                (int) (_bounds.Height - topRight.Height * _scale - bottomRight.Height * _scale)), Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle((int) (_bounds.Left + left.Width * _scale),
+                (int) (_bounds.Top + top.Height * _scale),
+                (int) (_bounds.Width - left.Width * _scale - right.Width * _scale),
+                (int) (_bounds.Height - top.Height * _scale - bottom.Height * _scale)), Color.Red);
         }
 
         public Vector2 BottomLeft() => new Vector2(_bounds.X, _bounds.Y + _bounds.Height);

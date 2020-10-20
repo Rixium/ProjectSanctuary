@@ -13,12 +13,15 @@ using Steamworks;
 
 namespace Application
 {
+
     public class SanctuaryGame : Game
     {
         private const string GameName = "Project Sanctuary";
         private const int Major = 0;
         private const int Minor = 1;
         private const int Revision = 0;
+
+        public static KeyboardDispatcher KeyboardDispatcher;
 
         private IApplicationFolder _applicationFolder;
         private IOptionsManager _optionsManager;
@@ -28,7 +31,6 @@ namespace Application
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private ControlOptions _options;
-        private KeyboardState _lastKeyboardState;
 
         public SanctuaryGame()
         {
@@ -114,6 +116,8 @@ namespace Application
             UpdateWindowTitle();
 
             InitializeApplicationFolder();
+            
+            KeyboardDispatcher = new KeyboardDispatcher();
 
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
@@ -129,6 +133,11 @@ namespace Application
             _viewManager.OnExitRequest += OnExit;
             _viewManager.RequestControls += () => Enum.GetNames(typeof(InputAction));
 
+            KeyboardDispatcher.SubscribeToKeyPress(Keys.OemTilde, () =>
+            {
+                Debug = !Debug;
+            });
+            
             base.Initialize();
         }
 
@@ -153,17 +162,12 @@ namespace Application
 
         protected override void Update(GameTime gameTime)
         {
-            var keyState = Keyboard.GetState();
             var delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+
+            KeyboardDispatcher.Update(delta);
             _viewManager.Update(delta);
 
-            if (keyState.IsKeyDown(Keys.OemTilde) && _lastKeyboardState.IsKeyUp(Keys.OemTilde))
-            {
-                Debug = !Debug;
-            }
-
             base.Update(gameTime);
-            _lastKeyboardState = keyState;
         }
 
         protected override void Draw(GameTime gameTime)
