@@ -78,7 +78,7 @@ namespace Application.Menus
                 new Vector2(_panel.BottomLeft().X + 96 * _buttonScale / 2f,
                     _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
 
-            NameTextBox = new TextBox(ViewManager.ViewPort.Center(), interfaceFont, 12);
+            NameTextBox = new TextBox(ViewManager.ViewPort.Center(), interfaceFont, 200);
             Clickables.Add(BackButton);
 
         }
