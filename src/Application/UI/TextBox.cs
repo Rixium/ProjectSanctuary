@@ -12,8 +12,9 @@ namespace Application.UI
         private string _text = "";
         private readonly Vector2 _position;
         private readonly SpriteFont _font;
-        private readonly Rectangle _bounds;
         private MouseState _lastMouseState;
+
+        public Rectangle Bounds { get; private set; }
         public bool Selected { get; private set; }
 
 
@@ -24,7 +25,7 @@ namespace Application.UI
 
             var (_, fontY) = font.MeasureString("x");
 
-            _bounds = new Rectangle((int) position.X, (int) position.Y, width, (int) (fontY + 20));
+            Bounds = new Rectangle((int) position.X, (int) position.Y, width, (int) (fontY + 20));
 
             SanctuaryGame.KeyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
         }
@@ -41,7 +42,7 @@ namespace Application.UI
                 _text = _text.Length > 0 ? _text.Remove(_text.Length - 1) : _text;
                 return;
             }
-            
+
             if (pressedKey == Keys.Enter)
             {
                 Selected = false;
@@ -57,7 +58,7 @@ namespace Application.UI
 
             var newText = _text + character;
 
-            if (_font.MeasureString(newText).X >= _bounds.Width - 20)
+            if (_font.MeasureString(newText).X >= Bounds.Width - 20)
             {
                 return;
             }
@@ -71,7 +72,7 @@ namespace Application.UI
             var mouseRect = new Rectangle(mouse.Position, new Point(1, 1));
             if (mouse.LeftButton == ButtonState.Pressed && _lastMouseState.LeftButton == ButtonState.Released)
             {
-                Selected = mouseRect.Intersects(_bounds);
+                Selected = mouseRect.Intersects(Bounds);
             }
 
             _lastMouseState = mouse;
@@ -84,11 +85,11 @@ namespace Application.UI
             var show = Selected && DateTime.Now.Millisecond % 1000 < 500;
 
             spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
-                _bounds, new Color(221, 190, 137));
+                Bounds, new Color(221, 190, 137));
 
             if (Selected)
             {
-                ShapeHelpers.DrawRectangle(spriteBatch, _bounds, Color.Green);
+                ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Green);
             }
 
             var tempText = show ? _text.Insert(_text.Length, "|") : _text;
@@ -102,6 +103,6 @@ namespace Application.UI
         }
 
         public void DrawDebug(SpriteBatch spriteBatch) =>
-            ShapeHelpers.DrawRectangle(spriteBatch, _bounds, Color.Red);
+            ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
     }
 }

@@ -22,6 +22,7 @@ namespace Application.Menus
         public TexturedButton BackButton { get; set; }
         public TextBlock NameTextBoxTitle { get; set; }
         public TextBox NameTextBox { get; set; }
+        public TextBlock PronounTextBoxTitle { get; set; }
 
         public CharacterCreationMenu()
         {
@@ -67,8 +68,17 @@ namespace Application.Menus
 
             var nameSectionPosition = new Vector2(_panel.Center().X,
                 _panel.Top() + 30);
-            NameTextBoxTitle = new TextBlock("Name", nameSectionPosition - new Vector2(interfaceFont.MeasureString("Name").X / 2f, 0), interfaceFont, Color.White, Color.Black);
-            NameTextBox = new TextBox(nameSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Name").Y + 10), inputBoxFont, 200);
+            NameTextBoxTitle = new TextBlock("Name",
+                nameSectionPosition - new Vector2(interfaceFont.MeasureString("Name").X / 2f, 0), interfaceFont,
+                Color.White, Color.Black);
+            NameTextBox =
+                new TextBox(nameSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Name").Y + 10),
+                    inputBoxFont, 200);
+
+            var pronounSectionPosition = new Vector2(_panel.Center().X, NameTextBox.Bounds.Bottom + 10);
+            PronounTextBoxTitle = new TextBlock("Pronouns",
+                pronounSectionPosition - new Vector2(interfaceFont.MeasureString("Pronouns").X / 2f, 0), interfaceFont,
+                Color.White, Color.Black);
 
             Clickables.Add(BackButton);
         }
@@ -101,7 +111,7 @@ namespace Application.Menus
                 hoveringButton.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
-            
+
             NameTextBox.Update(delta);
 
             _lastMouse = mouse;
@@ -121,6 +131,8 @@ namespace Application.Menus
 
             NameTextBoxTitle.Draw(spriteBatch);
             NameTextBox.Draw(spriteBatch);
+
+            PronounTextBoxTitle.Draw(spriteBatch);
 
             spriteBatch.End();
         }
