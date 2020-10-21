@@ -17,7 +17,6 @@ namespace Application.Menus
         private readonly float _buttonScale;
         private Panel _panel;
 
-        private TextBlock _characterCreationTitle;
         private MouseState _lastMouse;
 
         public TexturedButton BackButton { get; set; }
@@ -36,20 +35,8 @@ namespace Application.Menus
         {
             Clickables.Clear();
 
-            var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
             var interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
             var inputBoxFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InputBoxFont");
-
-            _characterCreationTitle =
-                new TextBlock("Character Creation",
-                    new Vector2(
-                        ViewManager.ViewPort.TitleSafeArea.Center.X -
-                        TextHelpers.TextWidth(font, "Character Creation").Half(),
-                        ViewManager.ViewPort.TitleSafeArea.Top + 10),
-                    font,
-                    Color.White,
-                    Color.Black
-                );
 
             var nineSlice = new NineSlice(_menuButtons, new Dictionary<Segment, Rectangle>
             {
@@ -114,6 +101,8 @@ namespace Application.Menus
                 hoveringButton.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
+            
+            NameTextBox.Update(delta);
 
             _lastMouse = mouse;
             base.Update(delta);
@@ -127,8 +116,6 @@ namespace Application.Menus
             {
                 clickable.Draw(spriteBatch);
             }
-
-            _characterCreationTitle.Draw(spriteBatch);
 
             _panel.Draw(spriteBatch);
 
