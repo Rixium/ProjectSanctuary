@@ -127,5 +127,11 @@ namespace Application.UI
         }
 
         public Vector2 BottomLeft() => new Vector2(_bounds.X, _bounds.Y + _bounds.Height);
+
+        public int Right() => _bounds.X + _bounds.Width;
+
+        public int Top() => _bounds.Y;
+
+        public Vector2 Center() => new Vector2(_bounds.X + _bounds.Width / 2f, _bounds.Y + _bounds.Height / 2f);
     }
 }

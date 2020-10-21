@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.UI
 {
-    internal class TextBlock
+    public class TextBlock
     {
         private readonly string _text;
         private readonly Vector2 _position;

@@ -16,7 +16,6 @@ namespace Application.Menus
         private float _titleYOffset;
         private MouseState _lastMouse;
         private readonly ScrollBox _scrollBox;
-        private readonly Texture2D _background;
         private readonly float _buttonScale;
         private readonly Texture2D _menuButtons;
         private Panel _panel;
@@ -24,8 +23,6 @@ namespace Application.Menus
 
         public MainOptionsMenu()
         {
-            _background = ContentChest.Instance.Get<Texture2D>("background");
-
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
 
             _scrollBox =
@@ -112,8 +109,7 @@ namespace Application.Menus
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            spriteBatch.Draw(_background, new Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height),
-                Color.White * 0.2f);
+            
             _scrollBox.Draw(spriteBatch);
 
             foreach (var clickable in Clickables)

@@ -190,8 +190,6 @@ namespace Application.Menus
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            spriteBatch.Draw(_background, new Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height),
-                Color.White * 0.2f);
             var title = "Project Sanctuary";
             var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
 
