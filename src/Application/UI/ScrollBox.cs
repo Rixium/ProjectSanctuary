@@ -78,7 +78,6 @@ namespace Application.UI
 
                     if (_bounds.Y + currentY + ySize > _bounds.Bottom)
                     {
-                        scrollEndLine = _lines.Count - i;
                         break;
                     }
 
