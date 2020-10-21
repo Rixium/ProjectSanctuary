@@ -31,12 +31,22 @@
 #begin Fonts/Farmilia.ttf
 /copy:Fonts/Farmilia.ttf
 
+#begin Fonts/InputBoxFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/InputBoxFont.spritefont
+
 #begin Fonts/InterfaceFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=NoChange
 /build:Fonts/InterfaceFont.spritefont
+
+#begin Fonts/monof55.ttf
+/copy:Fonts/monof55.ttf
 
 #begin Fonts/TitleFont.spritefont
 /importer:FontDescriptionImporter

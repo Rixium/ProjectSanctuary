@@ -23,7 +23,6 @@ namespace Application.UI
 
             _bounds = new Rectangle((int) position.X, (int) position.Y, width, (int) (fontY + 20));
 
-
             SanctuaryGame.KeyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
         }
 
@@ -34,12 +33,7 @@ namespace Application.UI
                 _text = _text.Length > 0 ? _text.Remove(_text.Length - 1) : _text;
                 return;
             }
-
-            if (_font.MeasureString(_text).X >= _bounds.Width - 20)
-            {
-                return;
-            }
-
+            
             var character = GetCharacter(pressedKey);
 
             if (character == null)
@@ -47,7 +41,14 @@ namespace Application.UI
                 return;
             }
 
-            _text += character;
+            var newText = _text + character;
+            
+            if (_font.MeasureString(newText).X >= _bounds.Width - 20)
+            {
+                return;
+            }
+
+            _text = newText;
         }
 
         private static char? GetCharacter(Keys pressedKey) => pressedKey.ToChar(false);

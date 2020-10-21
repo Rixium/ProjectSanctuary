@@ -38,6 +38,7 @@ namespace Application.Menus
 
             var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
             var interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
+            var inputBoxFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InputBoxFont");
 
             _characterCreationTitle =
                 new TextBlock("Character Creation",
@@ -80,7 +81,7 @@ namespace Application.Menus
             var nameSectionPosition = new Vector2(_panel.Center().X,
                 _panel.Top() + 30);
             NameTextBoxTitle = new TextBlock("Name", nameSectionPosition - new Vector2(interfaceFont.MeasureString("Name").X / 2f, 0), interfaceFont, Color.White, Color.Black);
-            NameTextBox = new TextBox(nameSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Name").Y + 10), interfaceFont, 200);
+            NameTextBox = new TextBox(nameSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Name").Y + 10), inputBoxFont, 200);
 
             Clickables.Add(BackButton);
         }
