@@ -18,6 +18,7 @@ namespace Application.UI
         private Vector2 _arrowBounds;
         private MouseState _lastMouse;
         private NineSlice _nineSlice;
+        private int _hoverOption;
         public bool Open { get; set; }
 
         public string Selected => _selectedOption != -1 ? _options[_selectedOption] : "";
@@ -79,6 +80,22 @@ namespace Application.UI
                     }
                 }
             }
+            
+            if (Open)
+            {
+                _hoverOption = -1;
+                for (var i = 0; i < _options.Length; i++)
+                {
+                    var optionBounds =
+                        Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
+                    if (mouseRectangle.Intersects(optionBounds))
+                    {
+                        _hoverOption = i;
+                        break;
+                    }
+                }
+            }
+            
 
             _lastMouse = mouse;
         }
@@ -100,7 +117,7 @@ namespace Application.UI
                     var optionBounds =
                         Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
                     spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), optionBounds,
-                        new Color(221, 190, 137));
+                        _hoverOption == i ? new Color(230, 200, 170) : new Color(221, 190, 137));
                     spriteBatch.DrawString(_font, option, new Vector2(optionBounds.X + 10, optionBounds.Y + 10),
                         Color.White);
                 }
