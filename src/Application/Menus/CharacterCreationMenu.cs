@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Application.Configuration;
 using Application.Content;
 using Application.Graphics;
 using Application.UI;
@@ -26,6 +25,8 @@ namespace Application.Menus
         public TextBox NameTextBox { get; set; }
         public TextBlock PronounTextBoxTitle { get; set; }
         public DropDownBox PronounDropDown { get; set; }
+
+        public Panel CharacterPanel { get; set; }
 
         public CharacterCreationMenu()
         {
@@ -69,25 +70,29 @@ namespace Application.Menus
                 new Vector2(_panel.BottomLeft().X + 96 * _buttonScale / 2f,
                     _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
 
-            var nameSectionPosition = new Vector2(_panel.Center().X,
+            var nameSectionPosition = new Vector2(_panel.Left() + 30,
                 _panel.Top() + 30);
-            NameTextBoxTitle = new TextBlock("Name",
-                nameSectionPosition - new Vector2(interfaceFont.MeasureString("Name").X / 2f, 0), interfaceFont,
-                Color.White, Color.Black);
+
+            NameTextBoxTitle = new TextBlock("Name", nameSectionPosition, interfaceFont, Color.White, Color.Black);
             NameTextBox =
-                new TextBox(nameSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Name").Y + 10),
+                new TextBox(nameSectionPosition + new Vector2(0, interfaceFont.MeasureString("Name").Y + 10),
                     inputBoxFont, 200);
 
-            var pronounSectionPosition = new Vector2(_panel.Center().X, NameTextBox.Bounds.Bottom + 10);
-            PronounTextBoxTitle = new TextBlock("Pronouns",
-                pronounSectionPosition - new Vector2(interfaceFont.MeasureString("Pronouns").X / 2f, 0), interfaceFont,
-                Color.White, Color.Black);
+            var pronounSectionPosition = new Vector2(_panel.Left() + 30, NameTextBox.Bounds.Bottom + 10);
+            PronounTextBoxTitle =
+                new TextBlock("Pronouns", pronounSectionPosition, interfaceFont, Color.White, Color.Black);
             PronounDropDown = new DropDownBox(inputBoxFont,
-                pronounSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Pronouns").Y + 10),
+                pronounSectionPosition + new Vector2(0, interfaceFont.MeasureString("Pronouns").Y + 10),
                 SanctuaryGame.OptionsManager.PronounOptions.Pronouns.Select(x =>
                     $"{x.Subjective}/{x.Objective}").ToArray(), 200);
 
             Clickables.Add(BackButton);
+
+            CharacterPanel = new Panel(nineSlice,
+                new Rectangle(PronounDropDown.Bounds.Right + 30, _panel.Top() + 30,
+                    _panel.Right() - PronounDropDown.Bounds.Right - 60,
+                    _panel.Right() - PronounDropDown.Bounds.Right - 60),
+                3f);
         }
 
         public override void Update(float delta)
@@ -141,6 +146,8 @@ namespace Application.Menus
 
             PronounTextBoxTitle.Draw(spriteBatch);
             PronounDropDown.Draw(spriteBatch);
+
+            CharacterPanel.Draw(spriteBatch);
 
             spriteBatch.End();
         }

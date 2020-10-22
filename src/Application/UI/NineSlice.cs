@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.UI
 {
-    internal enum Segment
+    public enum Segment
     {
         TopLeft,
         Top,
@@ -17,8 +17,8 @@ namespace Application.UI
         Left,
         Center
     }
-    
-    internal class NineSlice
+
+    public class NineSlice
     {
         private readonly Dictionary<Segment, Rectangle> _segmentSources;
         public Texture2D Texture { get; }

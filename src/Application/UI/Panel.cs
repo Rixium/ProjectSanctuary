@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.UI
 {
-    internal class Panel
+    public class Panel
     {
         private readonly NineSlice _nineSlice;
         private readonly Rectangle _bounds;
@@ -36,5 +36,7 @@ namespace Application.UI
         public int Top() => _bounds.Y;
 
         public Vector2 Center() => new Vector2(_bounds.X + _bounds.Width / 2f, _bounds.Y + _bounds.Height / 2f);
+        
+        public int Left() => _bounds.X;
     }
 }
