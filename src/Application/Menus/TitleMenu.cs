@@ -14,9 +14,7 @@ namespace Application.Menus
 {
     public class TitleMenu : Menu
     {
-        private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
-        private readonly Rectangle _titleImageSource;
         private float _buttonScale;
 
         private float _titleYOffset;
@@ -33,8 +31,6 @@ namespace Application.Menus
 
         public TitleMenu()
         {
-            _background = ContentChest.Instance.Get<Texture2D>("background");
-            _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = -(ViewManager.ViewPort.Height / 2.0f - 50);
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
