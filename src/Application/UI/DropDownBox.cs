@@ -61,23 +61,21 @@ namespace Application.UI
                     (int) (_downArrowSource.Width * 3f), (int) (_downArrowSource.Height * 3f))))
                 {
                     Open = !Open;
-                }
-                else
+                } else if (Open)
                 {
-                    if (Open)
+                    for (var i = 0; i < _options.Length; i++)
                     {
-                        for (var i = 0; i < _options.Length; i++)
+                        var optionBounds =
+                            Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
+                        if (mouseRectangle.Intersects(optionBounds))
                         {
-                            var optionBounds =
-                                Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
-                            if (mouseRectangle.Intersects(optionBounds))
-                            {
-                                _selectedOption = i;
-                                Open = false;
-                                break;
-                            }
+                            _selectedOption = i;
+                            Open = false;
+                            break;
                         }
                     }
+
+                    Open = false;
                 }
             }
             
