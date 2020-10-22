@@ -5,8 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.UI
 {
-
-    enum Segment
+    internal enum Segment
     {
         TopLeft,
         Top,
