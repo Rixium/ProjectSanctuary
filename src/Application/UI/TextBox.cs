@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Application.Content;
 using Application.Utils;
 using Microsoft.Xna.Framework;
@@ -13,6 +14,7 @@ namespace Application.UI
         private readonly Vector2 _position;
         private readonly SpriteFont _font;
         private MouseState _lastMouseState;
+        private NineSlice _nineSlice;
 
         public Rectangle Bounds { get; private set; }
         public bool Selected { get; private set; }
@@ -28,6 +30,21 @@ namespace Application.UI
             Bounds = new Rectangle((int) position.X, (int) position.Y, width, (int) (fontY + 20));
 
             SanctuaryGame.KeyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
+            
+            
+            _nineSlice = new NineSlice(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+                new Dictionary<Segment, Rectangle>
+                {
+                    {Segment.TopLeft, new Rectangle(233, 4, 1, 1)},
+                    {Segment.Top, new Rectangle(234, 4, 1, 1)},
+                    {Segment.TopRight, new Rectangle(235, 4, 1, 1)},
+                    {Segment.Right, new Rectangle(235, 5, 1, 1)},
+                    {Segment.BottomRight, new Rectangle(235, 6, 1, 1)},
+                    {Segment.Bottom, new Rectangle(234, 6, 1, 1)},
+                    {Segment.BottomLeft, new Rectangle(233, 6, 1, 1)},
+                    {Segment.Left, new Rectangle(233, 5, 1, 1)},
+                    {Segment.Center, new Rectangle(234, 5, 1, 1)},
+                });
         }
 
         private void OnKeyPressed(Keys pressedKey)
@@ -84,8 +101,7 @@ namespace Application.UI
         {
             var show = Selected && DateTime.Now.Millisecond % 1000 < 500;
 
-            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
-                Bounds, new Color(221, 190, 137));
+            _nineSlice.DrawRectangle(spriteBatch, Bounds, 3f);
 
             if (Selected)
             {
