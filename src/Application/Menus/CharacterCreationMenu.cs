@@ -57,7 +57,7 @@ namespace Application.Menus
                 {Segment.Center, new Rectangle(10, 199, 1, 1)}
             });
 
-            int panelWidth = (int) (96 * _buttonScale * 2 + 30);
+            var panelWidth = (int) (96 * _buttonScale * 2 + 30);
 
             _panel = new Panel(nineSlice,
                 new Rectangle(
