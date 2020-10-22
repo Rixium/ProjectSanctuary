@@ -23,6 +23,7 @@ namespace Application.Menus
         public TextBlock NameTextBoxTitle { get; set; }
         public TextBox NameTextBox { get; set; }
         public TextBlock PronounTextBoxTitle { get; set; }
+        public DropDownBox PronounDropDown { get; set; }
 
         public CharacterCreationMenu()
         {
@@ -79,10 +80,12 @@ namespace Application.Menus
             PronounTextBoxTitle = new TextBlock("Pronouns",
                 pronounSectionPosition - new Vector2(interfaceFont.MeasureString("Pronouns").X / 2f, 0), interfaceFont,
                 Color.White, Color.Black);
+            PronounDropDown = new DropDownBox(inputBoxFont,
+                pronounSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Pronouns").Y + 10),
+                new[] {"He/Him", "She/Her"}, 200);
 
             Clickables.Add(BackButton);
         }
-
 
         public override void Update(float delta)
         {
@@ -113,6 +116,7 @@ namespace Application.Menus
             }
 
             NameTextBox.Update(delta);
+            PronounDropDown.Update(delta);
 
             _lastMouse = mouse;
             base.Update(delta);
@@ -133,6 +137,7 @@ namespace Application.Menus
             NameTextBox.Draw(spriteBatch);
 
             PronounTextBoxTitle.Draw(spriteBatch);
+            PronounDropDown.Draw(spriteBatch);
 
             spriteBatch.End();
         }
