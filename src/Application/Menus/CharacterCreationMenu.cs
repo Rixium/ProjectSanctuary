@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Application.Configuration;
 using Application.Content;
 using Application.Graphics;
 using Application.UI;
@@ -82,7 +84,8 @@ namespace Application.Menus
                 Color.White, Color.Black);
             PronounDropDown = new DropDownBox(inputBoxFont,
                 pronounSectionPosition + new Vector2(-100, interfaceFont.MeasureString("Pronouns").Y + 10),
-                new[] {"He/Him", "She/Her"}, 200);
+                SanctuaryGame.OptionsManager.PronounOptions.Pronouns.Select(x =>
+                    $"{x.Subjective}/{x.Objective}").ToArray(), 200);
 
             Clickables.Add(BackButton);
         }

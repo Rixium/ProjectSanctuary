@@ -13,7 +13,6 @@ using Steamworks;
 
 namespace Application
 {
-
     public class SanctuaryGame : Game
     {
         private const string GameName = "Project Sanctuary";
@@ -22,9 +21,9 @@ namespace Application
         private const int Revision = 0;
 
         public static KeyboardDispatcher KeyboardDispatcher;
+        public static IOptionsManager OptionsManager;
 
         private IApplicationFolder _applicationFolder;
-        private IOptionsManager _optionsManager;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
@@ -90,7 +89,7 @@ namespace Application
             _graphics.ApplyChanges();
 
             ViewManager.Instance?.WindowResized();
-            
+
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
         }
 
@@ -116,7 +115,7 @@ namespace Application
             UpdateWindowTitle();
 
             InitializeApplicationFolder();
-            
+
             KeyboardDispatcher = new KeyboardDispatcher();
 
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
@@ -124,8 +123,8 @@ namespace Application
             // Now we've created the app data folder,
             // and saved the defaults if required,
             // The options can be loaded using it.
-            _optionsManager = new OptionsManager(_applicationFolder);
-            _optionsManager.Initialize();
+            OptionsManager = new OptionsManager(_applicationFolder);
+            OptionsManager.Initialize();
 
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
@@ -133,11 +132,8 @@ namespace Application
             _viewManager.OnExitRequest += OnExit;
             _viewManager.RequestControls += () => Enum.GetNames(typeof(InputAction));
 
-            KeyboardDispatcher.SubscribeToKeyPress(Keys.OemTilde, () =>
-            {
-                Debug = !Debug;
-            });
-            
+            KeyboardDispatcher.SubscribeToKeyPress(Keys.OemTilde, () => { Debug = !Debug; });
+
             base.Initialize();
         }
 
@@ -156,6 +152,9 @@ namespace Application
 
             var controlOptions = new ControlOptions();
             controlOptions.Save(_applicationFolder, false);
+            
+            var pronounOptions = new PronounOptions();
+            pronounOptions.Save(_applicationFolder, false);
         }
 
         private void UpdateWindowTitle() => Window.Title = $"{GameName} - {GameVersion()}";

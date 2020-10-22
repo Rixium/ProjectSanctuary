@@ -11,10 +11,9 @@ namespace Application.UI
     public class TextBox
     {
         private string _text = "";
-        private readonly Vector2 _position;
         private readonly SpriteFont _font;
+        private readonly NineSlice _nineSlice;
         private MouseState _lastMouseState;
-        private NineSlice _nineSlice;
 
         public Rectangle Bounds { get; private set; }
         public bool Selected { get; private set; }
@@ -22,12 +21,10 @@ namespace Application.UI
 
         public TextBox(Vector2 position, SpriteFont font, int width)
         {
-            _position = position;
             _font = font;
 
-            var (_, fontY) = font.MeasureString("x");
-
-            Bounds = new Rectangle((int) position.X, (int) position.Y, width, (int) (fontY + 20));
+            var (x, y) = position;
+            Bounds = new Rectangle((int) x, (int) y, width, 30);
 
             SanctuaryGame.KeyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
             
@@ -110,7 +107,7 @@ namespace Application.UI
 
             var tempText = show ? _text.Insert(_text.Length, "|") : _text;
 
-            spriteBatch.DrawString(_font, tempText, _position + new Vector2(10, 10), Color.Black);
+            spriteBatch.DrawString(_font, tempText, new Vector2(Bounds.Left + 10, Bounds.Center.Y - _font.MeasureString(tempText).Y / 2f), Color.Black);
 
             if (SanctuaryGame.Debug)
             {

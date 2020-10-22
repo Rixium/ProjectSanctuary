@@ -115,14 +115,14 @@ namespace Application.UI
                         Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
                     spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), optionBounds,
                         _hoverOption == i ? new Color(230, 200, 170) : new Color(221, 190, 137));
-                    spriteBatch.DrawString(_font, option, new Vector2(optionBounds.X + 10, optionBounds.Y + 10),
-                        Color.White);
+                    spriteBatch.DrawString(_font, option, new Vector2(optionBounds.X + 10, optionBounds.Center.Y - _font.MeasureString(option).Y / 2f),
+                        Color.Black);
                 }
             }
 
             spriteBatch.DrawString(_font, Selected,
                 new Vector2(Bounds.X + 10, Bounds.Center.Y - _font.MeasureString(Selected).Y / 2f),
-                Color.White);
+                Color.Black);
 
             if (SanctuaryGame.Debug)
             {
