@@ -70,7 +70,6 @@ namespace Application.UI
                         if (mouseRectangle.Intersects(optionBounds))
                         {
                             _selectedOption = i;
-                            Open = false;
                             break;
                         }
                     }
