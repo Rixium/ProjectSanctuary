@@ -29,14 +29,18 @@ namespace Application.UI
 
         public void DrawDebug(SpriteBatch spriteBatch) => _nineSlice.DrawDebug(spriteBatch, _bounds, _scale);
 
-        public Vector2 BottomLeft() => new Vector2(_bounds.X, _bounds.Y + _bounds.Height);
+        public Vector2 BottomLeft() => new Vector2(Left(), Bottom());
 
         public int Right() => _bounds.X + _bounds.Width;
 
         public int Top() => _bounds.Y;
 
         public Vector2 Center() => new Vector2(_bounds.X + _bounds.Width / 2f, _bounds.Y + _bounds.Height / 2f);
-        
+
         public int Left() => _bounds.X;
+
+        public Vector2 BottomRight() => new Vector2(Right(), Bottom());
+
+        private int Bottom() => _bounds.Y + _bounds.Height;
     }
 }

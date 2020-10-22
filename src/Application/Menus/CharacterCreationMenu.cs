@@ -21,6 +21,7 @@ namespace Application.Menus
         private MouseState _lastMouse;
 
         public TexturedButton BackButton { get; set; }
+        public TexturedButton DoneButton { get; set; }
         public TextBlock NameTextBoxTitle { get; set; }
         public TextBox NameTextBox { get; set; }
         public TextBlock PronounTextBoxTitle { get; set; }
@@ -56,18 +57,24 @@ namespace Application.Menus
                 {Segment.Center, new Rectangle(10, 199, 1, 1)}
             });
 
-            const int panelWidth = 550;
+            int panelWidth = (int) (96 * _buttonScale * 2 + 30);
 
             _panel = new Panel(nineSlice,
                 new Rectangle(
                     (int) (ViewManager.ViewPort.Center().X - panelWidth / 2f),
-                    (int) (ViewManager.ViewPort.Center().Y - 250), panelWidth,
+                    (int) (ViewManager.ViewPort.Center().Y - (500 + 30 + 22 * _buttonScale) / 2f), panelWidth,
                     500), _buttonScale);
 
             BackButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
                 new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
                 new Vector2(_panel.BottomLeft().X + 96 * _buttonScale / 2f,
+                    _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
+
+            DoneButton = new TexturedButton(
+                new Sprite(_menuButtons, new Rectangle(0, 144, 96, 22)),
+                new Sprite(_menuButtons, new Rectangle(96, 144, 96, 22)),
+                new Vector2(_panel.BottomRight().X - 96 * _buttonScale / 2f,
                     _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
 
             var nameSectionPosition = new Vector2(_panel.Left() + 30,
@@ -87,6 +94,7 @@ namespace Application.Menus
                     $"{x.Subjective}/{x.Objective}").ToArray(), 200);
 
             Clickables.Add(BackButton);
+            Clickables.Add(DoneButton);
 
             CharacterPanel = new Panel(nineSlice,
                 new Rectangle(PronounDropDown.Bounds.Right + 30, _panel.Top() + 30,
