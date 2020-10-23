@@ -1,5 +1,6 @@
 ﻿using Application.Content;
 using Application.Menus;
+using Application.UI;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,7 +31,7 @@ namespace Application.Scenes
         {
             _mainTitleMenu.NewGameButton.OnClick += () => _activeMenu = _characterCreationMenu;
             _mainTitleMenu.LoadGameButton.OnClick += () => _activeMenu = _mainOptionsMenu;
-            _mainOptionsMenu.BackButton.OnClick += () => _activeMenu = _mainTitleMenu;
+            ((IClickable)_mainOptionsMenu.BackButton).OnClick += () => _activeMenu = _mainTitleMenu;
             _characterCreationMenu.BackButton.OnClick += () => _activeMenu = _mainTitleMenu;
         }
 
