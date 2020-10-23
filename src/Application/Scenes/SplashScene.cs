@@ -1,9 +1,7 @@
-﻿using System;
-using Application.Content;
+﻿using Application.Content;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 
 namespace Application.Scenes
 {
@@ -28,8 +26,8 @@ namespace Application.Scenes
                 return;
             }
             
-            var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
-            MediaPlayer.Play(ContentChest.Instance.Get<Song>($"Music/MenuSong{num}"));
+            // var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
+            // MediaPlayer.Play(ContentChest.Instance.Get<Song>($"Music/MenuSong{num}"));
             
             SceneManager.Instance.AddScene(new MenuScene());
             SceneManager.Instance.SetNextScene<MenuScene>();

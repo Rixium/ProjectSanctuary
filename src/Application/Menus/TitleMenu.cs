@@ -1,40 +1,32 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Application.Content;
 using Application.Graphics;
 using Application.UI;
+using Application.UI.Widgets;
 using Application.Utils;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Application.Menus
 {
     public class TitleMenu : Menu
     {
-        private readonly Texture2D _background;
         private readonly Texture2D _menuButtons;
-        private readonly Rectangle _titleImageSource;
         private float _buttonScale;
 
         private float _titleYOffset;
-        private MouseState _lastMouse;
-        private float _lastDrag;
-        public Image SignTopImage { get; private set; }
 
-        public IClickable OptionsMenuButton { get; private set; }
         public IClickable NewGameButton { get; private set; }
         public IClickable LoadGameButton { get; private set; }
-        public IClickable ExitGameButton { get; private set; }
-
-        public ScrollBox ScrollBox { get; private set; }
+        private IClickable ExitGameButton { get; set; }
+        private ScrollBox ScrollBox { get; set; }
+        private Image SignTopImage { get; set; }
+        private Image NewsPanelImage { get; set; }
 
         public TitleMenu()
         {
-            _background = ContentChest.Instance.Get<Texture2D>("background");
-            _titleImageSource = new Rectangle(0, 241, 258, 67);
             _titleYOffset = -(ViewManager.ViewPort.Height / 2.0f - 50);
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
@@ -65,7 +57,7 @@ namespace Application.Menus
 
 
             ScrollBox = new ScrollBox(
-                "{line} Welcome to Project Sanctuary! {line} Build your Sanctuary, Save Animals and Change the World! \n \n Your village needs you. \n \n The times are changing and they need your guidance. \n \n The animals will thank you. {line} Crafted with love by YetiFace. {line} ",
+                "{line} Welcome to Project Sanctuary! {line} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi congue finibus maximus. Maecenas rhoncus malesuada eros vitae tincidunt. Nam suscipit, justo ac gravida rhoncus, ante neque auctor urna, a egestas dui odio eget ante. Aenean nec eros nisi. Nam bibendum viverra tincidunt. Phasellus elementum urna nibh, ac egestas nibh pellentesque vitae. Nulla in mollis nisl. Vivamus nec mauris rutrum magna sollicitudin venenatis et a enim. Phasellus quis mi ex. {line} ",
                 NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -11 * _buttonScale, -20 * _buttonScale));
             NewGameButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
@@ -95,15 +87,8 @@ namespace Application.Menus
             Clickables.Add(ExitGameButton);
         }
 
-        public Image NewsPanelImage { get; set; }
-
         public override void Update(float delta)
         {
-            var mouse = Mouse.GetState();
-            var mousePosition = new Vector2(mouse.X, mouse.Y);
-
-            var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
-
             if (_titleYOffset < 0)
             {
                 _titleYOffset = MathHelper.Lerp(_titleYOffset, 0, delta);
@@ -115,7 +100,7 @@ namespace Application.Menus
             {
                 button.Hovering = false;
 
-                if (!button.Intersects(mouseRectangle))
+                if (!button.Intersects(SanctuaryGame.MouseManager.MouseBounds))
                 {
                     continue;
                 }
@@ -127,22 +112,20 @@ namespace Application.Menus
 
             if (ScrollBox.Dragging)
             {
-                if (MathHelper.Distance(mouse.Y, _lastDrag) > 10)
+                if (SanctuaryGame.MouseManager.Dragged(6))
                 {
-                    if (mouse.Y < _lastDrag)
+                    if (SanctuaryGame.MouseManager.Drag < 0)
                     {
                         ScrollBox.ScrollLine(-1);
-                        _lastDrag = mouse.Y;
                     }
-                    else
+                    else if(SanctuaryGame.MouseManager.Drag > 0)
                     {
                         ScrollBox.ScrollLine(1);
-                        _lastDrag = mouse.Y;
                     }
                 }
             }
-            else if (mouse.LeftButton == ButtonState.Pressed &&
-                     _lastMouse.LeftButton == ButtonState.Released)
+            
+            else if (SanctuaryGame.MouseManager.LeftClicked)
             {
                 if (hoveringButton != null)
                 {
@@ -151,38 +134,35 @@ namespace Application.Menus
                 }
                 else
                 {
-                    if (mouseRectangle.Intersects(ScrollBox.TopNibBounds()))
+                    if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.TopNibBounds()))
                     {
                         ScrollBox.ScrollLine(-1);
                     }
-                    else if (mouseRectangle.Intersects(ScrollBox.BottomNibBounds()))
+                    else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.BottomNibBounds()))
                     {
                         ScrollBox.ScrollLine(1);
                     }
-                    else if (mouseRectangle.Intersects(ScrollBox.ScrollBarBounds()))
+                    else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.ScrollBarBounds()))
                     {
                         ScrollBox.Dragging = true;
-                        Console.WriteLine("BEGIN DRAG");
-                        _lastDrag = mouse.Y;
                     }
                 }
-            } else if (mouseRectangle.Intersects(ScrollBox.Bounds))
+            } else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.Bounds))
             {
-                if (mouse.ScrollWheelValue < _lastMouse.ScrollWheelValue)
+                if (SanctuaryGame.MouseManager.ScrolledUp)
                 {
                     ScrollBox.ScrollLine(1);
-                } else if (mouse.ScrollWheelValue > _lastMouse.ScrollWheelValue)
+                } else if (SanctuaryGame.MouseManager.ScrolledDown)
                 {
                     ScrollBox.ScrollLine(-1);
                 }
             }
 
-            if (mouse.LeftButton == ButtonState.Released)
+            if (SanctuaryGame.MouseManager.LeftReleased)
             {
                 ScrollBox.Dragging = false;
             }
 
-            _lastMouse = mouse;
             base.Update(delta);
         }
 
@@ -190,8 +170,6 @@ namespace Application.Menus
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            spriteBatch.Draw(_background, new Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height),
-                Color.White * 0.2f);
             var title = "Project Sanctuary";
             var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
 

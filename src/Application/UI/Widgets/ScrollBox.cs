@@ -5,7 +5,7 @@ using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Application.UI
+namespace Application.UI.Widgets
 {
     public class ScrollBox
     {
@@ -78,7 +78,6 @@ namespace Application.UI
 
                     if (_bounds.Y + currentY + ySize > _bounds.Bottom)
                     {
-                        scrollEndLine = _lines.Count - i;
                         break;
                     }
 

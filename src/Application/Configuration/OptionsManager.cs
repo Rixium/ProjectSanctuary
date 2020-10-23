@@ -7,6 +7,7 @@ namespace Application.Configuration
         private readonly IApplicationFolder _applicationFolder;
 
         public ControlOptions ControlOptions { get; private set; }
+        public PronounOptions PronounOptions { get; private set; }
 
         public OptionsManager(IApplicationFolder applicationFolder)
         {
@@ -16,6 +17,7 @@ namespace Application.Configuration
         public void Initialize()
         {
             ControlOptions = ControlOptions.Load(_applicationFolder);
+            PronounOptions = PronounOptions.Load(_applicationFolder);
         }
         
     }

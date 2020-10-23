@@ -20,15 +20,16 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
 
+        public static KeyboardDispatcher KeyboardDispatcher;
+        public static IMouseManager MouseManager;
+        public static IOptionsManager OptionsManager;
+
+        private readonly GraphicsDeviceManager _graphics;
         private IApplicationFolder _applicationFolder;
-        private IOptionsManager _optionsManager;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
-        private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private ControlOptions _options;
-        private KeyboardState _lastKeyboardState;
 
         public SanctuaryGame()
         {
@@ -62,7 +63,7 @@ namespace Application
 
         public static bool Debug { get; set; }
 
-        private void WindowOnClientSizeChanged(object? sender, EventArgs e)
+        private void WindowOnClientSizeChanged(object sender, EventArgs e)
         {
             Window.ClientSizeChanged -= WindowOnClientSizeChanged;
 
@@ -88,7 +89,7 @@ namespace Application
             _graphics.ApplyChanges();
 
             ViewManager.Instance?.WindowResized();
-            
+
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
         }
 
@@ -115,19 +116,24 @@ namespace Application
 
             InitializeApplicationFolder();
 
+            KeyboardDispatcher = new KeyboardDispatcher();
+            MouseManager = new MonoGameMouseManager();
+
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
             // Now we've created the app data folder,
             // and saved the defaults if required,
             // The options can be loaded using it.
-            _optionsManager = new OptionsManager(_applicationFolder);
-            _optionsManager.Initialize();
+            OptionsManager = new OptionsManager(_applicationFolder);
+            OptionsManager.Initialize();
 
             _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
             ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _viewManager.OnExitRequest += OnExit;
             _viewManager.RequestControls += () => Enum.GetNames(typeof(InputAction));
+
+            KeyboardDispatcher.SubscribeToKeyPress(Keys.OemTilde, () => { Debug = !Debug; });
 
             base.Initialize();
         }
@@ -147,23 +153,23 @@ namespace Application
 
             var controlOptions = new ControlOptions();
             controlOptions.Save(_applicationFolder, false);
+            
+            var pronounOptions = new PronounOptions();
+            pronounOptions.Save(_applicationFolder, false);
         }
 
         private void UpdateWindowTitle() => Window.Title = $"{GameName} - {GameVersion()}";
 
         protected override void Update(GameTime gameTime)
         {
-            var keyState = Keyboard.GetState();
             var delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
+
+            KeyboardDispatcher.Update(delta);
+            MouseManager.Update(delta);
+            
             _viewManager.Update(delta);
 
-            if (keyState.IsKeyDown(Keys.OemTilde) && _lastKeyboardState.IsKeyUp(Keys.OemTilde))
-            {
-                Debug = !Debug;
-            }
-
             base.Update(gameTime);
-            _lastKeyboardState = keyState;
         }
 
         protected override void Draw(GameTime gameTime)
