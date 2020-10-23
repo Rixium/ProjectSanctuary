@@ -21,6 +21,7 @@ namespace Application
         private const int Revision = 0;
 
         public static KeyboardDispatcher KeyboardDispatcher;
+        public static IMouseManager MouseManager;
         public static IOptionsManager OptionsManager;
 
         private readonly GraphicsDeviceManager _graphics;
@@ -116,6 +117,7 @@ namespace Application
             InitializeApplicationFolder();
 
             KeyboardDispatcher = new KeyboardDispatcher();
+            MouseManager = new MonoGameMouseManager();
 
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
 
@@ -163,6 +165,8 @@ namespace Application
             var delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
 
             KeyboardDispatcher.Update(delta);
+            MouseManager.Update(delta);
+            
             _viewManager.Update(delta);
 
             base.Update(gameTime);

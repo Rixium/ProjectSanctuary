@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Application.Content;
 using Application.Graphics;
 using Application.UI;
@@ -9,7 +8,6 @@ using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Application.Menus
 {
@@ -19,16 +17,13 @@ namespace Application.Menus
         private float _buttonScale;
 
         private float _titleYOffset;
-        private MouseState _lastMouse;
-        private float _lastDrag;
-        public Image SignTopImage { get; private set; }
 
-        public IClickable OptionsMenuButton { get; private set; }
         public IClickable NewGameButton { get; private set; }
         public IClickable LoadGameButton { get; private set; }
-        public IClickable ExitGameButton { get; private set; }
-
-        public ScrollBox ScrollBox { get; private set; }
+        private IClickable ExitGameButton { get; set; }
+        private ScrollBox ScrollBox { get; set; }
+        private Image SignTopImage { get; set; }
+        private Image NewsPanelImage { get; set; }
 
         public TitleMenu()
         {
@@ -92,15 +87,8 @@ namespace Application.Menus
             Clickables.Add(ExitGameButton);
         }
 
-        public Image NewsPanelImage { get; set; }
-
         public override void Update(float delta)
         {
-            var mouse = Mouse.GetState();
-            var mousePosition = new Vector2(mouse.X, mouse.Y);
-
-            var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
-
             if (_titleYOffset < 0)
             {
                 _titleYOffset = MathHelper.Lerp(_titleYOffset, 0, delta);
@@ -112,7 +100,7 @@ namespace Application.Menus
             {
                 button.Hovering = false;
 
-                if (!button.Intersects(mouseRectangle))
+                if (!button.Intersects(SanctuaryGame.MouseManager.MouseBounds))
                 {
                     continue;
                 }
@@ -124,22 +112,20 @@ namespace Application.Menus
 
             if (ScrollBox.Dragging)
             {
-                if (MathHelper.Distance(mouse.Y, _lastDrag) > 10)
+                if (SanctuaryGame.MouseManager.Dragged(6))
                 {
-                    if (mouse.Y < _lastDrag)
+                    if (SanctuaryGame.MouseManager.Drag < 0)
                     {
                         ScrollBox.ScrollLine(-1);
-                        _lastDrag = mouse.Y;
                     }
-                    else
+                    else if(SanctuaryGame.MouseManager.Drag > 0)
                     {
                         ScrollBox.ScrollLine(1);
-                        _lastDrag = mouse.Y;
                     }
                 }
             }
-            else if (mouse.LeftButton == ButtonState.Pressed &&
-                     _lastMouse.LeftButton == ButtonState.Released)
+            
+            else if (SanctuaryGame.MouseManager.LeftClicked)
             {
                 if (hoveringButton != null)
                 {
@@ -148,38 +134,35 @@ namespace Application.Menus
                 }
                 else
                 {
-                    if (mouseRectangle.Intersects(ScrollBox.TopNibBounds()))
+                    if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.TopNibBounds()))
                     {
                         ScrollBox.ScrollLine(-1);
                     }
-                    else if (mouseRectangle.Intersects(ScrollBox.BottomNibBounds()))
+                    else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.BottomNibBounds()))
                     {
                         ScrollBox.ScrollLine(1);
                     }
-                    else if (mouseRectangle.Intersects(ScrollBox.ScrollBarBounds()))
+                    else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.ScrollBarBounds()))
                     {
                         ScrollBox.Dragging = true;
-                        Console.WriteLine("BEGIN DRAG");
-                        _lastDrag = mouse.Y;
                     }
                 }
-            } else if (mouseRectangle.Intersects(ScrollBox.Bounds))
+            } else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.Bounds))
             {
-                if (mouse.ScrollWheelValue < _lastMouse.ScrollWheelValue)
+                if (SanctuaryGame.MouseManager.ScrolledUp)
                 {
                     ScrollBox.ScrollLine(1);
-                } else if (mouse.ScrollWheelValue > _lastMouse.ScrollWheelValue)
+                } else if (SanctuaryGame.MouseManager.ScrolledDown)
                 {
                     ScrollBox.ScrollLine(-1);
                 }
             }
 
-            if (mouse.LeftButton == ButtonState.Released)
+            if (SanctuaryGame.MouseManager.LeftReleased)
             {
                 ScrollBox.Dragging = false;
             }
 
-            _lastMouse = mouse;
             base.Update(delta);
         }
 

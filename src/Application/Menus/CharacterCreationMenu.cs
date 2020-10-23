@@ -107,17 +107,13 @@ namespace Application.Menus
 
         public override void Update(float delta)
         {
-            var mouse = Mouse.GetState();
-            var (x, y) = new Vector2(mouse.X, mouse.Y);
-            var mouseRectangle = new Rectangle((int) x, (int) y, 1, 1);
-
             IClickable hoveringButton = null;
 
             foreach (var button in Clickables)
             {
                 button.Hovering = false;
 
-                if (!button.Intersects(mouseRectangle))
+                if (!button.Intersects(SanctuaryGame.MouseManager.MouseBounds))
                 {
                     continue;
                 }
@@ -126,8 +122,7 @@ namespace Application.Menus
                 button.Hovering = true;
             }
 
-            if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed &&
-                _lastMouse.LeftButton == ButtonState.Released)
+            if (hoveringButton != null && SanctuaryGame.MouseManager.LeftClicked)
             {
                 hoveringButton.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
@@ -136,7 +131,6 @@ namespace Application.Menus
             NameTextBox.Update();
             PronounDropDown.Update();
 
-            _lastMouse = mouse;
             base.Update(delta);
         }
 
