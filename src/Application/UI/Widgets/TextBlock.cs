@@ -7,7 +7,7 @@ namespace Application.UI.Widgets
     public class TextBlock : Widget
     {
         private readonly string _text;
-        private readonly Vector2 _position;
+        private Vector2 _position;
         private readonly SpriteFont _font;
         private readonly Color _color;
         private readonly Color? _border;
@@ -22,6 +22,16 @@ namespace Application.UI.Widgets
 
             var (x, y) = font.MeasureString(text);
             Bounds = new Rectangle((int) _position.X, (int) _position.Y, (int) x, (int) y);
+        }
+
+        public float Y
+        {
+            get => _position.Y;
+            set
+            {
+                _position = new Vector2(_position.X, value);
+                Bounds = new Rectangle((int) _position.X, (int) _position.Y, Bounds.Width, Bounds.Height);
+            }
         }
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
