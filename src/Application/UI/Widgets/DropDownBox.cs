@@ -3,7 +3,6 @@ using Application.Content;
 using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Application.UI.Widgets
 {
@@ -17,7 +16,6 @@ namespace Application.UI.Widgets
         private readonly NineSlice _nineSlice;
 
         private int _selectedOption = -1;
-        private MouseState _lastMouse;
         private int _hoverOption;
         private bool Open { get; set; }
         private string Selected => _selectedOption != -1 ? _options[_selectedOption] : "";
@@ -51,12 +49,9 @@ namespace Application.UI.Widgets
 
         public void Update()
         {
-            var mouse = Mouse.GetState();
-            var mouseRectangle = new Rectangle(mouse.Position, new Point(5, 5));
-
-            if (mouse.LeftButton == ButtonState.Pressed && _lastMouse.LeftButton == ButtonState.Released)
+            if (SanctuaryGame.MouseManager.LeftReleased)
             {
-                if (mouseRectangle.Intersects(new Rectangle((int) _arrowBounds.X, (int) _arrowBounds.Y,
+                if (SanctuaryGame.MouseManager.MouseBounds.Intersects(new Rectangle((int) _arrowBounds.X, (int) _arrowBounds.Y,
                     (int) (_downArrowSource.Width * 3f), (int) (_downArrowSource.Height * 3f))))
                 {
                     Open = !Open;
@@ -67,11 +62,14 @@ namespace Application.UI.Widgets
                     {
                         var optionBounds =
                             Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
-                        if (mouseRectangle.Intersects(optionBounds))
+                        
+                        if (!SanctuaryGame.MouseManager.MouseBounds.Intersects(optionBounds))
                         {
-                            _selectedOption = i;
-                            break;
+                            continue;
                         }
+                        
+                        _selectedOption = i;
+                        break;
                     }
 
                     Open = false;
@@ -86,7 +84,7 @@ namespace Application.UI.Widgets
                     var optionBounds =
                         Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
 
-                    if (!mouseRectangle.Intersects(optionBounds))
+                    if (!SanctuaryGame.MouseManager.MouseBounds.Intersects(optionBounds))
                     {
                         continue;
                     }
@@ -95,9 +93,6 @@ namespace Application.UI.Widgets
                     break;
                 }
             }
-
-
-            _lastMouse = mouse;
         }
 
         protected override void InternalDraw(SpriteBatch spriteBatch)

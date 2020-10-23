@@ -8,14 +8,12 @@ using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Application.Menus
 {
     internal class MainOptionsMenu : Menu
     {
         private float _titleYOffset;
-        private MouseState _lastMouse;
         private readonly ScrollBox _scrollBox;
         private readonly float _buttonScale;
         private readonly Texture2D _menuButtons;
@@ -40,7 +38,7 @@ namespace Application.Menus
         private void SetupButtons()
         {
             Clickables.Clear();
-            
+
             BackButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
                 new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
@@ -71,11 +69,6 @@ namespace Application.Menus
 
         public override void Update(float delta)
         {
-            var mouse = Mouse.GetState();
-            var mousePosition = new Vector2(mouse.X, mouse.Y);
-
-            var mouseRectangle = new Rectangle((int) mousePosition.X, (int) mousePosition.Y, 1, 1);
-
             if (_titleYOffset > 0)
             {
                 _titleYOffset = MathHelper.Lerp(_titleYOffset, 0, delta);
@@ -87,7 +80,7 @@ namespace Application.Menus
             {
                 button.Hovering = false;
 
-                if (!button.Intersects(mouseRectangle))
+                if (!button.Intersects(SanctuaryGame.MouseManager.MouseBounds))
                 {
                     continue;
                 }
@@ -96,30 +89,28 @@ namespace Application.Menus
                 button.Hovering = true;
             }
 
-            if (hoveringButton != null && mouse.LeftButton == ButtonState.Pressed &&
-                _lastMouse.LeftButton == ButtonState.Released)
+            if (hoveringButton != null && SanctuaryGame.MouseManager.LeftClicked)
             {
                 hoveringButton.Click();
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
 
-            _lastMouse = mouse;
             base.Update(delta);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            
+
             _scrollBox.Draw(spriteBatch);
 
             foreach (var clickable in Clickables)
             {
                 clickable.Draw(spriteBatch);
             }
-            
+
             _panel.Draw(spriteBatch);
-            
+
             spriteBatch.End();
         }
 

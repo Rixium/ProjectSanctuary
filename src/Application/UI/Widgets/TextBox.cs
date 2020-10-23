@@ -13,7 +13,6 @@ namespace Application.UI.Widgets
         private string _text = "";
         private readonly SpriteFont _font;
         private readonly NineSlice _nineSlice;
-        private MouseState _lastMouseState;
         private bool Selected { get; set; }
 
 
@@ -80,14 +79,10 @@ namespace Application.UI.Widgets
 
         public void Update()
         {
-            var mouse = Mouse.GetState();
-            var mouseRect = new Rectangle(mouse.Position, new Point(1, 1));
-            if (mouse.LeftButton == ButtonState.Pressed && _lastMouseState.LeftButton == ButtonState.Released)
+            if (SanctuaryGame.MouseManager.LeftReleased)
             {
-                Selected = mouseRect.Intersects(Bounds);
+                Selected = SanctuaryGame.MouseManager.MouseBounds.Intersects(Bounds);
             }
-
-            _lastMouseState = mouse;
         }
 
         private static char? GetCharacter(Keys pressedKey) => pressedKey.ToChar(false);

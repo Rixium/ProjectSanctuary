@@ -9,7 +9,6 @@ using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Application.Menus
 {
@@ -18,8 +17,6 @@ namespace Application.Menus
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
         private Panel _panel;
-
-        private MouseState _lastMouse;
 
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
