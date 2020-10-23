@@ -8,7 +8,7 @@ namespace Application.Input
     public class KeyboardDispatcher
     {
         private readonly Dictionary<Keys, Action> _onKeyPressSubscribers = new Dictionary<Keys, Action>();
-        private Action<Keys> _anyKeyPressSubcribers;
+        private Action<Keys> _anyKeyPressSubscribers;
 
         private KeyboardState _lastKeyState;
 
@@ -37,12 +37,12 @@ namespace Application.Input
                     _onKeyPressSubscribers[key]?.Invoke();
                 }
 
-                _anyKeyPressSubcribers?.Invoke(key);
+                _anyKeyPressSubscribers?.Invoke(key);
             }
 
             _lastKeyState = keyState;
         }
 
-        public void SubscribeToAnyKeyPress(Action<Keys> callback) => _anyKeyPressSubcribers += callback;
+        public void SubscribeToAnyKeyPress(Action<Keys> callback) => _anyKeyPressSubscribers += callback;
     }
 }
