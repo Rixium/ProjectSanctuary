@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Application.Content;
+﻿using Application.Content;
 using Application.Menus;
 using Application.View;
 using Microsoft.Xna.Framework;

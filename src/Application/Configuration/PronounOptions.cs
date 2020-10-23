@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 using Application.FileSystem;
-using Application.Input;
-using Microsoft.Xna.Framework.Input;
 
 namespace Application.Configuration
 {

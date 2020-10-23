@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Application.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

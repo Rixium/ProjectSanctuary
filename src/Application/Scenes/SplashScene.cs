@@ -1,9 +1,7 @@
-﻿using System;
-using Application.Content;
+﻿using Application.Content;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
 
 namespace Application.Scenes
 {
