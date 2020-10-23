@@ -23,13 +23,12 @@ namespace Application
         public static KeyboardDispatcher KeyboardDispatcher;
         public static IOptionsManager OptionsManager;
 
+        private readonly GraphicsDeviceManager _graphics;
         private IApplicationFolder _applicationFolder;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
-        private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private ControlOptions _options;
 
         public SanctuaryGame()
         {
@@ -63,7 +62,7 @@ namespace Application
 
         public static bool Debug { get; set; }
 
-        private void WindowOnClientSizeChanged(object? sender, EventArgs e)
+        private void WindowOnClientSizeChanged(object sender, EventArgs e)
         {
             Window.ClientSizeChanged -= WindowOnClientSizeChanged;
 
