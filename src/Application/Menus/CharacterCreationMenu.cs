@@ -3,6 +3,7 @@ using System.Linq;
 using Application.Content;
 using Application.Graphics;
 using Application.UI;
+using Application.UI.Widgets;
 using Application.Utils;
 using Application.View;
 using Microsoft.Xna.Framework;
@@ -22,9 +23,7 @@ namespace Application.Menus
 
         public TexturedButton BackButton { get; set; }
         public TexturedButton DoneButton { get; set; }
-        public TextBlock NameTextBoxTitle { get; set; }
         public TextBox NameTextBox { get; set; }
-        public TextBlock PronounTextBoxTitle { get; set; }
         public DropDownBox PronounDropDown { get; set; }
 
         public Panel CharacterPanel { get; set; }
@@ -80,13 +79,13 @@ namespace Application.Menus
             var nameSectionPosition = new Vector2(_panel.Left() + 30,
                 _panel.Top() + 30);
 
-            NameTextBoxTitle = new TextBlock("Name", nameSectionPosition, interfaceFont, Color.White, Color.Black);
+            var nameTextBoxTitle = new TextBlock("Name", nameSectionPosition, interfaceFont, Color.White, Color.Black);
             NameTextBox =
                 new TextBox(nameSectionPosition + new Vector2(0, interfaceFont.MeasureString("Name").Y + 10),
                     inputBoxFont, 200);
 
             var pronounSectionPosition = new Vector2(_panel.Left() + 30, NameTextBox.Bounds.Bottom + 10);
-            PronounTextBoxTitle =
+            var pronounTextBoxTitle =
                 new TextBlock("Pronouns", pronounSectionPosition, interfaceFont, Color.White, Color.Black);
             PronounDropDown = new DropDownBox(inputBoxFont,
                 pronounSectionPosition + new Vector2(0, interfaceFont.MeasureString("Pronouns").Y + 10),
@@ -96,11 +95,20 @@ namespace Application.Menus
             Clickables.Add(BackButton);
             Clickables.Add(DoneButton);
 
+
+            _panel.AddChild(pronounTextBoxTitle);
+            _panel.AddChild(nameTextBoxTitle);
+            
             CharacterPanel = new Panel(nineSlice,
                 new Rectangle(PronounDropDown.Bounds.Right + 30, _panel.Top() + 30,
                     _panel.Right() - PronounDropDown.Bounds.Right - 60,
                     _panel.Right() - PronounDropDown.Bounds.Right - 60),
                 3f);
+            
+            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.Space, () =>
+            {
+                _panel.Visible = !_panel.Visible;
+            });
         }
 
         public override void Update(float delta)
@@ -149,10 +157,7 @@ namespace Application.Menus
 
             _panel.Draw(spriteBatch);
 
-            NameTextBoxTitle.Draw(spriteBatch);
             NameTextBox.Draw(spriteBatch);
-
-            PronounTextBoxTitle.Draw(spriteBatch);
             PronounDropDown.Draw(spriteBatch);
 
             CharacterPanel.Draw(spriteBatch);

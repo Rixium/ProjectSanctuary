@@ -3,7 +3,7 @@ using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Application.UI
+namespace Application.UI.Widgets
 {
     public class Image
     {

@@ -2,6 +2,7 @@
 using Application.Content;
 using Application.Graphics;
 using Application.UI;
+using Application.UI.Widgets;
 using Application.Utils;
 using Application.View;
 using Microsoft.Xna.Framework;
