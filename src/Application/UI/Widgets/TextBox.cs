@@ -8,15 +8,13 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Application.UI.Widgets
 {
-    public class TextBox
+    public class TextBox : Widget
     {
         private string _text = "";
         private readonly SpriteFont _font;
         private readonly NineSlice _nineSlice;
         private MouseState _lastMouseState;
-
-        public Rectangle Bounds { get; private set; }
-        public bool Selected { get; private set; }
+        private bool Selected { get; set; }
 
 
         public TextBox(Vector2 position, SpriteFont font, int width)
@@ -80,7 +78,7 @@ namespace Application.UI.Widgets
             _text = newText;
         }
 
-        public void Update(float delta)
+        public void Update()
         {
             var mouse = Mouse.GetState();
             var mouseRect = new Rectangle(mouse.Position, new Point(1, 1));
@@ -94,7 +92,7 @@ namespace Application.UI.Widgets
 
         private static char? GetCharacter(Keys pressedKey) => pressedKey.ToChar(false);
 
-        public void Draw(SpriteBatch spriteBatch)
+        protected override void InternalDraw(SpriteBatch spriteBatch)
         {
             var show = Selected && DateTime.Now.Millisecond % 1000 < 500;
 
@@ -108,14 +106,9 @@ namespace Application.UI.Widgets
             var tempText = show ? _text.Insert(_text.Length, "|") : _text;
 
             spriteBatch.DrawString(_font, tempText, new Vector2(Bounds.Left + 10, Bounds.Center.Y - _font.MeasureString(tempText).Y / 2f), Color.Black);
-
-            if (SanctuaryGame.Debug)
-            {
-                DrawDebug(spriteBatch);
-            }
         }
 
-        public void DrawDebug(SpriteBatch spriteBatch) =>
+        public override void DrawDebug(SpriteBatch spriteBatch) =>
             ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
     }
 }

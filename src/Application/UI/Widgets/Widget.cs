@@ -8,7 +8,7 @@ namespace Application.UI.Widgets
     {
         private readonly IList<IWidget> _children = new List<IWidget>();
 
-        protected Rectangle Bounds;
+        public Rectangle Bounds { get; protected set; }
 
         public int Id { get; set; }
         public bool Visible { get; set; } = true;

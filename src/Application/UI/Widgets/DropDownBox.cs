@@ -7,21 +7,20 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Application.UI.Widgets
 {
-    public class DropDownBox
+    public class DropDownBox : Widget
     {
         private readonly SpriteFont _font;
         private readonly string[] _options;
-        public Rectangle Bounds { get; }
-        private Rectangle _downArrowSource;
+
+        private readonly Rectangle _downArrowSource;
+        private readonly Vector2 _arrowBounds;
+        private readonly NineSlice _nineSlice;
 
         private int _selectedOption = -1;
-        private Vector2 _arrowBounds;
         private MouseState _lastMouse;
-        private NineSlice _nineSlice;
         private int _hoverOption;
-        public bool Open { get; set; }
-
-        public string Selected => _selectedOption != -1 ? _options[_selectedOption] : "";
+        private bool Open { get; set; }
+        private string Selected => _selectedOption != -1 ? _options[_selectedOption] : "";
 
         public DropDownBox(SpriteFont font, Vector2 position, string[] options, int width)
         {
@@ -50,7 +49,7 @@ namespace Application.UI.Widgets
                 });
         }
 
-        public void Update(float delta)
+        public void Update()
         {
             var mouse = Mouse.GetState();
             var mouseRectangle = new Rectangle(mouse.Position, new Point(5, 5));
@@ -61,7 +60,8 @@ namespace Application.UI.Widgets
                     (int) (_downArrowSource.Width * 3f), (int) (_downArrowSource.Height * 3f))))
                 {
                     Open = !Open;
-                } else if (Open)
+                }
+                else if (Open)
                 {
                     for (var i = 0; i < _options.Length; i++)
                     {
@@ -77,7 +77,7 @@ namespace Application.UI.Widgets
                     Open = false;
                 }
             }
-            
+
             if (Open)
             {
                 _hoverOption = -1;
@@ -85,20 +85,22 @@ namespace Application.UI.Widgets
                 {
                     var optionBounds =
                         Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
-                    if (mouseRectangle.Intersects(optionBounds))
+
+                    if (!mouseRectangle.Intersects(optionBounds))
                     {
-                        _hoverOption = i;
-                        break;
+                        continue;
                     }
+
+                    _hoverOption = i;
+                    break;
                 }
             }
-            
+
 
             _lastMouse = mouse;
         }
 
-
-        public void Draw(SpriteBatch spriteBatch)
+        protected override void InternalDraw(SpriteBatch spriteBatch)
         {
             _nineSlice.DrawRectangle(spriteBatch, Bounds, 3f);
 
@@ -115,7 +117,8 @@ namespace Application.UI.Widgets
                         Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
                     spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), optionBounds,
                         _hoverOption == i ? new Color(230, 200, 170) : new Color(221, 190, 137));
-                    spriteBatch.DrawString(_font, option, new Vector2(optionBounds.X + 10, optionBounds.Center.Y - _font.MeasureString(option).Y / 2f),
+                    spriteBatch.DrawString(_font, option,
+                        new Vector2(optionBounds.X + 10, optionBounds.Center.Y - _font.MeasureString(option).Y / 2f),
                         Color.Black);
                 }
             }
@@ -123,13 +126,9 @@ namespace Application.UI.Widgets
             spriteBatch.DrawString(_font, Selected,
                 new Vector2(Bounds.X + 10, Bounds.Center.Y - _font.MeasureString(Selected).Y / 2f),
                 Color.Black);
-
-            if (SanctuaryGame.Debug)
-            {
-                DrawDebug(spriteBatch);
-            }
         }
 
-        public void DrawDebug(SpriteBatch spriteBatch) => ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
+        public override void DrawDebug(SpriteBatch spriteBatch) =>
+            ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
     }
 }
