@@ -17,6 +17,7 @@ namespace Application.Menus
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
         private Panel _panel;
+        private ColorPicker _colorPicker;
 
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
@@ -106,9 +107,9 @@ namespace Application.Menus
             _panel.AddChild(DoneButton);
 
             _panel.AddChild(hairColor);
-            _panel.AddChild(
+            _colorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
-                    PronounDropDown.Bounds.Width));
+                    PronounDropDown.Bounds.Width, 25));
         }
 
         public override void Update(float delta)
