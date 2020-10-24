@@ -86,6 +86,10 @@ namespace Application.Menus
                 SanctuaryGame.OptionsManager.PronounOptions.Pronouns.Select(x =>
                     $"{x.Subjective}/{x.Objective}").ToArray(), 200);
 
+            var hairColor = new TextBlock("Hair Color",
+                new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
+                Color.Black);
+
             Clickables.Add(BackButton);
             Clickables.Add(DoneButton);
 
@@ -100,6 +104,11 @@ namespace Application.Menus
                 3f));
             _panel.AddChild(BackButton);
             _panel.AddChild(DoneButton);
+
+            _panel.AddChild(hairColor);
+            _panel.AddChild(
+                new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
+                    PronounDropDown.Bounds.Width));
         }
 
         public override void Update(float delta)
