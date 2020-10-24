@@ -21,7 +21,7 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
 
-        public static KeyboardDispatcher KeyboardDispatcher;
+        public static IKeyboardDispatcher KeyboardDispatcher;
         public static IMouseManager MouseManager;
         public static IOptionsManager OptionsManager;
         public static Cursor Cursor;

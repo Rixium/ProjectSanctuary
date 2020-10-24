@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Application.Input
 {
-    public class KeyboardDispatcher
+    public class KeyboardDispatcher : IKeyboardDispatcher
     {
         private readonly Dictionary<Keys, Action> _onKeyPressSubscribers = new Dictionary<Keys, Action>();
         private Action<Keys> _anyKeyPressSubscribers;
