@@ -91,10 +91,6 @@ namespace Application.UI.Widgets
                         (int) _position.Y + Height + Margin + Height + Margin, _width / _segments,
                         Height), color);
             }
-            
-            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
-                new Rectangle((int) (_position.X), (int) _position.Y + Height + Margin + Height + Margin + Height + Margin, 40,
-                    40), ColorHelpers.HsvToRgb(_hue / 100 * 360, _saturation / 100, _value / 100));
         }
 
         public override void DrawDebug(SpriteBatch spriteBatch)
@@ -102,5 +98,8 @@ namespace Application.UI.Widgets
             ShapeHelpers.DrawRectangle(spriteBatch, new Rectangle((int) _position.X, (int) _position.Y, _width, 10),
                 Color.Red);
         }
+
+        public Color GetColor() => 
+            ColorHelpers.HsvToRgb(_hue / 100 * 360, _saturation / 100, _value / 100);
     }
 }
