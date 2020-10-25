@@ -17,6 +17,7 @@ namespace Application.Menus
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
         private Panel _panel;
+        private ColorPicker _colorPicker;
 
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
@@ -86,11 +87,15 @@ namespace Application.Menus
                 SanctuaryGame.OptionsManager.PronounOptions.Pronouns.Select(x =>
                     $"{x.Subjective}/{x.Objective}").ToArray(), 200);
 
+            var hairColor = new TextBlock("Hair Color",
+                new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
+                Color.Black);
+
             Clickables.Add(BackButton);
             Clickables.Add(DoneButton);
 
             _panel.AddChild(pronounTextBoxTitle);
-            _panel.AddChild(PronounDropDown);
+            
             _panel.AddChild(nameTextBoxTitle);
             _panel.AddChild(NameTextBox);
             _panel.AddChild(new Panel(nineSlice,
@@ -100,6 +105,12 @@ namespace Application.Menus
                 3f));
             _panel.AddChild(BackButton);
             _panel.AddChild(DoneButton);
+
+            _panel.AddChild(hairColor);
+            _colorPicker = _panel.AddChild(
+                new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
+                    PronounDropDown.Bounds.Width, 25, _buttonScale));
+            _panel.AddChild(PronounDropDown);
         }
 
         public override void Update(float delta)
@@ -125,6 +136,7 @@ namespace Application.Menus
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
 
+            _colorPicker.Update();
             NameTextBox.Update();
             PronounDropDown.Update();
 

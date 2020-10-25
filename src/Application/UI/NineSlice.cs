@@ -21,15 +21,15 @@ namespace Application.UI
     public class NineSlice
     {
         private readonly Dictionary<Segment, Rectangle> _segmentSources;
-        public Texture2D Texture { get; }
+        private Texture2D Texture { get; }
         
         public NineSlice(Texture2D texture, Dictionary<Segment, Rectangle> segmentSources)
         {
             Texture = texture;
             _segmentSources = segmentSources;
         }
-        
-        public Rectangle Get(Segment segment) => _segmentSources[segment];
+
+        private Rectangle Get(Segment segment) => _segmentSources[segment];
 
         public void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, float scale = 1f)
         {

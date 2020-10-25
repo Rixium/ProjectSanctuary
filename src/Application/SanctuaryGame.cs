@@ -5,6 +5,7 @@ using Application.Configuration;
 using Application.Content;
 using Application.FileSystem;
 using Application.Input;
+using Application.UI;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,9 +21,10 @@ namespace Application
         private const int Minor = 1;
         private const int Revision = 0;
 
-        public static KeyboardDispatcher KeyboardDispatcher;
+        public static IKeyboardDispatcher KeyboardDispatcher;
         public static IMouseManager MouseManager;
         public static IOptionsManager OptionsManager;
+        public static Cursor Cursor;
 
         private readonly GraphicsDeviceManager _graphics;
         private IApplicationFolder _applicationFolder;
@@ -42,7 +44,7 @@ namespace Application
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
 
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             //InitializeSteam();
@@ -120,6 +122,7 @@ namespace Application
             MouseManager = new MonoGameMouseManager();
 
             _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
+            Cursor = new Cursor();
 
             // Now we've created the app data folder,
             // and saved the defaults if required,
@@ -175,9 +178,8 @@ namespace Application
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.White);
-
             _viewManager.Draw(_spriteBatch);
-
+            Cursor.Draw(_spriteBatch);
             base.Draw(gameTime);
         }
 
