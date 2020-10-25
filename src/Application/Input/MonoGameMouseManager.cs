@@ -17,13 +17,13 @@ namespace Application.Input
         public bool ScrolledDown { get; private set; }
         public bool ScrolledUp { get; private set; }
         public bool Dragging { get; private set; }
-        public int Drag { get; private set; }
+        public Vector2 Drag { get; private set; }
 
         private MouseState _lastMouseState;
-        private int _lastDrag;
 
         public bool Dragged(int distance) =>
-            Math.Abs(Drag) > distance;
+            Math.Abs(Drag.X) > distance ||
+            Math.Abs(Drag.Y) > distance;
 
         public void Update(float delta)
         {
@@ -50,15 +50,13 @@ namespace Application.Input
 
             if (Dragging)
             {
-                Drag = MouseBounds.Y - _lastDrag;
-                _lastDrag = MouseBounds.Y;
+                Drag = new Vector2(mouseState.X - _lastMouseState.X, mouseState.Y - _lastMouseState.Y);
             }
-            
+
             ScrolledUp = mouseState.ScrollWheelValue < _lastMouseState.ScrollWheelValue;
             ScrolledDown = mouseState.ScrollWheelValue > _lastMouseState.ScrollWheelValue;
 
             _lastMouseState = mouseState;
         }
-
     }
 }

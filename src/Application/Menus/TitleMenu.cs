@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System;
+using Application.Content;
 using Application.Graphics;
 using Application.UI;
 using Application.UI.Widgets;
@@ -33,7 +34,7 @@ namespace Application.Menus
 
             SetupButtons();
         }
-        
+
         private void SetupButtons()
         {
             Clickables.Clear();
@@ -48,9 +49,10 @@ namespace Application.Menus
                 new Vector2(ViewManager.ViewPort.Center().X,
                     ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 6f), _buttonScale));
 
-            TitleTextBlock = new TextBlock( title, new Vector2(ViewManager.ViewPort.Center().X - font.MeasureString(title).X / 2,
-                SignTopImage.Bounds.Top -
-                font.MeasureString(title).Y), font, Color.Black, null);
+            TitleTextBlock = new TextBlock(title,
+                new Vector2(ViewManager.ViewPort.Center().X - font.MeasureString(title).X / 2,
+                    SignTopImage.Bounds.Top -
+                    font.MeasureString(title).Y), font, Color.Black, null);
 
             var newButtonPosition = new Vector2(SignTopImage.Bounds.Left + 96 / 2f * _buttonScale,
                 SignTopImage.Bounds.Bottom + 32 / 2f * _buttonScale);
@@ -120,16 +122,9 @@ namespace Application.Menus
 
             if (ScrollBox.Dragging)
             {
-                if (SanctuaryGame.MouseManager.Dragged(6))
+                if (SanctuaryGame.MouseManager.Dragged(1))
                 {
-                    if (SanctuaryGame.MouseManager.Drag < 0)
-                    {
-                        ScrollBox.ScrollLine(-1);
-                    }
-                    else if (SanctuaryGame.MouseManager.Drag > 0)
-                    {
-                        ScrollBox.ScrollLine(1);
-                    }
+                    ScrollBox.ScrollLine(Math.Sign(SanctuaryGame.MouseManager.Drag.Y));
                 }
             }
 

@@ -32,8 +32,10 @@ namespace Application.UI.Widgets
                 new Rectangle(202, 4, 10, 10));
         }
 
+        public int LineCount => _lines?.Count ?? 1;
+
         protected override void InternalDraw(SpriteBatch spriteBatch)
-        {            
+        {
             var currentY = 0f;
 
             for (var i = _visibleLine; i < _lines.Count; i++)
@@ -112,7 +114,8 @@ namespace Application.UI.Widgets
                 30);
         }
 
-        public override void DrawDebug(SpriteBatch spriteBatch) => ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
+        public override void DrawDebug(SpriteBatch spriteBatch) =>
+            ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
 
         private IList<string> WrapString(string textContent)
         {

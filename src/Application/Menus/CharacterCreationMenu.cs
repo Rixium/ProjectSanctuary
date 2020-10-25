@@ -95,7 +95,7 @@ namespace Application.Menus
             Clickables.Add(DoneButton);
 
             _panel.AddChild(pronounTextBoxTitle);
-            _panel.AddChild(PronounDropDown);
+            
             _panel.AddChild(nameTextBoxTitle);
             _panel.AddChild(NameTextBox);
             _panel.AddChild(new Panel(nineSlice,
@@ -110,6 +110,7 @@ namespace Application.Menus
             _colorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
+            _panel.AddChild(PronounDropDown);
         }
 
         public override void Update(float delta)
@@ -135,6 +136,7 @@ namespace Application.Menus
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
 
+            _colorPicker.Update();
             NameTextBox.Update();
             PronounDropDown.Update();
 

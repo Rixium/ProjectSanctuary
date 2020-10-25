@@ -15,7 +15,7 @@ namespace Application.Input
         bool ScrolledDown { get; }
         bool ScrolledUp { get; }
         bool Dragging { get; }
-        int Drag { get; }
+        Vector2 Drag { get; }
         bool Dragged(int distance);
         void Update(float delta);
     }

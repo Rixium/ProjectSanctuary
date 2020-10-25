@@ -33,7 +33,7 @@ namespace Application.Utils
 
         private float XOffset() => _currentValue / _maxValue * _width;
 
-        public void IncreaseValue(int increase)
+        public void IncreaseValue(float increase)
         {
             _currentValue += increase;
 
@@ -52,16 +52,21 @@ namespace Application.Utils
         {
             spriteBatch.Draw(
                 _texture,
-                new Rectangle((int) (Bounds.X + XOffset() - _sliderSource.Width / 2f * _scale),
-                    (int) (Bounds.Y + Bounds.Height / 2f - _sliderSource.Height * _scale / 2f),
-                    (int) (_sliderSource.Width * _scale),
-                    (int) (_sliderSource.Height * _scale)),
+                SliderBounds,
                 _sliderSource,
                 Color.White
             );
         }
 
+        public Rectangle SliderBounds => new Rectangle(
+            (int) (Bounds.X + XOffset() - _sliderSource.Width / 2f * _scale),
+            (int) (Bounds.Y + Bounds.Height / 2f - _sliderSource.Height * _scale / 2f),
+            (int) (_sliderSource.Width * _scale),
+            (int) (_sliderSource.Height * _scale));
+
         public override void DrawDebug(SpriteBatch spriteBatch) =>
             ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
+
+        public float GetValue() => _currentValue;
     }
 }
