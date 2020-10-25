@@ -117,9 +117,7 @@ namespace Application.Menus
                 hoveringButton = button;
                 button.Hovering = true;
             }
-
-            SanctuaryGame.Cursor.ActiveState = hoveringButton != null ? CursorState.Hand : CursorState.Cursor;
-
+            
             if (ScrollBox.Dragging)
             {
                 if (SanctuaryGame.MouseManager.Dragged(1))

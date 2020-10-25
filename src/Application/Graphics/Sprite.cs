@@ -22,6 +22,8 @@ namespace Application.Graphics
 
         public Sprite(Texture2D texture, Rectangle sourceRectangle) : this(texture, sourceRectangle, new Vector2(sourceRectangle.Width, sourceRectangle.Height) / 2.0f)
         { }
-        
+
+        public Sprite(Texture2D texture) : this(texture, new Rectangle(0, 0, texture.Width, texture.Height), Vector2.Zero) { }
+
     }
 }
