@@ -15,45 +15,12 @@ namespace Application.UI.Widgets
         private double _saturation = 50;
         private double _value = 50;
         private readonly int _segments;
-        private Random _random;
 
         public ColorPicker(Vector2 position, int width, int segments)
         {
             _position = position;
             _width = width;
             _segments = segments;
-            _random = new Random();
-            
-            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.E, () =>
-            {
-                _hue += 1;
-            });
-            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.W, () =>
-            {
-                _hue -= 1;
-            });
-            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.D, () =>
-            {
-                _saturation += 1;
-            });
-            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.S, () =>
-            {
-                _saturation -= 1;
-            });
-            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.C, () =>
-            {
-                _value += 1;
-            });
-            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.X, () =>
-            {
-                _value -= 1;
-            });
-            SanctuaryGame.KeyboardDispatcher.SubscribeToKeyPress(Keys.R, () =>
-            {
-                _hue = _random.NextDouble() * 100;
-                _saturation = _random.NextDouble() * 100;
-                _value = _random.NextDouble() * 100;
-            });
         }
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
