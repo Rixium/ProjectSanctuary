@@ -109,7 +109,7 @@ namespace Application.Menus
             _panel.AddChild(hairColor);
             _colorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
-                    PronounDropDown.Bounds.Width, 25));
+                    PronounDropDown.Bounds.Width, 25, _buttonScale));
         }
 
         public override void Update(float delta)
