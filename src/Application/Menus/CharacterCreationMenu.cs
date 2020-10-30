@@ -22,6 +22,7 @@ namespace Application.Menus
         private Texture2D _playerHair;
         private Texture2D _playerBody;
         private Vector2 _playerPosition;
+        private ColorPicker _bodyColorPicker;
 
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
@@ -94,7 +95,7 @@ namespace Application.Menus
             var hairColor = new TextBlock("Hair Color",
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
                 Color.Black);
-
+            
             Clickables.Add(BackButton);
             Clickables.Add(DoneButton);
 
@@ -120,6 +121,16 @@ namespace Application.Menus
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
             _panel.AddChild(PronounDropDown);
 
+            
+            var bodyColor = new TextBlock("Body Color",
+                new Vector2(PronounDropDown.Left(), _colorPicker.BottomLeft().Y + 10), interfaceFont, Color.White,
+                Color.Black);
+            _bodyColorPicker = _panel.AddChild(
+                new ColorPicker(new Vector2(bodyColor.BottomLeft().X, bodyColor.BottomLeft().Y + 10),
+                    PronounDropDown.Bounds.Width, 25, _buttonScale));
+
+            _panel.AddChild(bodyColor);
+            
             _playerEyes = ContentChest.Instance.Get<Texture2D>("Characters/player_eyes");
             _playerHair = ContentChest.Instance.Get<Texture2D>("Characters/player_hair");
             _playerBody = ContentChest.Instance.Get<Texture2D>("Characters/player_body");
@@ -151,6 +162,7 @@ namespace Application.Menus
             }
 
             _colorPicker.Update();
+            _bodyColorPicker.Update();
             NameTextBox.Update();
             PronounDropDown.Update();
 
@@ -162,7 +174,7 @@ namespace Application.Menus
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _panel.Draw(spriteBatch);
 
-            spriteBatch.Draw(_playerBody, _playerPosition, null, Color.White, 0f, Vector2.Zero, _buttonScale,
+            spriteBatch.Draw(_playerBody, _playerPosition, null, _bodyColorPicker.GetColor(), 0f, Vector2.Zero, _buttonScale,
                 SpriteEffects.None, 0f);
             spriteBatch.Draw(_playerEyes, _playerPosition, null, Color.White, 0f, Vector2.Zero, _buttonScale,
                 SpriteEffects.None, 0f);

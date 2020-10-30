@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System.Security.Cryptography;
+using Application.Content;
 using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -35,6 +36,9 @@ namespace Application.UI.Widgets
                 width, scale));
             _valueSlider = AddChild(new Slider(position + new Vector2(0, Height + Margin + Height + Margin), 0, 100,
                 _value, width, scale));
+
+            Bounds = new Rectangle((int) position.X, (int) position.Y, width,
+                Height + Margin + Height + Margin + Height);
         }
 
         public void Update()
@@ -99,7 +103,7 @@ namespace Application.UI.Widgets
                 Color.Red);
         }
 
-        public Color GetColor() => 
+        public Color GetColor() =>
             ColorHelpers.HsvToRgb(_hue / 100 * 360, _saturation / 100, _value / 100);
     }
 }
