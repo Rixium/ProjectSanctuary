@@ -92,7 +92,7 @@ namespace Application.Menus
                     PronounDropDown.Bounds.Right + 30 +
                     (_panel.Right() - 30 - (PronounDropDown.Bounds.Right + 30)) / 2f -
                     portraitImage.Center.X * _buttonScale,
-                    _panel.Top() + 80), _buttonScale);
+                    nameTextBoxTitle.Top()), _buttonScale);
 
             var hairText = new TextBlock("Hair Style",
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
