@@ -1,9 +1,7 @@
-﻿using System.Security.Cryptography;
-using Application.Content;
+﻿using Application.Content;
 using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Application.UI.Widgets
 {
