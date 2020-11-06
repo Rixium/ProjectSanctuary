@@ -33,9 +33,9 @@ namespace Application.Menus
             Clickables.Clear();
 
             BackButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
-                new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
-                new Vector2(ViewManager.ViewPort.Bounds.Left + 10 + 96 * _buttonScale / 2f,
+                new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
+                new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),
+                new Vector2(ViewManager.ViewPort.Bounds.Left + 10 + 78 * _buttonScale / 2f,
                     ViewManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
 
             Clickables.Add(BackButton as IClickable);

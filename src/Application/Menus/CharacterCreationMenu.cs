@@ -45,6 +45,9 @@ namespace Application.Menus
             var interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
             var inputBoxFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InputBoxFont");
 
+            var portraitTexture = ContentChest.Instance.Get<Texture2D>("portrait_background");
+            var portraitImage = new Sprite(portraitTexture);
+            
             var nineSlice = new NineSlice(_menuButtons, new Dictionary<Segment, Rectangle>
             {
                 {Segment.TopLeft, new Rectangle(1, 189, 8, 9)},
@@ -58,21 +61,22 @@ namespace Application.Menus
                 {Segment.Center, new Rectangle(10, 199, 1, 1)}
             });
 
-            var panelWidth = (int) (96 * _buttonScale * 2 + 30);
+            var panelWidth = (int) (30 + 200 + 30 + portraitImage.Texture.Width * _buttonScale + 30);
             _panel = new Panel(nineSlice,
                 new Rectangle(
                     (int) (ViewManager.ViewPort.Center().X - panelWidth / 2f),
                     (int) (ViewManager.ViewPort.Center().Y - (500 + 30 + 22 * _buttonScale) / 2f), panelWidth,
                     500), _buttonScale);
+            
             BackButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 166, 96, 22)),
-                new Sprite(_menuButtons, new Rectangle(96, 166, 96, 22)),
-                new Vector2(_panel.BottomLeft().X + 96 * _buttonScale / 2f,
+                new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
+                new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),
+                new Vector2(_panel.BottomLeft().X + 78 * _buttonScale / 2f,
                     _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
             DoneButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 144, 96, 22)),
-                new Sprite(_menuButtons, new Rectangle(96, 144, 96, 22)),
-                new Vector2(_panel.BottomRight().X - 96 * _buttonScale / 2f,
+                new Sprite(_menuButtons, new Rectangle(0, 140, 78, 22)),
+                new Sprite(_menuButtons, new Rectangle(78, 140, 78, 22)),
+                new Vector2(_panel.BottomRight().X - 78 * _buttonScale / 2f,
                     _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
             var nameSectionPosition = new Vector2(_panel.Left() + 30,
                 _panel.Top() + 30);
@@ -86,8 +90,6 @@ namespace Application.Menus
                 pronounSectionPosition + new Vector2(0, interfaceFont.MeasureString("Pronouns").Y + 10),
                 SanctuaryGame.OptionsManager.PronounOptions.Pronouns.Select(x =>
                     $"{x.Subjective}/{x.Objective}").ToArray(), 200);
-            var portraitTexture = ContentChest.Instance.Get<Texture2D>("portrait_background");
-            var portraitImage = new Sprite(portraitTexture);
             var characterPanel = new Image(portraitImage,
                 new Vector2(
                     PronounDropDown.Bounds.Right + 30 +
@@ -103,6 +105,8 @@ namespace Application.Menus
                 new Vector2(hairText.Left(), hairText.BottomLeft().Y + 10),
                 new []{ "Long", "Short" }, 200);
 
+
+            
             Clickables.Add(BackButton);
             Clickables.Add(DoneButton);
             _panel.AddChild(pronounTextBoxTitle);
