@@ -56,5 +56,17 @@ namespace Application.Scenes
 
             SetupButtons();
         }
+
+        public void Finish()
+        {
+            _mainTitleMenu.Finish();
+            _mainOptionsMenu.Finish();
+            _characterCreationMenu.Finish();
+        }
+
+        public void Start()
+        {
+            
+        }
     }
 }

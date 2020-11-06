@@ -9,5 +9,7 @@ namespace Application.Scenes
         void Update(float delta);
         void Draw(SpriteBatch spriteBatch);
         void WindowResized();
+        void Finish();
+        void Start();
     }
 }

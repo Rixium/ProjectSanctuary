@@ -22,5 +22,10 @@ namespace Application.Menus
         {
             
         }
+
+        public virtual void Finish()
+        {
+            
+        }
     }
 }

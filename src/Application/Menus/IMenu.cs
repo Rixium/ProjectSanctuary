@@ -7,5 +7,6 @@ namespace Application.Menus
         void Update(float delta);
         void Draw(SpriteBatch spriteBatch);
         void WindowResized();
+        void Finish();
     }
 }

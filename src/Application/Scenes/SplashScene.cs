@@ -58,5 +58,15 @@ namespace Application.Scenes
         {
             
         }
+
+        public void Finish()
+        {
+            
+        }
+
+        public void Start()
+        {
+            
+        }
     }
 }

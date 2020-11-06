@@ -27,6 +27,11 @@ namespace Application.Scenes
 
         public void SwitchToNextScene()
         {
+            // Ensure that the active scene cleans up after itself if it needs to.
+            ActiveScene?.Finish();
+            // Ensure that the next scene starts before required.
+            NextScene?.Start();
+            
             ActiveScene = NextScene;
             NextScene = null;
         }

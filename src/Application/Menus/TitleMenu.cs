@@ -188,5 +188,10 @@ namespace Application.Menus
         {
             SetupButtons();
         }
+
+        public override void Finish()
+        {
+            
+        }
     }
 }

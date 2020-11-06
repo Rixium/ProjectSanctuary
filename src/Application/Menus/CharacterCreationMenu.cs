@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Application.Content;
 using Application.Graphics;
@@ -113,6 +114,9 @@ namespace Application.Menus
             _panel.AddChild(hairText);
             _panel.AddChild(PlayerHairDropDown);
             _panel.AddChild(PronounDropDown);
+
+            PlayerHairDropDown.Hover += OnHairSelect;
+            
             
             var hairColor = new TextBlock("Hair Color",
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
@@ -138,6 +142,11 @@ namespace Application.Menus
             _playerBody = ContentChest.Instance.Get<Texture2D>("Characters/player_body");
             _playerPosition = characterPanel.Center() - new Vector2(_playerEyes.Width * _buttonScale / 2f,
                 _playerEyes.Height * _buttonScale / 2f - 30f);
+        }
+
+        private static void OnHairSelect(string text)
+        {
+            Console.WriteLine($"Hovering Hair: {text}");
         }
 
         public override void Update(float delta)
@@ -195,6 +204,12 @@ namespace Application.Menus
         {
             SetupButtons();
             base.WindowResized();
+        }
+
+        public override void Finish()
+        {
+            PlayerHairDropDown.Hover -= OnHairSelect;
+            base.Finish();
         }
     }
 }

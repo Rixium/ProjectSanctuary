@@ -79,6 +79,16 @@ namespace ProjectSanctuary.Application.Tests.Scenes
             {
                 
             }
+
+            public void Finish()
+            {
+                
+            }
+
+            public void Start()
+            {
+                
+            }
         }
         
     }
