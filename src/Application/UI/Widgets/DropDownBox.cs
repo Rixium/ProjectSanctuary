@@ -21,7 +21,7 @@ namespace Application.UI.Widgets
         private int _lastHoverOption;
         private bool Open { get; set; }
         private string Selected => _selectedOption != -1 ? _options[_selectedOption] : "";
-        public event Action<string> Hover;
+        public event Action<int> Hover;
 
         public DropDownBox(SpriteFont font, Vector2 position, string[] options, int width)
         {
@@ -97,7 +97,7 @@ namespace Application.UI.Widgets
                     
                     if (_lastHoverOption != _hoverOption)
                     {
-                        Hover?.Invoke(_options[_hoverOption]);
+                        Hover?.Invoke(_hoverOption);
                     }
                     
                     break;

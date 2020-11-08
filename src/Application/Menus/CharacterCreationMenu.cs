@@ -26,6 +26,7 @@ namespace Application.Menus
         private Texture2D _playerBody;
         private Vector2 _playerPosition;
         private ColorPicker _bodyColorPicker;
+        private Rectangle _hairSource;
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
         private DropDownBox PronounDropDown { get; set; }
@@ -50,7 +51,7 @@ namespace Application.Menus
 
             var portraitTexture = ContentChest.Instance.Get<Texture2D>("portrait_background");
             var portraitImage = new Sprite(portraitTexture);
-            
+
             var nineSlice = new NineSlice(_menuButtons, new Dictionary<Segment, Rectangle>
             {
                 {Segment.TopLeft, new Rectangle(1, 189, 8, 9)},
@@ -70,7 +71,7 @@ namespace Application.Menus
                     (int) (ViewManager.ViewPort.Center().X - panelWidth / 2f),
                     (int) (ViewManager.ViewPort.Center().Y - (500 + 30 + 22 * _buttonScale) / 2f), panelWidth,
                     500), _buttonScale);
-            
+
             BackButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
                 new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),
@@ -104,13 +105,12 @@ namespace Application.Menus
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
                 Color.Black);
 
-            
+
             PlayerHairDropDown = new DropDownBox(inputBoxFont,
                 new Vector2(hairText.Left(), hairText.BottomLeft().Y + 10),
-                new []{ "Long", "Short" }, 200);
+                new[] {"Long", "Short"}, 200);
 
 
-            
             Clickables.Add(BackButton);
             Clickables.Add(DoneButton);
             _panel.AddChild(pronounTextBoxTitle);
@@ -120,31 +120,31 @@ namespace Application.Menus
             _panel.AddChild(BackButton);
             _panel.AddChild(DoneButton);
             _panel.AddChild(hairText);
+
+            PlayerHairDropDown.Hover += OnHairSelect;
+
+
+            var hairColor = new TextBlock("Hair Color",
+                new Vector2(PlayerHairDropDown.Left(), PlayerHairDropDown.BottomLeft().Y + 40), interfaceFont, Color.White,
+                Color.Black);
+
+
+            _panel.AddChild(hairColor);
+            _colorPicker = _panel.AddChild(
+                new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
+                    PronounDropDown.Bounds.Width, 25, _buttonScale));
+
+            var bodyColor = new TextBlock("Body Color",
+                new Vector2(_colorPicker.Right() + 10, hairColor.Top()), interfaceFont, Color.White,
+                Color.Black);
+            _bodyColorPicker = _panel.AddChild(
+                new ColorPicker(new Vector2(bodyColor.BottomLeft().X, bodyColor.BottomLeft().Y + 10),
+                    PronounDropDown.Bounds.Width, 25, _buttonScale));
+
+            _panel.AddChild(bodyColor);
             _panel.AddChild(PlayerHairDropDown);
             _panel.AddChild(PronounDropDown);
 
-            PlayerHairDropDown.Hover += OnHairSelect;
-            
-            
-            var hairColor = new TextBlock("Hair Color",
-                new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
-                Color.Black);
-            
-            //
-            // _panel.AddChild(hairColor);
-            // _colorPicker = _panel.AddChild(
-            //     new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
-            //         PronounDropDown.Bounds.Width, 25, _buttonScale));
-
-            // var bodyColor = new TextBlock("Body Color",
-            //     new Vector2(PronounDropDown.Left(), _colorPicker.BottomLeft().Y + 10), interfaceFont, Color.White,
-            //     Color.Black);
-            // _bodyColorPicker = _panel.AddChild(
-            //     new ColorPicker(new Vector2(bodyColor.BottomLeft().X, bodyColor.BottomLeft().Y + 10),
-            //         PronounDropDown.Bounds.Width, 25, _buttonScale));
-            //
-            // _panel.AddChild(bodyColor);
-            
             _playerEyes = ContentChest.Instance.Get<Texture2D>("Characters/player_eyes");
             _playerHair = ContentChest.Instance.Get<Texture2D>("Characters/player_hair");
             _playerBody = ContentChest.Instance.Get<Texture2D>("Characters/player_body");
@@ -152,9 +152,13 @@ namespace Application.Menus
                 _playerEyes.Height * _buttonScale / 2f - 30f);
         }
 
-        private static void OnHairSelect(string text)
+        private void OnHairSelect(int index)
         {
-            Console.WriteLine($"Hovering Hair: {text}");
+            Console.WriteLine($"Hovering Hair: {index}");
+
+            _hairSource = index == 0 ? 
+                new Rectangle(0, 0, 23, 33) : 
+                new Rectangle(23, 0, 23, 33);
         }
 
         public override void Update(float delta)
@@ -180,9 +184,9 @@ namespace Application.Menus
                 ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
             }
 
-            // _colorPicker.Update();
-            // _bodyColorPicker.Update();
-            
+            _colorPicker.Update();
+            _bodyColorPicker.Update();
+
             NameTextBox.Update();
             PronounDropDown.Update();
             PlayerHairDropDown.Update();
@@ -194,17 +198,18 @@ namespace Application.Menus
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _panel.Draw(spriteBatch);
-            // DrawCharacter(spriteBatch);
+            DrawCharacter(spriteBatch);
             spriteBatch.End();
         }
 
         private void DrawCharacter(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_playerBody, _playerPosition, null, _bodyColorPicker.GetColor(), 0f, Vector2.Zero, _buttonScale,
+            spriteBatch.Draw(_playerBody, _playerPosition, null, _bodyColorPicker.GetColor(), 0f, Vector2.Zero,
+                _buttonScale,
                 SpriteEffects.None, 0f);
             spriteBatch.Draw(_playerEyes, _playerPosition, null, Color.White, 0f, Vector2.Zero, _buttonScale,
                 SpriteEffects.None, 0f);
-            spriteBatch.Draw(_playerHair, _playerPosition, null, _colorPicker.GetColor(), 0f, Vector2.Zero,
+            spriteBatch.Draw(_playerHair, _playerPosition, _hairSource, _colorPicker.GetColor(), 0f, Vector2.Zero,
                 _buttonScale, SpriteEffects.None, 0f);
         }
 
