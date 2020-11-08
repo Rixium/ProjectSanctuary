@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Content;
 using Application.Graphics;
+using Application.Player;
 using Application.UI;
 using Application.UI.Widgets;
 using Application.Utils;
@@ -15,6 +16,7 @@ namespace Application.Menus
 {
     public class CharacterCreationMenu : Menu
     {
+        private readonly IPlayerMaker _playerMaker;
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
         private Panel _panel;
@@ -30,8 +32,9 @@ namespace Application.Menus
         private DropDownBox PlayerHairDropDown { get; set; }
         private TextBox NameTextBox { get; set; }
 
-        public CharacterCreationMenu()
+        public CharacterCreationMenu(IPlayerMaker playerMaker)
         {
+            _playerMaker = playerMaker;
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
 
@@ -100,6 +103,7 @@ namespace Application.Menus
             var hairText = new TextBlock("Hair Style",
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
                 Color.Black);
+
             
             PlayerHairDropDown = new DropDownBox(inputBoxFont,
                 new Vector2(hairText.Left(), hairText.BottomLeft().Y + 10),

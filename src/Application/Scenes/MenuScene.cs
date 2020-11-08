@@ -1,5 +1,6 @@
 ﻿using Application.Content;
 using Application.Menus;
+using Application.Player;
 using Application.UI;
 using Application.View;
 using Microsoft.Xna.Framework;
@@ -19,7 +20,7 @@ namespace Application.Scenes
         public MenuScene()
         {
             _mainTitleMenu = new TitleMenu();
-            _characterCreationMenu = new CharacterCreationMenu();
+            _characterCreationMenu = new CharacterCreationMenu(new PlayerMaker());
             _mainOptionsMenu = new MainOptionsMenu();
 
             _activeMenu = _mainTitleMenu;
