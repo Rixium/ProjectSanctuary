@@ -61,5 +61,29 @@ namespace Application.UI.Widgets
 
         public bool Intersects(Rectangle rectangle) =>
             rectangle.Intersects(Bounds);
+
+        public override bool MouseMove(Rectangle mouseBounds)
+        {
+            if (Intersects(mouseBounds))
+            {
+                Hovering = true;
+                return true;
+            }
+
+            Hovering = false;
+            
+            return base.MouseMove(mouseBounds);
+        }
+
+        public override bool MouseClick(Rectangle mouseRectangle)
+        {
+            if (Intersects(mouseRectangle))
+            {
+                Click();
+                return true;
+            }
+
+            return base.MouseClick(mouseRectangle);
+        }
     }
 }

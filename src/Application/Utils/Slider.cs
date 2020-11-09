@@ -68,5 +68,15 @@ namespace Application.Utils
             ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
 
         public float GetValue() => _currentValue;
+
+        public override bool MouseClick(Rectangle mouseRectangle)
+        {
+            return base.MouseClick(mouseRectangle);
+        }
+
+        public override bool MouseMove(Rectangle mouseBounds)
+        {
+            return base.MouseMove(mouseBounds);
+        }
     }
 }

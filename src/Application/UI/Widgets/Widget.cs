@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -32,7 +33,7 @@ namespace Application.UI.Widgets
             {
                 widget.Draw(spriteBatch);
             }
-            
+
             if (SanctuaryGame.Debug)
             {
                 DrawDebug(spriteBatch);
@@ -42,6 +43,21 @@ namespace Application.UI.Widgets
         protected abstract void InternalDraw(SpriteBatch spriteBatch);
 
         public abstract void DrawDebug(SpriteBatch spriteBatch);
+
+        public virtual bool MouseMove(Rectangle mouseBounds)
+        {
+            foreach (var child in _children)
+            {
+                child.MouseMove(mouseBounds);
+            }
+
+            return false;
+        }
+
+        public virtual bool MouseClick(Rectangle mouseRectangle) =>
+            _children.Any(child => child.MouseClick(mouseRectangle));
+        public virtual bool MouseHeld(Rectangle mouseRectangle) =>
+            _children.Any(child => child.MouseHeld(mouseRectangle));
 
         public Vector2 BottomLeft() => new Vector2(Left(), Bottom());
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Application.Content;
 using Application.Graphics;
 using Application.Utils;
@@ -161,5 +162,63 @@ namespace Application.UI.Widgets
 
         public Rectangle TopNibBounds() => new Rectangle(Bounds.Right - 10, Bounds.Top, 10, 10);
         public Rectangle BottomNibBounds() => new Rectangle(Bounds.Right - 10, Bounds.Bottom - 10, 10, 10);
+
+        public override bool MouseMove(Rectangle mouseBounds)
+        {
+            if (Dragging)
+            {
+                if (SanctuaryGame.MouseManager.Dragged(1))
+                {
+                    ScrollLine(Math.Sign(SanctuaryGame.MouseManager.Drag.Y));
+                }
+            }
+            else if (mouseBounds.Intersects(Bounds))
+            {
+                if (SanctuaryGame.MouseManager.ScrolledUp)
+                {
+                    ScrollLine(1);
+                }
+                else if (SanctuaryGame.MouseManager.ScrolledDown)
+                {
+                    ScrollLine(-1);
+                }
+            }
+
+            if (SanctuaryGame.MouseManager.LeftReleased)
+            {
+                Dragging = false;
+            }
+
+            return base.MouseMove(mouseBounds);
+        }
+
+        public override bool MouseClick(Rectangle mouseRectangle)
+        {
+            if (mouseRectangle.Intersects(TopNibBounds()))
+            {
+                ScrollLine(-1);
+                return true;
+            }
+
+            if (!mouseRectangle.Intersects(BottomNibBounds()))
+            {
+                return base.MouseClick(mouseRectangle);
+            }
+            
+            ScrollLine(1);
+            return true;
+
+        }
+
+        public override bool MouseHeld(Rectangle mouseRectangle)
+        {
+            if (!mouseRectangle.Intersects(ScrollBarBounds()))
+            {
+                return base.MouseHeld(mouseRectangle);
+            }
+            
+            Dragging = true;
+            return true;
+        }
     }
 }

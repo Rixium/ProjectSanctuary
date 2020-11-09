@@ -6,13 +6,13 @@ using Application.UI.Widgets;
 using Application.Utils;
 using Application.View;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.Menus
 {
     internal class MainOptionsMenu : Menu
     {
+        private IUserInterface _userInterface;
         private float _titleYOffset;
         private readonly float _buttonScale;
         private readonly Texture2D _menuButtons;
@@ -25,20 +25,18 @@ namespace Application.Menus
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
 
-            SetupButtons();
+            SetupUserInterface();
         }
 
-        private void SetupButtons()
+        private void SetupUserInterface()
         {
-            Clickables.Clear();
+            _userInterface = new UserInterface();
 
             BackButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
                 new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),
                 new Vector2(ViewManager.ViewPort.Bounds.Left + 10 + 78 * _buttonScale / 2f,
                     ViewManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
-
-            Clickables.Add(BackButton as IClickable);
 
             var nineSlice = new NineSlice(_menuButtons, new Dictionary<Segment, Rectangle>
             {
@@ -60,6 +58,8 @@ namespace Application.Menus
                     500), _buttonScale);
 
             _panel.AddChild(BackButton);
+
+            _userInterface.AddWidget(_panel);
         }
 
         public override void Update(float delta)
@@ -69,26 +69,7 @@ namespace Application.Menus
                 _titleYOffset = MathHelper.Lerp(_titleYOffset, 0, delta);
             }
 
-            IClickable hoveringButton = null;
-
-            foreach (var button in Clickables)
-            {
-                button.Hovering = false;
-
-                if (!button.Intersects(SanctuaryGame.MouseManager.MouseBounds))
-                {
-                    continue;
-                }
-
-                hoveringButton = button;
-                button.Hovering = true;
-            }
-
-            if (hoveringButton != null && SanctuaryGame.MouseManager.LeftClicked)
-            {
-                hoveringButton.Click();
-                ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
-            }
+            _userInterface.Update(delta);
 
             base.Update(delta);
         }
@@ -96,13 +77,13 @@ namespace Application.Menus
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            _panel.Draw(spriteBatch);
+            _userInterface.Draw(spriteBatch);
             spriteBatch.End();
         }
 
         public override void WindowResized()
         {
-            SetupButtons();
+            SetupUserInterface();
             base.WindowResized();
         }
     }

@@ -24,8 +24,8 @@ namespace Application.UI.Widgets
             Bounds = new Rectangle((int) x, (int) y, width, 30);
 
             SanctuaryGame.KeyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
-            
-            
+
+
             _nineSlice = new NineSlice(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
                 new Dictionary<Segment, Rectangle>
                 {
@@ -77,14 +77,6 @@ namespace Application.UI.Widgets
             _text = newText;
         }
 
-        public void Update()
-        {
-            if (SanctuaryGame.MouseManager.LeftReleased)
-            {
-                Selected = SanctuaryGame.MouseManager.MouseBounds.Intersects(Bounds);
-            }
-        }
-
         private static char? GetCharacter(Keys pressedKey) => pressedKey.ToChar(false);
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
@@ -100,10 +92,17 @@ namespace Application.UI.Widgets
 
             var tempText = show ? _text.Insert(_text.Length, "|") : _text;
 
-            spriteBatch.DrawString(_font, tempText, new Vector2(Bounds.Left + 10, Bounds.Center.Y - _font.MeasureString(tempText).Y / 2f), Color.Black);
+            spriteBatch.DrawString(_font, tempText,
+                new Vector2(Bounds.Left + 10, Bounds.Center.Y - _font.MeasureString(tempText).Y / 2f), Color.Black);
         }
 
         public override void DrawDebug(SpriteBatch spriteBatch) =>
             ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
+
+        public override bool MouseClick(Rectangle mouseRectangle)
+        {
+            Selected = SanctuaryGame.MouseManager.MouseBounds.Intersects(Bounds);
+            return Selected;
+        }
     }
 }

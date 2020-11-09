@@ -4,6 +4,7 @@ using Application.Content;
 using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Application.UI.Widgets
 {
@@ -50,61 +51,9 @@ namespace Application.UI.Widgets
                 });
         }
 
-        public void Update()
-        {
-            if (SanctuaryGame.MouseManager.LeftReleased)
-            {
-                if (SanctuaryGame.MouseManager.MouseBounds.Intersects(new Rectangle((int) _arrowBounds.X, (int) _arrowBounds.Y,
-                    (int) (_downArrowSource.Width * 3f), (int) (_downArrowSource.Height * 3f))))
-                {
-                    Open = !Open;
-                }
-                else if (Open)
-                {
-                    for (var i = 0; i < _options.Length; i++)
-                    {
-                        var optionBounds =
-                            Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
-                        
-                        if (!SanctuaryGame.MouseManager.MouseBounds.Intersects(optionBounds))
-                        {
-                            continue;
-                        }
-                        
-                        _selectedOption = i;
-                        break;
-                    }
-
-                    Open = false;
-                }
-            }
-
-            if (Open)
-            {
-                _lastHoverOption = _hoverOption;
-                _hoverOption = -1;
-                for (var i = 0; i < _options.Length; i++)
-                {
-                    var optionBounds =
-                        Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
-
-                    if (!SanctuaryGame.MouseManager.MouseBounds.Intersects(optionBounds))
-                    {
-                        continue;
-                    }
-
-                    _hoverOption = i;
-                    
-                    if (_lastHoverOption != _hoverOption)
-                    {
-                        Hover?.Invoke(_hoverOption);
-                    }
-                    
-                    break;
-                }
-
-            }
-        }
+        private Rectangle DownArrowBounds =>
+            new Rectangle((int) _arrowBounds.X, (int) _arrowBounds.Y,
+                (int) (_downArrowSource.Width * 3f), (int) (_downArrowSource.Height * 3f));
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
         {
@@ -136,6 +85,68 @@ namespace Application.UI.Widgets
 
         public override void DrawDebug(SpriteBatch spriteBatch) =>
             ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Red);
-    }
 
+        public override bool MouseClick(Rectangle mouseRectangle)
+        {
+            if (mouseRectangle.Intersects(DownArrowBounds))
+            {
+                Open = !Open;
+                return true;
+            }
+
+            if (!Open)
+            {
+                return false;
+            }
+            
+            for (var i = 0; i < _options.Length; i++)
+            {
+                var optionBounds =
+                    Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
+
+                if (!mouseRectangle.Intersects(optionBounds))
+                {
+                    continue;
+                }
+
+                _selectedOption = i;
+                break;
+            }
+
+            Open = false;
+            return true;
+        }
+
+        public override bool MouseMove(Rectangle mouseBounds)
+        {
+            if (!Open)
+            {
+                return false;
+            }
+
+            _lastHoverOption = _hoverOption;
+            _hoverOption = -1;
+            for (var i = 0; i < _options.Length; i++)
+            {
+                var optionBounds =
+                    Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
+
+                if (!SanctuaryGame.MouseManager.MouseBounds.Intersects(optionBounds))
+                {
+                    continue;
+                }
+
+                _hoverOption = i;
+
+                if (_lastHoverOption != _hoverOption)
+                {
+                    Hover?.Invoke(_hoverOption);
+                }
+
+                break;
+            }
+
+            return true;
+        }
+    }
 }

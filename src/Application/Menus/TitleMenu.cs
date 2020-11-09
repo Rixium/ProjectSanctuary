@@ -14,7 +14,7 @@ namespace Application.Menus
     public class TitleMenu : Menu
     {
         private readonly Texture2D _menuButtons;
-        private readonly IUserInterface _userInterface;
+        private IUserInterface _userInterface;
 
         private float _buttonScale;
         public IClickable NewGameButton { get; private set; }
@@ -32,13 +32,12 @@ namespace Application.Menus
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
 
-            SetupButtons();
+            SetupUserInterface();
         }
 
-        private void SetupButtons()
+        private void SetupUserInterface()
         {
-            Clickables.Clear();
-
+            _userInterface = new UserInterface();
             _buttonScale = 3f;
 
             const string title = "Project Sanctuary";
@@ -90,82 +89,18 @@ namespace Application.Menus
 
             ExitGameButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
 
-            Clickables.Add(NewGameButton);
-            Clickables.Add(LoadGameButton);
-            Clickables.Add(ExitGameButton);
-
             SignTopImage.AddChild(TitleTextBlock);
             SignTopImage.AddChild(ScrollBox);
             SignTopImage.AddChild(NewGameButton as IWidget);
             SignTopImage.AddChild(LoadGameButton as IWidget);
             SignTopImage.AddChild(ExitGameButton as IWidget);
+
+            _userInterface.AddWidget(SignTopImage);
         }
 
         public override void Update(float delta)
         {
-            IClickable hoveringButton = null;
-
-            foreach (var button in Clickables)
-            {
-                button.Hovering = false;
-
-                if (!button.Intersects(SanctuaryGame.MouseManager.MouseBounds))
-                {
-                    continue;
-                }
-
-                hoveringButton = button;
-                button.Hovering = true;
-            }
-            
-            if (ScrollBox.Dragging)
-            {
-                if (SanctuaryGame.MouseManager.Dragged(1))
-                {
-                    ScrollBox.ScrollLine(Math.Sign(SanctuaryGame.MouseManager.Drag.Y));
-                }
-            }
-
-            else if (SanctuaryGame.MouseManager.LeftClicked)
-            {
-                if (hoveringButton != null)
-                {
-                    hoveringButton.Click();
-                    ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
-                }
-                else
-                {
-                    if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.TopNibBounds()))
-                    {
-                        ScrollBox.ScrollLine(-1);
-                    }
-                    else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.BottomNibBounds()))
-                    {
-                        ScrollBox.ScrollLine(1);
-                    }
-                    else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.ScrollBarBounds()))
-                    {
-                        ScrollBox.Dragging = true;
-                    }
-                }
-            }
-            else if (SanctuaryGame.MouseManager.MouseBounds.Intersects(ScrollBox.Bounds))
-            {
-                if (SanctuaryGame.MouseManager.ScrolledUp)
-                {
-                    ScrollBox.ScrollLine(1);
-                }
-                else if (SanctuaryGame.MouseManager.ScrolledDown)
-                {
-                    ScrollBox.ScrollLine(-1);
-                }
-            }
-
-            if (SanctuaryGame.MouseManager.LeftReleased)
-            {
-                ScrollBox.Dragging = false;
-            }
-
+            _userInterface.Update(delta);
             base.Update(delta);
         }
 
@@ -186,7 +121,7 @@ namespace Application.Menus
 
         public override void WindowResized()
         {
-            SetupButtons();
+            SetupUserInterface();
         }
 
         public override void Finish()

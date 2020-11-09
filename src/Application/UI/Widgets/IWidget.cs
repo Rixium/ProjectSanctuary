@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.UI.Widgets
 {
@@ -9,5 +10,8 @@ namespace Application.UI.Widgets
         T AddChild<T>(T widget) where T : IWidget;
         void Draw(SpriteBatch spriteBatch);
         void DrawDebug(SpriteBatch spriteBatch);
+        bool MouseMove(Rectangle mouseBounds);
+        bool MouseClick(Rectangle mouseRectangle);
+        bool MouseHeld(Rectangle mouseRectangle);
     }
 }

@@ -17,6 +17,8 @@ namespace Application.Menus
     public class CharacterCreationMenu : Menu
     {
         private readonly IPlayerMaker _playerMaker;
+        private UserInterface _characterCreationInterface;
+        
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
         private Panel _panel;
@@ -39,12 +41,12 @@ namespace Application.Menus
             _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
 
-            SetupButtons();
+            SetupUserInterface();
         }
 
-        private void SetupButtons()
+        private void SetupUserInterface()
         {
-            Clickables.Clear();
+            _characterCreationInterface = new UserInterface();
 
             var interfaceFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
             var inputBoxFont = ContentChest.Instance.Get<SpriteFont>("Fonts/InputBoxFont");
@@ -110,9 +112,6 @@ namespace Application.Menus
                 new Vector2(hairText.Left(), hairText.BottomLeft().Y + 10),
                 new[] {"Long", "Short"}, 200);
 
-
-            Clickables.Add(BackButton);
-            Clickables.Add(DoneButton);
             _panel.AddChild(pronounTextBoxTitle);
             _panel.AddChild(nameTextBoxTitle);
             _panel.AddChild(NameTextBox);
@@ -150,6 +149,8 @@ namespace Application.Menus
             _playerBody = ContentChest.Instance.Get<Texture2D>("Characters/player_body");
             _playerPosition = characterPanel.Center() - new Vector2(_playerEyes.Width * _buttonScale / 2f,
                 _playerEyes.Height * _buttonScale / 2f - 30f);
+            
+            _characterCreationInterface.AddWidget(_panel);
         }
 
         private void OnHairSelect(int index)
@@ -163,41 +164,14 @@ namespace Application.Menus
 
         public override void Update(float delta)
         {
-            IClickable hoveringButton = null;
-
-            foreach (var button in Clickables)
-            {
-                button.Hovering = false;
-
-                if (!button.Intersects(SanctuaryGame.MouseManager.MouseBounds))
-                {
-                    continue;
-                }
-
-                hoveringButton = button;
-                button.Hovering = true;
-            }
-
-            if (hoveringButton != null && SanctuaryGame.MouseManager.LeftClicked)
-            {
-                hoveringButton.Click();
-                ContentChest.Instance.Get<SoundEffect>("Sounds/menuHover").Play();
-            }
-
-            _colorPicker.Update();
-            _bodyColorPicker.Update();
-
-            NameTextBox.Update();
-            PronounDropDown.Update();
-            PlayerHairDropDown.Update();
-
+            _characterCreationInterface.Update(delta);
             base.Update(delta);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            _panel.Draw(spriteBatch);
+            _characterCreationInterface.Draw(spriteBatch);
             DrawCharacter(spriteBatch);
             spriteBatch.End();
         }
@@ -215,7 +189,7 @@ namespace Application.Menus
 
         public override void WindowResized()
         {
-            SetupButtons();
+            SetupUserInterface();
             base.WindowResized();
         }
 
