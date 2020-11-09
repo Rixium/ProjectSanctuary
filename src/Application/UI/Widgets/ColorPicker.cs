@@ -71,38 +71,37 @@ namespace Application.UI.Widgets
         public Color GetColor() =>
             ColorHelpers.HsvToRgb(_hue / 100 * 360, _saturation / 100, _value / 100);
 
-        public override bool MouseMove(Rectangle mouseBounds)
+        public override bool MouseDragged(Rectangle mouseRectangle, float dragX, float dragY)
         {
-            if (SanctuaryGame.MouseManager.Dragging)
+            if (mouseRectangle.Intersects(_hueSlider.SliderBounds) ||
+                _dragged == _hueSlider)
             {
-                if (mouseBounds.Intersects(_hueSlider.SliderBounds) ||
-                    _dragged == _hueSlider)
-                {
-                    _hueSlider.IncreaseValue(SanctuaryGame.MouseManager.Drag.X / 2f);
-                    _dragged = _hueSlider;
-                    _hue = _hueSlider.GetValue();
-                }
-                else if (mouseBounds.Intersects(_saturationSlider.SliderBounds) ||
-                         _dragged == _saturationSlider)
-                {
-                    _saturationSlider.IncreaseValue(SanctuaryGame.MouseManager.Drag.X / 2f);
-                    _dragged = _saturationSlider;
-                    _saturation = _saturationSlider.GetValue();
-                }
-                else if (mouseBounds.Intersects(_valueSlider.SliderBounds) ||
-                         _dragged == _valueSlider)
-                {
-                    _valueSlider.IncreaseValue(SanctuaryGame.MouseManager.Drag.X / 2f);
-                    _dragged = _valueSlider;
-                    _value = _valueSlider.GetValue();
-                }
+                _hueSlider.IncreaseValue(dragX / 2f);
+                _dragged = _hueSlider;
+                _hue = _hueSlider.GetValue();
             }
-            else
+            else if (mouseRectangle.Intersects(_saturationSlider.SliderBounds) ||
+                     _dragged == _saturationSlider)
             {
-                _dragged = null;
+                _saturationSlider.IncreaseValue(dragX/ 2f);
+                _dragged = _saturationSlider;
+                _saturation = _saturationSlider.GetValue();
             }
-            
-            return base.MouseMove(mouseBounds);
+            else if (mouseRectangle.Intersects(_valueSlider.SliderBounds) ||
+                     _dragged == _valueSlider)
+            {
+                _valueSlider.IncreaseValue(dragX / 2f);
+                _dragged = _valueSlider;
+                _value = _valueSlider.GetValue();
+            }
+            return base.MouseDragged(mouseRectangle, dragX, dragY);
         }
+
+        public override bool MouseReleased(Rectangle mouseBounds)
+        {
+            _dragged = null;
+            return base.MouseReleased(mouseBounds);
+        }
+        
     }
 }

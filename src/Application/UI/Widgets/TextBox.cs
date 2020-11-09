@@ -101,7 +101,7 @@ namespace Application.UI.Widgets
 
         public override bool MouseClick(Rectangle mouseRectangle)
         {
-            Selected = SanctuaryGame.MouseManager.MouseBounds.Intersects(Bounds);
+            Selected = mouseRectangle.Intersects(Bounds);
             return Selected;
         }
     }

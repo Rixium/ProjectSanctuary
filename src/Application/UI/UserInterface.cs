@@ -1,16 +1,24 @@
-﻿using Application.UI.Widgets;
+﻿using Application.Input;
+using Application.UI.Widgets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Application.UI
 {
+    public enum MouseScrollDirection
+    {
+        Up,
+        Down
+    }
+
     public class UserInterface : IUserInterface
     {
-        public IWidget Root { get; private set; }
-
+        private readonly MonoGameMouseManager _mouseManager;
         private Rectangle _mouseRectangle;
         private MouseState _mouseState;
+
+        public IWidget Root { get; private set; }
 
         private MouseState MouseState
         {
@@ -23,12 +31,34 @@ namespace Application.UI
                     Root?.MouseMove(_mouseRectangle);
                 }
 
-                if (value.LeftButton == ButtonState.Released && _mouseState.LeftButton == ButtonState.Pressed)
+                if (_mouseManager.LeftClicked)
                 {
                     Root?.MouseClick(_mouseRectangle);
-                } else if (value.LeftButton == ButtonState.Pressed && _mouseState.LeftButton == ButtonState.Pressed)
+                }
+
+                if (_mouseManager.LeftHeld)
                 {
                     Root?.MouseHeld(_mouseRectangle);
+                }
+
+                if (_mouseManager.LeftReleased)
+                {
+                    Root?.MouseReleased(_mouseRectangle);
+                }
+                
+                if (_mouseManager.Dragging)
+                {
+                    Root?.MouseDragged(_mouseRectangle, _mouseManager.Drag.X, _mouseManager.Drag.Y);
+                }
+
+                if (_mouseManager.ScrolledUp)
+                {
+                    Root?.MouseScrolled(_mouseRectangle, MouseScrollDirection.Up);
+                }
+                
+                if (_mouseManager.ScrolledDown)
+                {
+                    Root?.MouseScrolled(_mouseRectangle, MouseScrollDirection.Down);
                 }
 
                 _mouseState = value;
@@ -37,16 +67,21 @@ namespace Application.UI
 
         public UserInterface()
         {
+            _mouseManager = new MonoGameMouseManager();
             _mouseRectangle = new Rectangle(0, 0, 1, 1);
             MouseState = Mouse.GetState();
         }
 
         public void Update(float delta)
         {
-            UpdateMouse();
+            UpdateMouse(delta);
         }
 
-        private void UpdateMouse() => MouseState = Mouse.GetState();
+        private void UpdateMouse(float delta)
+        {
+            _mouseManager.Update(delta);
+            MouseState = Mouse.GetState();
+        }
 
         public void Draw(SpriteBatch spriteBatch) => Root?.Draw(spriteBatch);
 

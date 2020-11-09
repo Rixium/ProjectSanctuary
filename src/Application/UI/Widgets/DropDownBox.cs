@@ -131,7 +131,7 @@ namespace Application.UI.Widgets
                 var optionBounds =
                     Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
 
-                if (!SanctuaryGame.MouseManager.MouseBounds.Intersects(optionBounds))
+                if (!mouseBounds.Intersects(optionBounds))
                 {
                     continue;
                 }

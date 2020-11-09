@@ -13,5 +13,8 @@ namespace Application.UI.Widgets
         bool MouseMove(Rectangle mouseBounds);
         bool MouseClick(Rectangle mouseRectangle);
         bool MouseHeld(Rectangle mouseRectangle);
+        bool MouseDragged(Rectangle mouseRectangle, float dragX, float dragY);
+        bool MouseScrolled(Rectangle mouseBounds, MouseScrollDirection direction);
+        bool MouseReleased(Rectangle mouseRectangle);
     }
 }

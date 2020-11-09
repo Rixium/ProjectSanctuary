@@ -163,33 +163,45 @@ namespace Application.UI.Widgets
         public Rectangle TopNibBounds() => new Rectangle(Bounds.Right - 10, Bounds.Top, 10, 10);
         public Rectangle BottomNibBounds() => new Rectangle(Bounds.Right - 10, Bounds.Bottom - 10, 10, 10);
 
-        public override bool MouseMove(Rectangle mouseBounds)
+        public override bool MouseDragged(Rectangle mouseRectangle, float dragX, float dragY)
         {
-            if (Dragging)
+            if (!Dragging)
             {
-                if (SanctuaryGame.MouseManager.Dragged(1))
-                {
-                    ScrollLine(Math.Sign(SanctuaryGame.MouseManager.Drag.Y));
-                }
+                return base.MouseDragged(mouseRectangle, dragX, dragY);
             }
-            else if (mouseBounds.Intersects(Bounds))
+
+            ScrollLine(Math.Sign(dragY));
+            return true;
+        }
+
+        public override bool MouseScrolled(Rectangle mouseBounds, MouseScrollDirection direction)
+        {
+            if (!mouseBounds.Intersects(Bounds))
             {
-                if (SanctuaryGame.MouseManager.ScrolledUp)
-                {
+                return base.MouseScrolled(mouseBounds, direction);
+            }
+            
+            switch (direction)
+            {
+                case MouseScrollDirection.Up:
+
                     ScrollLine(1);
-                }
-                else if (SanctuaryGame.MouseManager.ScrolledDown)
-                {
+                    break;
+                case MouseScrollDirection.Down:
+
                     ScrollLine(-1);
-                }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
 
-            if (SanctuaryGame.MouseManager.LeftReleased)
-            {
-                Dragging = false;
-            }
+            return base.MouseScrolled(mouseBounds, direction);
+        }
 
-            return base.MouseMove(mouseBounds);
+        public override bool MouseReleased(Rectangle mouseBounds)
+        {
+            Dragging = false;
+            return base.MouseReleased(mouseBounds);
         }
 
         public override bool MouseClick(Rectangle mouseRectangle)
@@ -204,10 +216,9 @@ namespace Application.UI.Widgets
             {
                 return base.MouseClick(mouseRectangle);
             }
-            
+
             ScrollLine(1);
             return true;
-
         }
 
         public override bool MouseHeld(Rectangle mouseRectangle)
@@ -216,7 +227,7 @@ namespace Application.UI.Widgets
             {
                 return base.MouseHeld(mouseRectangle);
             }
-            
+
             Dragging = true;
             return true;
         }
