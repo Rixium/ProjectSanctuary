@@ -163,17 +163,6 @@ namespace Application.UI.Widgets
         public Rectangle TopNibBounds() => new Rectangle(Bounds.Right - 10, Bounds.Top, 10, 10);
         public Rectangle BottomNibBounds() => new Rectangle(Bounds.Right - 10, Bounds.Bottom - 10, 10, 10);
 
-        public override bool MouseDragged(Rectangle mouseRectangle, float dragX, float dragY)
-        {
-            if (!Dragging)
-            {
-                return base.MouseDragged(mouseRectangle, dragX, dragY);
-            }
-
-            ScrollLine(Math.Sign(dragY));
-            return true;
-        }
-
         public override bool MouseScrolled(Rectangle mouseBounds, MouseScrollDirection direction)
         {
             if (!mouseBounds.Intersects(Bounds))

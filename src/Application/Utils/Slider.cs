@@ -78,5 +78,20 @@ namespace Application.Utils
         {
             return base.MouseMove(mouseBounds);
         }
+
+        public void SetValue(float value)
+        {
+            _currentValue = value;
+
+            if (_currentValue < _minValue)
+            {
+                _currentValue = _minValue;
+            }
+
+            if (_currentValue > _maxValue)
+            {
+                _currentValue = _maxValue;
+            }   
+        }
     }
 }

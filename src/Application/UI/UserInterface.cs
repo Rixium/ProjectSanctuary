@@ -45,11 +45,6 @@ namespace Application.UI
                 {
                     Root?.MouseReleased(_mouseRectangle);
                 }
-                
-                if (_mouseManager.Dragging)
-                {
-                    Root?.MouseDragged(_mouseRectangle, _mouseManager.Drag.X, _mouseManager.Drag.Y);
-                }
 
                 if (_mouseManager.ScrolledUp)
                 {

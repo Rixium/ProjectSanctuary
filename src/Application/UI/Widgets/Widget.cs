@@ -60,11 +60,9 @@ namespace Application.UI.Widgets
         public virtual bool MouseHeld(Rectangle mouseRectangle) =>
             _children.Any(child => child.MouseHeld(mouseRectangle));
 
-        public virtual bool MouseDragged(Rectangle mouseRectangle, float dragX, float dragY) =>
-            _children.Any(child => child.MouseDragged(mouseRectangle, dragX, dragY));
-
         public virtual bool MouseScrolled(Rectangle mouseBounds, MouseScrollDirection direction) =>
             _children.Any(child => child.MouseScrolled(mouseBounds, direction));
+
         public virtual bool MouseReleased(Rectangle mouseBounds) =>
             _children.Any(child => child.MouseReleased(mouseBounds));
 

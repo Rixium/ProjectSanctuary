@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System;
+using Application.Content;
 using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -71,30 +72,33 @@ namespace Application.UI.Widgets
         public Color GetColor() =>
             ColorHelpers.HsvToRgb(_hue / 100 * 360, _saturation / 100, _value / 100);
 
-        public override bool MouseDragged(Rectangle mouseRectangle, float dragX, float dragY)
+        public override bool MouseClick(Rectangle mouseRectangle)
         {
-            if (mouseRectangle.Intersects(_hueSlider.SliderBounds) ||
-                _dragged == _hueSlider)
+            if (mouseRectangle.Intersects(_hueSlider.SliderBounds))
             {
-                _hueSlider.IncreaseValue(dragX / 2f);
                 _dragged = _hueSlider;
-                _hue = _hueSlider.GetValue();
-            }
-            else if (mouseRectangle.Intersects(_saturationSlider.SliderBounds) ||
-                     _dragged == _saturationSlider)
+            } else if (mouseRectangle.Intersects(_saturationSlider.SliderBounds))
             {
-                _saturationSlider.IncreaseValue(dragX/ 2f);
                 _dragged = _saturationSlider;
-                _saturation = _saturationSlider.GetValue();
-            }
-            else if (mouseRectangle.Intersects(_valueSlider.SliderBounds) ||
-                     _dragged == _valueSlider)
+            } else if (mouseRectangle.Intersects(_valueSlider.SliderBounds))
             {
-                _valueSlider.IncreaseValue(dragX / 2f);
                 _dragged = _valueSlider;
-                _value = _valueSlider.GetValue();
             }
-            return base.MouseDragged(mouseRectangle, dragX, dragY);
+            
+            return base.MouseClick(mouseRectangle);
+        }
+
+        public override bool MouseMove(Rectangle mouseRectangle)
+        {
+            if (_dragged == null)
+            {
+                return false;
+            }
+
+            var normalised = mouseRectangle.X - _dragged.Bounds.Left;
+            _dragged.SetValue(normalised * (100.0f / _width));
+
+            return true;
         }
 
         public override bool MouseReleased(Rectangle mouseBounds)
