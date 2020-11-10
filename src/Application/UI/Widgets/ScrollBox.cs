@@ -201,23 +201,30 @@ namespace Application.UI.Widgets
                 return true;
             }
 
-            if (!mouseRectangle.Intersects(BottomNibBounds()))
+            if (mouseRectangle.Intersects(BottomNibBounds()))
             {
-                return base.MouseClick(mouseRectangle);
+                ScrollLine(1);
+                return true;
             }
 
-            ScrollLine(1);
-            return true;
+            if (mouseRectangle.Intersects(ScrollBarBounds()))
+            {
+                Dragging = true;
+                return true;
+            }
+            
+            return base.MouseClick(mouseRectangle);
         }
 
-        public override bool MouseHeld(Rectangle mouseRectangle)
+        public override bool MouseMove(Rectangle mouseBounds)
         {
-            if (!mouseRectangle.Intersects(ScrollBarBounds()))
+            if (!Dragging)
             {
-                return base.MouseHeld(mouseRectangle);
+                return false;
             }
-
-            Dragging = true;
+            
+            ScrollLine(Math.Sign(mouseBounds.Y - ScrollBarBounds().Center.Y));
+            
             return true;
         }
     }
