@@ -10,30 +10,35 @@ namespace Application.View
 {
     public class ViewManager : IViewManager
     {
+        private readonly IContentChest _contentChest;
+        private readonly SplashScene _splashScene;
         public static Viewport ViewPort;
         
-        private readonly GraphicsDeviceManager _graphics;
         
         private ITransitionManager _transitionManager;
         private ISceneManager _sceneManager;
         
+        public GraphicsDeviceManager Graphics { get; set; }
         public static ViewManager Instance { get; private set; } 
         
-        public ViewManager(GraphicsDeviceManager graphics)
+        public ViewManager(IContentChest contentChest, SplashScene splashScene)
         {
-            _graphics = graphics;
+            _contentChest = contentChest;
+            _splashScene = splashScene;
             Instance = this;
         }
 
         public void Initialize()
         {
-            ViewPort = new Viewport(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight);
+            ViewPort = new Viewport(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
             
             _sceneManager = new SceneManager();
-            _transitionManager = new TransitionManager(_sceneManager, ContentChest.Instance);
+            _transitionManager = new TransitionManager(_sceneManager, _contentChest);
+            _transitionManager.Initialize();
             
-            _sceneManager.AddScene(new SplashScene());
+            _sceneManager.AddScene(_splashScene);
             _sceneManager.SetNextScene<SplashScene>();
+            
         }
 
         public void Update(float delta)
@@ -44,7 +49,7 @@ namespace Application.View
             
         public void Draw(SpriteBatch spriteBatch)
         {
-            _graphics.GraphicsDevice.Clear(_sceneManager.BackgroundColor);
+            Graphics.GraphicsDevice.Clear(_sceneManager.BackgroundColor);
             _sceneManager.ActiveScene?.Draw(spriteBatch);
             _transitionManager.Draw(spriteBatch);
         }

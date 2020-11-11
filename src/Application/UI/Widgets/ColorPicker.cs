@@ -8,6 +8,7 @@ namespace Application.UI.Widgets
 {
     internal class ColorPicker : Widget
     {
+        private readonly IContentChest _contentChest;
         private readonly Vector2 _position;
         private readonly int _width;
         private float _hue = 50;
@@ -25,16 +26,17 @@ namespace Application.UI.Widgets
         
         public Action Changed { get; set; }
         
-        public ColorPicker(Vector2 position, int width, int segments, float scale)
+        public ColorPicker(IContentChest contentChest, Vector2 position, int width, int segments, float scale)
         {
+            _contentChest = contentChest;
             _position = position;
             _width = width;
             _segments = segments;
 
-            _hueSlider = AddChild(new Slider(position, 0, 100, _hue, width, scale));
-            _saturationSlider = AddChild(new Slider(position + new Vector2(0, Height + Margin), 0, 100, _saturation,
+            _hueSlider = AddChild(new Slider(contentChest, position, 0, 100, _hue, width, scale));
+            _saturationSlider = AddChild(new Slider(contentChest, position + new Vector2(0, Height + Margin), 0, 100, _saturation,
                 width, scale));
-            _valueSlider = AddChild(new Slider(position + new Vector2(0, Height + Margin + Height + Margin), 0, 100,
+            _valueSlider = AddChild(new Slider(contentChest, position + new Vector2(0, Height + Margin + Height + Margin), 0, 100,
                 _value, width, scale));
 
             _hueSlider.Changed += () =>
@@ -62,18 +64,18 @@ namespace Application.UI.Widgets
             for (var i = 0; i < _segments; i++)
             {
                 var color = ColorHelpers.HsvToRgb((double) i / _segments * 360.0, 1, 1);
-                spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
+                spriteBatch.Draw(_contentChest.Get<Texture2D>("Utils/pixel"),
                     new Rectangle((int) (_position.X + _width / _segments * i), (int) _position.Y, _width / _segments,
                         Height), color);
 
                 color = ColorHelpers.HsvToRgb(_hue / 100 * 306, (double) i / _segments, _value / 100);
-                spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
+                spriteBatch.Draw(_contentChest.Get<Texture2D>("Utils/pixel"),
                     new Rectangle((int) (_position.X + _width / _segments * i), (int) _position.Y + Height + Margin,
                         _width / _segments,
                         Height), color);
 
                 color = ColorHelpers.HsvToRgb(_hue / 100 * 360, _saturation / 100, (double) i / _segments);
-                spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
+                spriteBatch.Draw(_contentChest.Get<Texture2D>("Utils/pixel"),
                     new Rectangle((int) (_position.X + _width / _segments * i),
                         (int) _position.Y + Height + Margin + Height + Margin, _width / _segments,
                         Height), color);

@@ -18,7 +18,7 @@ namespace Application.UI.Widgets
         public string Value { get; set; } = "";
 
 
-        public TextBox(Vector2 position, SpriteFont font, int width)
+        public TextBox(IContentChest contentChest, Vector2 position, SpriteFont font, int width)
         {
             _font = font;
 
@@ -28,7 +28,7 @@ namespace Application.UI.Widgets
             SanctuaryGame.KeyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
 
 
-            _nineSlice = new NineSlice(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+            _nineSlice = new NineSlice(contentChest.Get<Texture2D>("UI/title_menu_buttons"),
                 new Dictionary<Segment, Rectangle>
                 {
                     {Segment.TopLeft, new Rectangle(233, 4, 1, 1)},

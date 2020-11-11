@@ -4,7 +4,8 @@ namespace Application.Menus
 {
     public abstract class Menu : IMenu
     {
-        
+
+        public abstract void Initialize();
         public virtual void Update(float delta)
         {
         

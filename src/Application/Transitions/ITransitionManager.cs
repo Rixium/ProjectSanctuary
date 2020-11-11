@@ -6,5 +6,6 @@ namespace Application.Transitions
     {
         void Update(float delta);
         void Draw(SpriteBatch spriteBatch);
+        void Initialize();
     }
 }

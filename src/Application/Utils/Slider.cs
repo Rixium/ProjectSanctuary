@@ -19,7 +19,7 @@ namespace Application.Utils
         
         public Action Changed { get; set; }
 
-        public Slider(Vector2 position, float minValue, float maxValue, float startingValue, int width, float scale)
+        public Slider(IContentChest contentChest, Vector2 position, float minValue, float maxValue, float startingValue, int width, float scale)
         {
             _minValue = minValue;
             _maxValue = maxValue;
@@ -28,7 +28,7 @@ namespace Application.Utils
             _scale = scale;
 
             _sliderSource = new Rectangle(34, 189, 10, 10);
-            _texture = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
+            _texture = contentChest.Get<Texture2D>("UI/title_menu_buttons");
 
             var (x, y) = position;
             Bounds = new Rectangle((int) x, (int) y, width, 10);

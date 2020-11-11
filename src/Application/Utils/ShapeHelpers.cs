@@ -7,11 +7,13 @@ namespace Application.Utils
 {
     internal static class ShapeHelpers
     {
+        public static IContentChest ContentChest { get; set; }
+        
         private static Texture2D _pixel;
-
+        
         public static void DrawRectangle(SpriteBatch spriteBatch, Rectangle rectangle, Color color)
         {
-            _pixel ??= ContentChest.Instance.Get<Texture2D>("Utils/pixel");
+            _pixel ??= ContentChest.Get<Texture2D>("Utils/pixel");
 
             var (x, y, width, height) = rectangle;
             spriteBatch.Draw(_pixel, new Rectangle(x, y, width, 1), color);

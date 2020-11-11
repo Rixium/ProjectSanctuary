@@ -5,5 +5,6 @@
         void Preload<T>(params string[] assets);
         void Unload();
         T Get<T>(string assetName);
+        IContentManager Content { get; set; }
     }
 }

@@ -20,7 +20,11 @@ namespace Application.Scenes
 
         public IEnumerable<IScene> GetScenes() => _scenes.ToImmutableHashSet();
 
-        public void AddScene(IScene scene) => _scenes.Add(scene);
+        public void AddScene(IScene scene)
+        {
+            scene.Initialize();
+            _scenes.Add(scene);
+        }
 
         public void SetNextScene<T>() where T : IScene =>
             NextScene = _scenes.FirstOrDefault(scene => scene.GetType() == typeof(T));

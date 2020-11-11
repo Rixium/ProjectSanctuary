@@ -2,7 +2,7 @@
 
 namespace Application.Player
 {
-    internal class PlayerCreationInformation : IPlayerMaker
+    internal class PlayerMaker : IPlayerMaker
     {
 
         public string Name { get; private set; } = string.Empty;

@@ -25,10 +25,8 @@ namespace Application.UI
 
         private readonly Texture2D _cursorTexture;
 
-        public Cursor()
-        {
-            _cursorTexture = ContentChest.Instance.Get<Texture2D>("UI/cursors");
-        }
+        public Cursor(IContentChest contentChest) =>
+            _cursorTexture = contentChest.Get<Texture2D>("UI/cursors");
 
         public void Draw(SpriteBatch spriteBatch)
         {

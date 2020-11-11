@@ -89,6 +89,11 @@ namespace ProjectSanctuary.Application.Tests.Scenes
             {
                 
             }
+
+            public void Initialize()
+            {
+                
+            }
         }
         
     }

@@ -2,26 +2,18 @@
 {
     public class ContentChest : IContentChest
     {
-        private readonly IContentManager _content;
-
-        public static ContentChest Instance { get; private set; }
-
-        public ContentChest(IContentManager content)
-        {
-            Instance = this;
-            _content = content;
-        }
+        public IContentManager Content { get; set; }
 
         public void Preload<T>(params string[] assets)
         {
             foreach (var asset in assets)
             {
-                _content.Load<T>(asset);
+                Content.Load<T>(asset);
             }
         }
 
-        public void Unload() => _content.Unload();
+        public void Unload() => Content.Unload();
 
-        public T Get<T>(string assetName) => _content.Load<T>(assetName);
+        public T Get<T>(string assetName) => Content.Load<T>(assetName);
     }
 }

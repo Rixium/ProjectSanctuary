@@ -23,8 +23,13 @@ namespace Application.Transitions
         {
             _sceneManager = sceneManager;
             _contentChest = contentChest;
-            _pixel = contentChest.Get<Texture2D>("Utils/pixel");
         }
+
+        public void Initialize()
+        {
+            _pixel = _contentChest.Get<Texture2D>("Utils/pixel");
+        }
+        
         public void Update(float delta)
         {
             if (_sceneManager.NextScene != null)

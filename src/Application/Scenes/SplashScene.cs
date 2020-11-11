@@ -9,11 +9,25 @@ namespace Application.Scenes
 {
     public class SplashScene : IScene
     {
+        private readonly IContentChest _contentChest;
+        private readonly MenuScene _menuScene;
         public Color BackgroundColor => Color.Black;
-        
+
         private const float TimeToShow = 3f;
         private float _timeShown;
 
+        public SplashScene(IContentChest contentChest, MenuScene menuScene)
+        {
+            _contentChest = contentChest;
+            _menuScene = menuScene;
+        }
+
+
+        public void Initialize()
+        {
+            
+        }
+        
         public void Update(float delta)
         {
             if (SceneManager.Instance.NextScene != null)
@@ -27,11 +41,11 @@ namespace Application.Scenes
             {
                 return;
             }
-            
+
             var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
-            MediaPlayer.Play(ContentChest.Instance.Get<Song>($"Music/MenuSong{num}"));
-            
-            SceneManager.Instance.AddScene(new MenuScene());
+            MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{num}"));
+
+            SceneManager.Instance.AddScene(_menuScene);
             SceneManager.Instance.SetNextScene<MenuScene>();
         }
 
@@ -39,8 +53,8 @@ namespace Application.Scenes
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
-            var texture = ContentChest.Instance.Get<Texture2D>("splash");
-            
+            var texture = _contentChest.Get<Texture2D>("splash");
+
             spriteBatch.Draw(texture,
                 new Vector2(ViewManager.ViewPort.Width, ViewManager.ViewPort.Height) / 2,
                 new Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height),
@@ -56,17 +70,14 @@ namespace Application.Scenes
 
         public void WindowResized()
         {
-            
         }
 
         public void Finish()
         {
-            
         }
 
         public void Start()
         {
-            
         }
     }
 }

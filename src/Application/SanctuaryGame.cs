@@ -6,6 +6,7 @@ using Application.Content;
 using Application.FileSystem;
 using Application.Input;
 using Application.UI;
+using Application.Utils;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -33,8 +34,11 @@ namespace Application
 
         private SpriteBatch _spriteBatch;
 
-        public SanctuaryGame()
+        public SanctuaryGame(IContentChest contentChest, IViewManager viewManager)
         {
+            _contentChest = contentChest;
+            _viewManager = viewManager;
+
             _graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 1280,
@@ -47,6 +51,7 @@ namespace Application
             IsMouseVisible = false;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
+            _viewManager.Graphics = _graphics;
             //InitializeSteam();
         }
 
@@ -121,16 +126,19 @@ namespace Application
             KeyboardDispatcher = new KeyboardDispatcher();
             MouseManager = new MonoGameMouseManager();
 
-            _contentChest = new ContentChest(new MonoGameContentManager(Content, "assets"));
-            Cursor = new Cursor();
+            Content.RootDirectory = "assets";
+            _contentChest.Content = new MonoGameContentManager
+            {
+                ContentManager = Content
+            };
 
-            // Now we've created the app data folder,
-            // and saved the defaults if required,
-            // The options can be loaded using it.
+            ShapeHelpers.ContentChest = _contentChest;
+
+            Cursor = new Cursor(_contentChest);
+
             OptionsManager = new OptionsManager(_applicationFolder);
             OptionsManager.Initialize();
 
-            _viewManager = new ViewManager(_graphics);
             _viewManager.Initialize();
             ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _viewManager.OnExitRequest += OnExit;
@@ -156,7 +164,7 @@ namespace Application
 
             var controlOptions = new ControlOptions();
             controlOptions.Save(_applicationFolder, false);
-            
+
             var pronounOptions = new PronounOptions();
             pronounOptions.Save(_applicationFolder, false);
         }
@@ -169,7 +177,7 @@ namespace Application
 
             KeyboardDispatcher.Update(delta);
             MouseManager.Update(delta);
-            
+
             _viewManager.Update(delta);
 
             base.Update(gameTime);

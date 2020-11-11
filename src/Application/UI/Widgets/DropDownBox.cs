@@ -9,6 +9,7 @@ namespace Application.UI.Widgets
 {
     public class DropDownBox : Widget
     {
+        private readonly IContentChest _contentChest;
         private readonly SpriteFont _font;
         private readonly string[] _options;
 
@@ -33,8 +34,9 @@ namespace Application.UI.Widgets
             }
         }
 
-        public DropDownBox(SpriteFont font, Vector2 position, string[] options, int width)
+        public DropDownBox(IContentChest contentChest, SpriteFont font, Vector2 position, string[] options, int width)
         {
+            _contentChest = contentChest;
             _font = font;
             _options = options;
 
@@ -45,7 +47,7 @@ namespace Application.UI.Widgets
             _arrowBounds = new Vector2(Bounds.Right - _downArrowSource.Width * 3f,
                 Bounds.Top);
 
-            _nineSlice = new NineSlice(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+            _nineSlice = new NineSlice(_contentChest.Get<Texture2D>("UI/title_menu_buttons"),
                 new Dictionary<Segment, Rectangle>
                 {
                     {Segment.TopLeft, new Rectangle(233, 4, 1, 1)},
@@ -69,7 +71,7 @@ namespace Application.UI.Widgets
         {
             _nineSlice.DrawRectangle(spriteBatch, Bounds, 3f);
 
-            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("UI/title_menu_buttons"),
                 _arrowBounds, _downArrowSource,
                 Color.White, 0f, Vector2.Zero, 3f, SpriteEffects.None, 0f);
 
@@ -80,7 +82,7 @@ namespace Application.UI.Widgets
                     var option = _options[i];
                     var optionBounds =
                         Bounds.Add(0, Bounds.Height + i * Bounds.Height, 0, 0);
-                    spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"), optionBounds,
+                    spriteBatch.Draw(_contentChest.Get<Texture2D>("Utils/pixel"), optionBounds,
                         _hoverOption == i ? new Color(230, 200, 170) : new Color(221, 190, 137));
                     spriteBatch.DrawString(_font, option,
                         new Vector2(optionBounds.X + 10, optionBounds.Center.Y - _font.MeasureString(option).Y / 2f),

@@ -12,17 +12,23 @@ namespace Application.Menus
 {
     internal class MainOptionsMenu : Menu
     {
+        private readonly IContentChest _contentChest;
         private IUserInterface _userInterface;
         private float _titleYOffset;
-        private readonly float _buttonScale;
-        private readonly Texture2D _menuButtons;
+        private float _buttonScale;
+        private Texture2D _menuButtons;
         private Panel _panel;
         public Widget BackButton { get; private set; }
 
-        public MainOptionsMenu()
+        public MainOptionsMenu(IContentChest contentChest)
         {
+            _contentChest = contentChest;
             _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
-            _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
+        }
+
+        public override void Initialize()
+        {
+            _menuButtons = _contentChest.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
 
             SetupUserInterface();

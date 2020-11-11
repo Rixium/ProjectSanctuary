@@ -10,6 +10,7 @@ namespace Application.UI.Widgets
 {
     public class ScrollBox : Widget
     {
+        private readonly IContentChest _contentChest;
         private readonly SpriteFont _font;
 
         // ReSharper disable once MemberInitializerValueIgnored
@@ -20,16 +21,17 @@ namespace Application.UI.Widgets
         private readonly Sprite _downArrowSprite;
         public bool Dragging { get; set; }
 
-        public ScrollBox(string textContent, Rectangle bounds)
+        public ScrollBox(IContentChest contentChest, string textContent, Rectangle bounds)
         {
-            _font = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont");
+            _contentChest = contentChest;
+            _font = _contentChest.Get<SpriteFont>("Fonts/InterfaceFont");
             Bounds = bounds;
             _lines = WrapString(textContent);
-            _nibSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+            _nibSprite = new Sprite(_contentChest.Get<Texture2D>("UI/title_menu_buttons"),
                 new Rectangle(192, 14, 10, 30));
-            _upArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+            _upArrowSprite = new Sprite(_contentChest.Get<Texture2D>("UI/title_menu_buttons"),
                 new Rectangle(192, 4, 10, 10));
-            _downArrowSprite = new Sprite(ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons"),
+            _downArrowSprite = new Sprite(_contentChest.Get<Texture2D>("UI/title_menu_buttons"),
                 new Rectangle(202, 4, 10, 10));
         }
 
@@ -44,7 +46,7 @@ namespace Application.UI.Widgets
                 var line = _lines[i];
                 if (line.Contains("{line}"))
                 {
-                    var pixel = ContentChest.Instance.Get<Texture2D>("Utils/pixel");
+                    var pixel = _contentChest.Get<Texture2D>("Utils/pixel");
                     var (_, _, width, _) = Bounds;
 
                     currentY += 15;
@@ -96,7 +98,7 @@ namespace Application.UI.Widgets
                 }
             }
 
-            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("Utils/pixel"),
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("Utils/pixel"),
                 new Rectangle(Bounds.Right - 10, Bounds.Top, 10, Bounds.Height),
                 new Color(221, 190, 137));
             var scrollBounds = ScrollBarBounds();

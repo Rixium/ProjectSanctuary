@@ -27,6 +27,7 @@
     <MonoGameContentReference Include="$(SolutionDir)\assets\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.0.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
   </ItemGroup>

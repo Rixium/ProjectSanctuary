@@ -11,5 +11,6 @@ namespace Application.Scenes
         void WindowResized();
         void Finish();
         void Start();
+        void Initialize();
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Application.Content;
 using Application.Menus;
-using Application.Player;
 using Application.UI;
 using Application.View;
 using Microsoft.Xna.Framework;
@@ -13,19 +12,28 @@ namespace Application.Scenes
         private IMenu _activeMenu;
         private readonly TitleMenu _mainTitleMenu;
         private readonly MainOptionsMenu _mainOptionsMenu;
+        private readonly IContentChest _contentChest;
         private readonly CharacterCreationMenu _characterCreationMenu;
 
         public Color BackgroundColor => Color.White;
 
-        public MenuScene()
+        public MenuScene(IContentChest contentChest, CharacterCreationMenu characterCreationMenu)
         {
-            _mainTitleMenu = new TitleMenu();
-            _characterCreationMenu = new CharacterCreationMenu(new PlayerCreationInformation());
-            _mainOptionsMenu = new MainOptionsMenu();
+            _mainTitleMenu = new TitleMenu(contentChest);
+            _contentChest = contentChest;
+            _characterCreationMenu = characterCreationMenu;
+            _mainOptionsMenu = new MainOptionsMenu(contentChest);
 
             _activeMenu = _mainTitleMenu;
+        }
 
-            SetupButtons();
+        public void Initialize()
+        {
+            _mainOptionsMenu.Initialize();
+            _characterCreationMenu.Initialize();
+            _mainTitleMenu.Initialize();
+            
+            SetupButtons();   
         }
 
         private void SetupButtons()
@@ -41,7 +49,7 @@ namespace Application.Scenes
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            spriteBatch.Draw(ContentChest.Instance.Get<Texture2D>("background"),
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("background"),
                 new Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height),
                 Color.White * 0.2f);
             spriteBatch.End();

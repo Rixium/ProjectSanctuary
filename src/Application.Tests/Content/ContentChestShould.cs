@@ -14,7 +14,10 @@ namespace ProjectSanctuary.Application.Tests.Content
         public void SetUp()
         {
             _contentManager = Substitute.For<IContentManager>();
-            _contentChest = new ContentChest(_contentManager);
+            _contentChest = new ContentChest
+            {
+                Content = _contentManager
+            };
         }
 
         [Test]
@@ -29,7 +32,7 @@ namespace ProjectSanctuary.Application.Tests.Content
         public void UnloadContent()
         {
             _contentChest.Unload();
-            
+
             _contentManager.Received(1).Unload();
         }
     }

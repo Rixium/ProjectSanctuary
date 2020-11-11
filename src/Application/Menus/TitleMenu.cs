@@ -12,7 +12,8 @@ namespace Application.Menus
 {
     public class TitleMenu : Menu
     {
-        private readonly Texture2D _menuButtons;
+        private readonly IContentChest _contentChest;
+        private Texture2D _menuButtons;
         private IUserInterface _userInterface;
 
         private float _buttonScale;
@@ -24,12 +25,16 @@ namespace Application.Menus
         private Image NewsPanelImage { get; set; }
         private TextBlock TitleTextBlock { get; set; }
 
-        public TitleMenu()
+        public TitleMenu(IContentChest contentChest)
         {
+            _contentChest = contentChest;
             _userInterface = new UserInterface();
+        }
 
-            _menuButtons = ContentChest.Instance.Get<Texture2D>("UI/title_menu_buttons");
-            ContentChest.Instance.Preload<SoundEffect>("Sounds/menuHover");
+        public override void Initialize()
+        {
+            _menuButtons = _contentChest.Get<Texture2D>("UI/title_menu_buttons");
+            _contentChest.Preload<SoundEffect>("Sounds/menuHover");
 
             SetupUserInterface();
         }
@@ -40,7 +45,7 @@ namespace Application.Menus
             _buttonScale = 3f;
 
             const string title = "Project Sanctuary";
-            var font = ContentChest.Instance.Get<SpriteFont>("Fonts/TitleFont");
+            var font = _contentChest.Get<SpriteFont>("Fonts/TitleFont");
 
             SignTopImage = _userInterface.AddWidget(new Image(
                 new Sprite(_menuButtons, new Rectangle(0, 0, 192, 44)),
@@ -61,7 +66,7 @@ namespace Application.Menus
                 new Sprite(_menuButtons, new Rectangle(192, 45, 96, 96)),
                 newsPanelPosition, _buttonScale));
 
-            ScrollBox = new ScrollBox(
+            ScrollBox = new ScrollBox(_contentChest,
                 "{line} Welcome to Project Sanctuary! {line} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi congue finibus maximus. Maecenas rhoncus malesuada eros vitae tincidunt. Nam suscipit, justo ac gravida rhoncus, ante neque auctor urna, a egestas dui odio eget ante. Aenean nec eros nisi. Nam bibendum viverra tincidunt. Phasellus elementum urna nibh, ac egestas nibh pellentesque vitae. Nulla in mollis nisl. Vivamus nec mauris rutrum magna sollicitudin venenatis et a enim. Phasellus quis mi ex. {line} ",
                 NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -11 * _buttonScale, -20 * _buttonScale));
 
@@ -109,9 +114,9 @@ namespace Application.Menus
 
             _userInterface.Draw(spriteBatch);
 
-            var size = ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont").MeasureString("by YetiFace");
+            var size = _contentChest.Get<SpriteFont>("Fonts/InterfaceFont").MeasureString("by YetiFace");
 
-            spriteBatch.DrawString(ContentChest.Instance.Get<SpriteFont>("Fonts/InterfaceFont"), "by YetiFace",
+            spriteBatch.DrawString(_contentChest.Get<SpriteFont>("Fonts/InterfaceFont"), "by YetiFace",
                 new Vector2(ViewManager.ViewPort.Center().X - size.X / 2f,
                     ViewManager.ViewPort.Bounds.Bottom - 10 - size.Y),
                 Color.Black);
