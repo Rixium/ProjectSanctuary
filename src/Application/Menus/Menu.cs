@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Application.UI;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.Menus
 {

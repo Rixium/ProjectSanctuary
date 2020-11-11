@@ -1,5 +1,4 @@
-﻿using Application.Configuration;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Application.Player
 {
