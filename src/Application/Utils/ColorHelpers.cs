@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace Application.Utils
 {
-    internal class ColorHelpers
+    internal static class ColorHelpers
     {
         public static Color HsvToRgb(double hue, double saturation, double value)
         {
