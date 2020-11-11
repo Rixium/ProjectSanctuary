@@ -147,5 +147,11 @@ namespace Application.UI.Widgets
 
             return true;
         }
+
+        public void Select(int index)
+        {
+            _selectedOption = index;
+            Hover?.Invoke(_selectedOption);
+        }
     }
 }

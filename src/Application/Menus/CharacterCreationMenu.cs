@@ -155,6 +155,10 @@ namespace Application.Menus
                 _playerEyes.Height * _buttonScale / 2f - 30f);
             
             _characterCreationInterface.AddWidget(_panel);
+
+            _hairColor = _colorPicker.GetColor();
+            _bodyColor = _bodyColorPicker.GetColor();
+            PlayerHairDropDown.Select(0);
         }
 
         private void OnBodyColorChanged() => _bodyColor = _bodyColorPicker.GetColor();
