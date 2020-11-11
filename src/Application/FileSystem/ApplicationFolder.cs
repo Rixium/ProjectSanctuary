@@ -6,13 +6,10 @@ namespace Application.FileSystem
 {
     internal class ApplicationFolder : IApplicationFolder
     {
-        private readonly string _gameName;
+        private string _gameName = "DefaultApplication";
 
-        public ApplicationFolder(string gameName)
-        {
-            _gameName = gameName;
-        }
-        
+        public void SetDirectoryName(string directoryName) => _gameName = directoryName;
+
         public string Create()
         {
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);

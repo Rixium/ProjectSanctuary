@@ -34,10 +34,11 @@ namespace Application
 
         private SpriteBatch _spriteBatch;
 
-        public SanctuaryGame(IContentChest contentChest, IViewManager viewManager)
+        public SanctuaryGame(IContentChest contentChest, IViewManager viewManager, IApplicationFolder applicationFolder)
         {
             _contentChest = contentChest;
             _viewManager = viewManager;
+            _applicationFolder = applicationFolder;
 
             _graphics = new GraphicsDeviceManager(this)
             {
@@ -159,7 +160,7 @@ namespace Application
         {
             // Create the AppData folder.
             // Also create the default file for settings files if they don't exist.
-            _applicationFolder = new ApplicationFolder(GameName);
+            _applicationFolder.SetDirectoryName(GameName);
             _applicationFolder.Create();
 
             var controlOptions = new ControlOptions();

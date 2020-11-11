@@ -1,5 +1,6 @@
 ﻿using System;
 using Application.Content;
+using Application.FileSystem;
 using Application.Menus;
 using Application.Player;
 using Application.Scenes;
@@ -14,6 +15,7 @@ namespace Application
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<ApplicationFolder>().As<IApplicationFolder>().SingleInstance();
             builder.RegisterType<ContentChest>().As<IContentChest>().SingleInstance();
             builder.RegisterType<SanctuaryGame>().As<Game>().SingleInstance();
             builder.RegisterType<ViewManager>().As<IViewManager>().SingleInstance();
