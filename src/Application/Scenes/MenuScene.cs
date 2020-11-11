@@ -20,7 +20,7 @@ namespace Application.Scenes
         public MenuScene()
         {
             _mainTitleMenu = new TitleMenu();
-            _characterCreationMenu = new CharacterCreationMenu(new PlayerMaker());
+            _characterCreationMenu = new CharacterCreationMenu(new PlayerCreationInformation());
             _mainOptionsMenu = new MainOptionsMenu();
 
             _activeMenu = _mainTitleMenu;

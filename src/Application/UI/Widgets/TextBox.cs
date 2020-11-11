@@ -10,10 +10,12 @@ namespace Application.UI.Widgets
 {
     public class TextBox : Widget
     {
-        private string _text = "";
         private readonly SpriteFont _font;
         private readonly NineSlice _nineSlice;
         private bool Selected { get; set; }
+        public Action<string> Changed { get; set; }
+
+        public string Value { get; set; } = "";
 
 
         public TextBox(Vector2 position, SpriteFont font, int width)
@@ -50,7 +52,7 @@ namespace Application.UI.Widgets
 
             if (pressedKey == Keys.Back)
             {
-                _text = _text.Length > 0 ? _text.Remove(_text.Length - 1) : _text;
+                Value = Value.Length > 0 ? Value.Remove(Value.Length - 1) : Value;
                 return;
             }
 
@@ -67,14 +69,15 @@ namespace Application.UI.Widgets
                 return;
             }
 
-            var newText = _text + character;
+            var newText = Value + character;
 
             if (_font.MeasureString(newText).X >= Bounds.Width - 20)
             {
                 return;
             }
 
-            _text = newText;
+            Value = newText;
+            Changed?.Invoke(Value);
         }
 
         private static char? GetCharacter(Keys pressedKey) => pressedKey.ToChar(
@@ -91,7 +94,7 @@ namespace Application.UI.Widgets
                 ShapeHelpers.DrawRectangle(spriteBatch, Bounds, Color.Green);
             }
 
-            var tempText = show ? _text.Insert(_text.Length, "|") : _text;
+            var tempText = show ? Value.Insert(Value.Length, "|") : Value;
 
             spriteBatch.DrawString(_font, tempText,
                 new Vector2(Bounds.Left + 10, Bounds.Center.Y - _font.MeasureString(tempText).Y / 2f), Color.Black);
@@ -106,6 +109,6 @@ namespace Application.UI.Widgets
             return Selected;
         }
 
-        public string GetValue() => _text;
+        public string GetValue() => Value;
     }
 }

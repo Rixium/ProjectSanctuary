@@ -17,23 +17,23 @@ namespace Application.Menus
     {
         private readonly IPlayerMaker _playerMaker;
         private UserInterface _characterCreationInterface;
-        
+
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
         private Panel _panel;
-        
+
         private ColorPicker _hairColorPicker;
         private Rectangle _hairSource;
         private Color _hairColor;
-        
+
         private ColorPicker _bodyColorPicker;
         private Color _bodyColor;
-        
+
         private Texture2D _playerEyes;
         private Texture2D _playerHair;
         private Texture2D _playerBody;
         private Vector2 _playerPosition;
-        
+
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
         private DropDownBox PronounDropDown { get; set; }
@@ -89,11 +89,17 @@ namespace Application.Menus
                 new Sprite(_menuButtons, new Rectangle(78, 140, 78, 22)),
                 new Vector2(_panel.BottomRight().X - 78 * _buttonScale / 2f,
                     _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
+
             var nameSectionPosition = new Vector2(_panel.Left() + 30,
                 _panel.Top() + 30);
             var nameTextBoxTitle = new TextBlock("Name", nameSectionPosition, interfaceFont, Color.White, Color.Black);
             NameTextBox = new TextBox(nameSectionPosition + new Vector2(0, interfaceFont.MeasureString("Name").Y + 10),
-                inputBoxFont, 200);
+                inputBoxFont, 200)
+            {
+                Value = _playerMaker.Name
+            };
+            NameTextBox.Changed += OnPlayerNameSet;
+
             var pronounSectionPosition = new Vector2(_panel.Left() + 30, NameTextBox.Bounds.Bottom + 10);
             var pronounTextBoxTitle =
                 new TextBlock("Pronouns", pronounSectionPosition, interfaceFont, Color.White, Color.Black);
@@ -101,6 +107,9 @@ namespace Application.Menus
                 pronounSectionPosition + new Vector2(0, interfaceFont.MeasureString("Pronouns").Y + 10),
                 SanctuaryGame.OptionsManager.PronounOptions.Pronouns.Select(x =>
                     $"{x.Subjective}/{x.Objective}").ToArray(), 200);
+            PronounDropDown.Hover += OnPronounSelect;
+            PronounDropDown.SelectedIndex = _playerMaker.Pronouns;
+
             var characterPanel = new Image(portraitImage,
                 new Vector2(
                     PronounDropDown.Bounds.Right + 30 +
@@ -111,12 +120,16 @@ namespace Application.Menus
             var hairText = new TextBlock("Hair Style",
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
                 Color.Black);
-
-
             PlayerHairDropDown = new DropDownBox(inputBoxFont,
                 new Vector2(hairText.Left(), hairText.BottomLeft().Y + 10),
                 new[] {"Long", "Short"}, 200);
-
+            PlayerHairDropDown.Hover += OnHairSelect;
+            PlayerHairDropDown.SelectedIndex = _playerMaker.Hair;
+            var hairColor = new TextBlock("Hair Color",
+                new Vector2(PlayerHairDropDown.Left(), PlayerHairDropDown.BottomLeft().Y + 40), interfaceFont,
+                Color.White,
+                Color.Black);
+            
             _panel.AddChild(pronounTextBoxTitle);
             _panel.AddChild(nameTextBoxTitle);
             _panel.AddChild(NameTextBox);
@@ -124,16 +137,8 @@ namespace Application.Menus
             _panel.AddChild(BackButton);
             _panel.AddChild(DoneButton);
             _panel.AddChild(hairText);
-
-            PlayerHairDropDown.Hover += OnHairSelect;
-
-
-            var hairColor = new TextBlock("Hair Color",
-                new Vector2(PlayerHairDropDown.Left(), PlayerHairDropDown.BottomLeft().Y + 40), interfaceFont, Color.White,
-                Color.Black);
-
-
             _panel.AddChild(hairColor);
+            
             _hairColorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
@@ -158,12 +163,11 @@ namespace Application.Menus
             _playerBody = ContentChest.Instance.Get<Texture2D>("Characters/player_body");
             _playerPosition = characterPanel.Center() - new Vector2(_playerEyes.Width * _buttonScale / 2f,
                 _playerEyes.Height * _buttonScale / 2f - 30f);
-            
+
             _characterCreationInterface.AddWidget(_panel);
 
             _hairColor = _hairColorPicker.GetColor();
             _bodyColor = _bodyColorPicker.GetColor();
-            PlayerHairDropDown.Select(0);
 
             DoneButton.OnClick += () =>
             {
@@ -176,17 +180,26 @@ namespace Application.Menus
             };
         }
 
-        private void OnBodyColorChanged() => _bodyColor = _bodyColorPicker.GetColor();
+        private void OnPronounSelect(int index) => _playerMaker.SetPronouns(index);
 
-        private void OnHairColorChanged() => _hairColor = _hairColorPicker.GetColor();
+        private void OnPlayerNameSet(string name) => _playerMaker.SetName(name);
+
+        private void OnBodyColorChanged()
+        {
+            _bodyColor = _bodyColorPicker.GetColor();
+            _playerMaker.SetBodyColor(_bodyColor);
+        }
+
+        private void OnHairColorChanged()
+        {
+            _hairColor = _hairColorPicker.GetColor();
+            _playerMaker.SetHairColor(_hairColor);
+        }
 
         private void OnHairSelect(int index)
         {
-            Console.WriteLine($"Hovering Hair: {index}");
-
-            _hairSource = index == 0 ? 
-                new Rectangle(0, 0, 23, 33) : 
-                new Rectangle(23, 0, 23, 33);
+            _hairSource = index == 0 ? new Rectangle(0, 0, 23, 33) : new Rectangle(23, 0, 23, 33);
+            _playerMaker.SetHair(index);
         }
 
         public override void Update(float delta)

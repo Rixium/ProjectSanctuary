@@ -16,12 +16,22 @@ namespace Application.UI.Widgets
         private readonly Vector2 _arrowBounds;
         private readonly NineSlice _nineSlice;
 
-        private int _selectedOption = -1;
         private int _hoverOption;
         private int _lastHoverOption;
+        private int _selectedIndex = -1;
         private bool Open { get; set; }
-        private string Selected => _selectedOption != -1 ? _options[_selectedOption] : "";
+        public string Selected => SelectedIndex != -1 ? _options[SelectedIndex] : "";
         public event Action<int> Hover;
+
+        public int SelectedIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                _selectedIndex = value;
+                Hover?.Invoke(SelectedIndex);
+            }
+        }
 
         public DropDownBox(SpriteFont font, Vector2 position, string[] options, int width)
         {
@@ -54,7 +64,6 @@ namespace Application.UI.Widgets
             new Rectangle((int) _arrowBounds.X, (int) _arrowBounds.Y,
                 (int) (_downArrowSource.Width * 3f), (int) (_downArrowSource.Height * 3f));
 
-        public int SelectedIndex => _selectedOption; 
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
         {
@@ -99,7 +108,7 @@ namespace Application.UI.Widgets
             {
                 return false;
             }
-            
+
             for (var i = 0; i < _options.Length; i++)
             {
                 var optionBounds =
@@ -110,7 +119,7 @@ namespace Application.UI.Widgets
                     continue;
                 }
 
-                _selectedOption = i;
+                SelectedIndex = i;
                 break;
             }
 
@@ -149,11 +158,6 @@ namespace Application.UI.Widgets
 
             return true;
         }
-
-        public void Select(int index)
-        {
-            _selectedOption = index;
-            Hover?.Invoke(_selectedOption);
-        }
+        
     }
 }
