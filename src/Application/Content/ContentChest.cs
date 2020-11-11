@@ -1,14 +1,16 @@
-﻿namespace Application.Content
+﻿using System.Threading.Tasks;
+
+namespace Application.Content
 {
     public class ContentChest : IContentChest
     {
         public IContentManager Content { get; set; }
 
-        public void Preload<T>(params string[] assets)
+        public async Task Preload<T>(params string[] assets)
         {
             foreach (var asset in assets)
             {
-                Content.Load<T>(asset);
+                await Task.Run(() => Content.Load<T>(asset));
             }
         }
 

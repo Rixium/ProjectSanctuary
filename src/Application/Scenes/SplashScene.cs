@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Application.Content;
 using Application.View;
 using Microsoft.Xna.Framework;
@@ -17,6 +18,7 @@ namespace Application.Scenes
 
         private const float TimeToShow = 3f;
         private float _timeShown;
+        private Song _song;
 
         public SplashScene(
             IViewPortManager viewPortManager,
@@ -42,8 +44,12 @@ namespace Application.Scenes
                 return;
             }
 
-            var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
-            MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{num}"));
+            if (_song == null)
+            {
+                return;
+            }
+            
+            MediaPlayer.Play(_song);
 
             RequestNextScene?.Invoke(_menuScene);
         }
@@ -75,8 +81,11 @@ namespace Application.Scenes
         {
         }
 
-        public void Start()
+        public async void Start()
         {
+            var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
+            await _contentChest.Preload<Song>($"Music/MenuSong{num}");
+            _song = _contentChest.Get<Song>($"Music/MenuSong{num}");
         }
     }
 }
