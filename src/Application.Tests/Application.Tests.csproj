@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>netcoreapp5.0</TargetFramework>
 
         <IsPackable>false</IsPackable>
 
         <AssemblyName>ProjectSanctuary.Application.Tests</AssemblyName>
 
         <RootNamespace>ProjectSanctuary.Application.Tests</RootNamespace>
+
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
