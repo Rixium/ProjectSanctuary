@@ -141,7 +141,7 @@ namespace Application.Menus
             _hairColorPicker.Changed += OnHairColorChanged;
 
             var bodyColor = new TextBlock("Body Color",
-                new Vector2(_hairColorPicker.Right() + 10, hairColor.Top()), interfaceFont, Color.White,
+                new Vector2(_hairColorPicker.Right() + 30, hairColor.Top()), interfaceFont, Color.White,
                 Color.Black);
             _bodyColorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(bodyColor.BottomLeft().X, bodyColor.BottomLeft().Y + 10),
