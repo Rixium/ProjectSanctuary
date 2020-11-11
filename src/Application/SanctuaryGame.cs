@@ -44,7 +44,7 @@ namespace Application
             Window.AllowUserResizing = true;
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
 
-            IsMouseVisible = true;
+            IsMouseVisible = false;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
             //InitializeSteam();
@@ -168,7 +168,7 @@ namespace Application
             var delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
 
             KeyboardDispatcher.Update(delta);
-            // MouseManager.Update(delta);
+            MouseManager.Update(delta);
             
             _viewManager.Update(delta);
 
