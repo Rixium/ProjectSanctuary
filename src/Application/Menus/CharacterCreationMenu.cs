@@ -28,6 +28,9 @@ namespace Application.Menus
         private Vector2 _playerPosition;
         private ColorPicker _bodyColorPicker;
         private Rectangle _hairSource;
+        private Color _hairColor;
+        private Color _bodyColor;
+        
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
         private DropDownBox PronounDropDown { get; set; }
@@ -131,6 +134,7 @@ namespace Application.Menus
             _colorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
+            _colorPicker.Changed += OnHairColorChanged;
 
             var bodyColor = new TextBlock("Body Color",
                 new Vector2(_colorPicker.Right() + 10, hairColor.Top()), interfaceFont, Color.White,
@@ -138,6 +142,7 @@ namespace Application.Menus
             _bodyColorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(bodyColor.BottomLeft().X, bodyColor.BottomLeft().Y + 10),
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
+            _bodyColorPicker.Changed += OnBodyColorChanged;
 
             _panel.AddChild(bodyColor);
             _panel.AddChild(PlayerHairDropDown);
@@ -151,6 +156,10 @@ namespace Application.Menus
             
             _characterCreationInterface.AddWidget(_panel);
         }
+
+        private void OnBodyColorChanged() => _bodyColor = _bodyColorPicker.GetColor();
+
+        private void OnHairColorChanged() => _hairColor = _colorPicker.GetColor();
 
         private void OnHairSelect(int index)
         {
@@ -177,12 +186,12 @@ namespace Application.Menus
 
         private void DrawCharacter(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_playerBody, _playerPosition, null, _bodyColorPicker.GetColor(), 0f, Vector2.Zero,
+            spriteBatch.Draw(_playerBody, _playerPosition, null, _bodyColor, 0f, Vector2.Zero,
                 _buttonScale,
                 SpriteEffects.None, 0f);
             spriteBatch.Draw(_playerEyes, _playerPosition, null, Color.White, 0f, Vector2.Zero, _buttonScale,
                 SpriteEffects.None, 0f);
-            spriteBatch.Draw(_playerHair, _playerPosition, _hairSource, _colorPicker.GetColor(), 0f, Vector2.Zero,
+            spriteBatch.Draw(_playerHair, _playerPosition, _hairSource, _hairColor, 0f, Vector2.Zero,
                 _buttonScale, SpriteEffects.None, 0f);
         }
 

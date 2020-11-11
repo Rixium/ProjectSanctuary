@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System;
+using Application.Content;
 using Application.UI.Widgets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,6 +16,8 @@ namespace Application.Utils
         private float _currentValue;
         private float _maxValue;
         private float _minValue;
+        
+        public Action Changed { get; set; }
 
         public Slider(Vector2 position, float minValue, float maxValue, float startingValue, int width, float scale)
         {
@@ -32,21 +35,6 @@ namespace Application.Utils
         }
 
         private float XOffset() => _currentValue / _maxValue * _width;
-
-        public void IncreaseValue(float increase)
-        {
-            _currentValue += increase;
-
-            if (_currentValue < _minValue)
-            {
-                _currentValue = _minValue;
-            }
-
-            if (_currentValue > _maxValue)
-            {
-                _currentValue = _maxValue;
-            }
-        }
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
         {
@@ -69,18 +57,10 @@ namespace Application.Utils
 
         public float GetValue() => _currentValue;
 
-        public override bool MouseClick(Rectangle mouseRectangle)
-        {
-            return base.MouseClick(mouseRectangle);
-        }
-
-        public override bool MouseMove(Rectangle mouseBounds)
-        {
-            return base.MouseMove(mouseBounds);
-        }
-
         public void SetValue(float value)
         {
+            var oldValue = _currentValue;
+            
             _currentValue = value;
 
             if (_currentValue < _minValue)
@@ -91,7 +71,12 @@ namespace Application.Utils
             if (_currentValue > _maxValue)
             {
                 _currentValue = _maxValue;
-            }   
+            }
+
+            if (Math.Abs(oldValue - _currentValue) > 0.01f)
+            {
+                Changed?.Invoke();
+            }
         }
     }
 }

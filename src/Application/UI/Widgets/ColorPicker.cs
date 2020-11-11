@@ -22,8 +22,9 @@ namespace Application.UI.Widgets
 
         private const int Margin = 30;
         private const int Height = 10;
-
-
+        
+        public Action Changed { get; set; }
+        
         public ColorPicker(Vector2 position, int width, int segments, float scale)
         {
             _position = position;
@@ -36,6 +37,22 @@ namespace Application.UI.Widgets
             _valueSlider = AddChild(new Slider(position + new Vector2(0, Height + Margin + Height + Margin), 0, 100,
                 _value, width, scale));
 
+            _hueSlider.Changed += () =>
+            {
+                _hue = _hueSlider.GetValue();
+                Changed?.Invoke();
+            };
+            _saturationSlider.Changed += () =>
+            {
+                _saturation = _saturationSlider.GetValue();
+                Changed?.Invoke();
+            };
+            _valueSlider.Changed += () =>
+            {
+                _value = _valueSlider.GetValue();
+                Changed?.Invoke();
+            };
+            
             Bounds = new Rectangle((int) position.X, (int) position.Y, width,
                 Height + Margin + Height + Margin + Height);
         }
