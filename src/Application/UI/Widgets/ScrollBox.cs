@@ -223,7 +223,7 @@ namespace Application.UI.Widgets
                 return false;
             }
             
-            ScrollLine(Math.Sign(mouseBounds.Y - ScrollBarBounds().Center.Y));
+            ScrollLine((mouseBounds.Y - ScrollBarBounds().Center.Y) / ScrollBarBounds().Height);
             
             return true;
         }
