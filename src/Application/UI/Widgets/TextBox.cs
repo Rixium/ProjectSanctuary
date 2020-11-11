@@ -77,7 +77,8 @@ namespace Application.UI.Widgets
             _text = newText;
         }
 
-        private static char? GetCharacter(Keys pressedKey) => pressedKey.ToChar(false);
+        private static char? GetCharacter(Keys pressedKey) => pressedKey.ToChar(
+            Keyboard.GetState().IsKeyDown(Keys.LeftShift) || Keyboard.GetState().IsKeyDown(Keys.RightShift));
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
         {

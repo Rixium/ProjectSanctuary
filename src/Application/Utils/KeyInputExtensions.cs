@@ -243,12 +243,12 @@ namespace Application.Utils
 
             if (key == Keys.Tab)
             {
-                return '\t';
+                return ' ';
             }
 
             if (key == Keys.Enter)
             {
-                return (char) 13;
+                return ' ';
             }
 
             if (key == Keys.Back)
