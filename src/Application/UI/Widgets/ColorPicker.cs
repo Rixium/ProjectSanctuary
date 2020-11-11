@@ -41,28 +41,20 @@ namespace Application.UI.Widgets
             {
                 _hue = _hueSlider.GetValue();
                 Changed?.Invoke();
-                OutputValues();
             };
             _saturationSlider.Changed += () =>
             {
                 _saturation = _saturationSlider.GetValue();
                 Changed?.Invoke();
-                OutputValues();
             };
             _valueSlider.Changed += () =>
             {
                 _value = _valueSlider.GetValue();
                 Changed?.Invoke();
-                OutputValues();
             };
             
             Bounds = new Rectangle((int) position.X, (int) position.Y, width,
                 Height + Margin + Height + Margin + Height);
-        }
-
-        private void OutputValues()
-        {
-            throw new NotImplementedException();
         }
 
         protected override void InternalDraw(SpriteBatch spriteBatch)
@@ -131,6 +123,12 @@ namespace Application.UI.Widgets
             _dragged = null;
             return base.MouseReleased(mouseBounds);
         }
-        
+
+        public void SetValues(float hue, float saturation, float value)
+        {
+            _hueSlider.SetValue(hue);
+            _saturationSlider.SetValue(saturation);
+            _valueSlider.SetValue(value);
+        }
     }
 }

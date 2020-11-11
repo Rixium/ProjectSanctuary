@@ -1,5 +1,4 @@
-﻿using Application.Configuration;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Application.Player
 {
@@ -7,14 +6,14 @@ namespace Application.Player
     {
         
         public string Name { get; private set; }
-        public Pronoun Pronoun { get; private set; }
+        public int Pronoun { get; private set; }
         public int Hair { get; private set; }
         public Color BodyColor { get; private set; }
         public Color HairColor { get; private set; }
 
         public void SetName(string name) => Name = name;
 
-        public void SetPronouns(Pronoun pronoun) => Pronoun = pronoun;
+        public void SetPronouns(int pronoun) => Pronoun = pronoun;
 
         public void SetHair(int hair) => Hair = hair;
 

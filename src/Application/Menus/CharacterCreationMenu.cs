@@ -21,15 +21,18 @@ namespace Application.Menus
         private readonly Texture2D _menuButtons;
         private readonly float _buttonScale;
         private Panel _panel;
-        private ColorPicker _colorPicker;
+        
+        private ColorPicker _hairColorPicker;
+        private Rectangle _hairSource;
+        private Color _hairColor;
+        
+        private ColorPicker _bodyColorPicker;
+        private Color _bodyColor;
+        
         private Texture2D _playerEyes;
         private Texture2D _playerHair;
         private Texture2D _playerBody;
         private Vector2 _playerPosition;
-        private ColorPicker _bodyColorPicker;
-        private Rectangle _hairSource;
-        private Color _hairColor;
-        private Color _bodyColor;
         
         public TexturedButton BackButton { get; private set; }
         private TexturedButton DoneButton { get; set; }
@@ -131,17 +134,19 @@ namespace Application.Menus
 
 
             _panel.AddChild(hairColor);
-            _colorPicker = _panel.AddChild(
+            _hairColorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
-            _colorPicker.Changed += OnHairColorChanged;
+            _hairColorPicker.SetValues(9.5f, 70.5f, 38.5f);
+            _hairColorPicker.Changed += OnHairColorChanged;
 
             var bodyColor = new TextBlock("Body Color",
-                new Vector2(_colorPicker.Right() + 10, hairColor.Top()), interfaceFont, Color.White,
+                new Vector2(_hairColorPicker.Right() + 10, hairColor.Top()), interfaceFont, Color.White,
                 Color.Black);
             _bodyColorPicker = _panel.AddChild(
                 new ColorPicker(new Vector2(bodyColor.BottomLeft().X, bodyColor.BottomLeft().Y + 10),
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
+            _bodyColorPicker.SetValues(5f, 21.5f, 100f);
             _bodyColorPicker.Changed += OnBodyColorChanged;
 
             _panel.AddChild(bodyColor);
@@ -156,14 +161,24 @@ namespace Application.Menus
             
             _characterCreationInterface.AddWidget(_panel);
 
-            _hairColor = _colorPicker.GetColor();
+            _hairColor = _hairColorPicker.GetColor();
             _bodyColor = _bodyColorPicker.GetColor();
             PlayerHairDropDown.Select(0);
+
+            DoneButton.OnClick += () =>
+            {
+                Console.WriteLine("Saving Settings");
+                _playerMaker.SetHair(PlayerHairDropDown.SelectedIndex);
+                _playerMaker.SetName(NameTextBox.GetValue());
+                _playerMaker.SetPronouns(PronounDropDown.SelectedIndex);
+                _playerMaker.SetBodyColor(_bodyColorPicker.GetColor());
+                _playerMaker.SetHairColor(_hairColorPicker.GetColor());
+            };
         }
 
         private void OnBodyColorChanged() => _bodyColor = _bodyColorPicker.GetColor();
 
-        private void OnHairColorChanged() => _hairColor = _colorPicker.GetColor();
+        private void OnHairColorChanged() => _hairColor = _hairColorPicker.GetColor();
 
         private void OnHairSelect(int index)
         {

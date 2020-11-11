@@ -104,5 +104,7 @@ namespace Application.UI.Widgets
             Selected = mouseRectangle.Intersects(Bounds);
             return Selected;
         }
+
+        public string GetValue() => _text;
     }
 }

@@ -54,6 +54,8 @@ namespace Application.UI.Widgets
             new Rectangle((int) _arrowBounds.X, (int) _arrowBounds.Y,
                 (int) (_downArrowSource.Width * 3f), (int) (_downArrowSource.Height * 3f));
 
+        public int SelectedIndex => _selectedOption; 
+
         protected override void InternalDraw(SpriteBatch spriteBatch)
         {
             _nineSlice.DrawRectangle(spriteBatch, Bounds, 3f);

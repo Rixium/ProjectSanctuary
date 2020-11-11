@@ -6,7 +6,7 @@ namespace Application.Player
     public interface IPlayerMaker
     {
         void SetName(string name);
-        void SetPronouns(Pronoun pronoun);
+        void SetPronouns(int pronoun);
         void SetHair(int hair);
         void SetBodyColor(Color color);
         void SetHairColor(Color color);
