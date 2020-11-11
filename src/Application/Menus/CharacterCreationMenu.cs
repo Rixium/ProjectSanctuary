@@ -17,6 +17,7 @@ namespace Application.Menus
     {
         private readonly IContentChest _contentChest;
         private readonly IPlayerMaker _playerMaker;
+        private readonly IViewPortManager _viewPortPortManager;
         private UserInterface _characterCreationInterface;
 
         private Texture2D _menuButtons;
@@ -41,10 +42,11 @@ namespace Application.Menus
         private DropDownBox PlayerHairDropDown { get; set; }
         private TextBox NameTextBox { get; set; }
 
-        public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker)
+        public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker, IViewPortManager viewPortManager)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
+            _viewPortPortManager = viewPortManager;
         }
         
         
@@ -82,8 +84,8 @@ namespace Application.Menus
             var panelWidth = (int) (30 + 200 + 30 + portraitImage.Texture.Width * _buttonScale + 30);
             _panel = new Panel(nineSlice,
                 new Rectangle(
-                    (int) (ViewManager.ViewPort.Center().X - panelWidth / 2f),
-                    (int) (ViewManager.ViewPort.Center().Y - (500 + 30 + 22 * _buttonScale) / 2f), panelWidth,
+                    (int) (_viewPortPortManager.ViewPort.Center().X - panelWidth / 2f),
+                    (int) (_viewPortPortManager.ViewPort.Center().Y - (500 + 30 + 22 * _buttonScale) / 2f), panelWidth,
                     500), _buttonScale);
 
             BackButton = new TexturedButton(

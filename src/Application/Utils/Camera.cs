@@ -5,8 +5,11 @@ namespace Application.Utils
 {
     public class Camera
     {
-        public Camera(Vector2 cameraPosition)
+        private readonly IViewManager _viewManager;
+
+        public Camera(IViewManager viewManager, Vector2 cameraPosition)
         {
+            _viewManager = viewManager;
             Position = cameraPosition;
             Zoom = 1.0f;
         }
@@ -14,9 +17,9 @@ namespace Application.Utils
         public Vector2 Position { get; set; }
         private float Zoom { get; set; }
         private float Rotation { get; set; }
-        private static int ViewportWidth => ViewManager.ViewPort.Width;
-        private static int ViewportHeight => ViewManager.ViewPort.Height;
-        private static Vector2 ViewportCenter => new Vector2(ViewportWidth * 0.5f, ViewportHeight * 0.5f);
+        private int ViewportWidth => _viewManager.ViewPort.Width;
+        private int ViewportHeight => _viewManager.ViewPort.Height;
+        private Vector2 ViewportCenter => new Vector2(ViewportWidth * 0.5f, ViewportHeight * 0.5f);
         
         public Matrix TranslationMatrix =>
             Matrix.CreateTranslation(-Position.X, -Position.Y, 0) *
@@ -53,7 +56,7 @@ namespace Application.Utils
             Position = CenteredPosition(location);
         }
 
-        private static Vector2 CenteredPosition(Point location, bool clampToMap = false)
+        private Vector2 CenteredPosition(Point location, bool clampToMap = false)
         {
             var (x, y) = new Vector2(location.X, location.Y);
             var cameraCenteredOnTilePosition = new Vector2(x,

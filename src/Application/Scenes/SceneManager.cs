@@ -14,10 +14,23 @@ namespace Application.Scenes
 
         public IEnumerable<IScene> GetScenes() => _scenes.ToImmutableHashSet();
 
+        public SceneManager(SplashScene initialScene)
+        {
+            AddScene(initialScene);
+            NextScene = initialScene;
+        }
+        
         public void AddScene(IScene scene)
         {
             scene.Initialize();
             _scenes.Add(scene);
+
+            scene.RequestNextScene = (nextScene) =>
+            {
+                AddScene(nextScene);
+                NextScene = nextScene;
+                SwitchToNextScene();
+            };
         }
 
         public void SetNextScene<T>() where T : IScene =>

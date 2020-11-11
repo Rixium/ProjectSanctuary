@@ -8,37 +8,45 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.View
 {
+    public interface IViewPortManager
+    {
+        Viewport ViewPort { get; set; }
+    }
+
+    public class ViewPortManager : IViewPortManager
+    {
+        public Viewport ViewPort { get; set; }
+    }
+    
     public class ViewManager : IViewManager
     {
         private readonly IContentChest _contentChest;
-        private readonly SplashScene _splashScene;
-        public static Viewport ViewPort;
-        
-        
+        private readonly ISceneManager _sceneManager;
+        private readonly IViewPortManager _viewPortManager;
+
         private ITransitionManager _transitionManager;
-        private ISceneManager _sceneManager;
+
+        public Viewport ViewPort
+        {
+            get => _viewPortManager.ViewPort;
+            set => _viewPortManager.ViewPort = value;
+        }
         
         public GraphicsDeviceManager Graphics { get; set; }
-        public static ViewManager Instance { get; private set; } 
-        
-        public ViewManager(IContentChest contentChest, ISceneManager sceneManager, SplashScene splashScene)
+
+        public ViewManager(IContentChest contentChest, ISceneManager sceneManager, IViewPortManager viewPortManager)
         {
             _contentChest = contentChest;
             _sceneManager = sceneManager;
-            _splashScene = splashScene;
-            Instance = this;
+            _viewPortManager = viewPortManager;
         }
 
         public void Initialize()
         {
             ViewPort = new Viewport(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
-            
-            _transitionManager = new TransitionManager(_sceneManager, _contentChest);
+
+            _transitionManager = new TransitionManager(_sceneManager, _contentChest, this);
             _transitionManager.Initialize();
-            
-            _sceneManager.AddScene(_splashScene);
-            _sceneManager.SetNextScene<SplashScene>();
-            
         }
 
         public void Update(float delta)
@@ -46,7 +54,7 @@ namespace Application.View
             _sceneManager.ActiveScene?.Update(delta);
             _transitionManager.Update(delta);
         }
-            
+
         public void Draw(SpriteBatch spriteBatch)
         {
             Graphics.GraphicsDevice.Clear(_sceneManager.BackgroundColor);

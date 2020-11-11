@@ -93,10 +93,10 @@ namespace Application
             _graphics.GraphicsDevice.Viewport = new Viewport(new Rectangle(0, 0, w,
                 h));
 
-            ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
+            _viewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _graphics.ApplyChanges();
 
-            ViewManager.Instance?.WindowResized();
+            _viewManager.WindowResized();
 
             Window.ClientSizeChanged += WindowOnClientSizeChanged;
         }
@@ -141,7 +141,7 @@ namespace Application
             OptionsManager.Initialize();
 
             _viewManager.Initialize();
-            ViewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
+            _viewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _viewManager.OnExitRequest += OnExit;
             _viewManager.RequestControls += () => Enum.GetNames(typeof(InputAction));
 

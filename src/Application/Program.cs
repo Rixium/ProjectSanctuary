@@ -15,6 +15,7 @@ namespace Application
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<ViewPortManager>().As<IViewPortManager>().SingleInstance();
             builder.RegisterType<SceneManager>().As<ISceneManager>().SingleInstance();
             builder.RegisterType<ApplicationFolder>().As<IApplicationFolder>().SingleInstance();
             builder.RegisterType<ContentChest>().As<IContentChest>().SingleInstance();

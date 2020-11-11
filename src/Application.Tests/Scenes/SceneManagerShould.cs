@@ -1,4 +1,5 @@
-﻿using Application.Scenes;
+﻿using System;
+using Application.Scenes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NSubstitute;
@@ -14,7 +15,7 @@ namespace ProjectSanctuary.Application.Tests.Scenes
         [SetUp]
         public void SetUp()
         {
-            _sceneManager = new SceneManager();
+            _sceneManager = new SceneManager(Arg.Any<SplashScene>());
         }
 
         [Test]
@@ -63,6 +64,7 @@ namespace ProjectSanctuary.Application.Tests.Scenes
         
         private class MockScene : IScene
         {
+            public Action<IScene> RequestNextScene { get; set; }
             public Color BackgroundColor { get; }
 
             public void Update(float delta)

@@ -13,6 +13,7 @@ namespace Application.Menus
     internal class MainOptionsMenu : Menu
     {
         private readonly IContentChest _contentChest;
+        private readonly IViewPortManager _viewPortManager;
         private IUserInterface _userInterface;
         private float _titleYOffset;
         private float _buttonScale;
@@ -20,14 +21,15 @@ namespace Application.Menus
         private Panel _panel;
         public Widget BackButton { get; private set; }
 
-        public MainOptionsMenu(IContentChest contentChest)
+        public MainOptionsMenu(IContentChest contentChest, IViewPortManager viewManager)
         {
             _contentChest = contentChest;
-            _titleYOffset = ViewManager.ViewPort.Height / 2.0f - 50;
+            _viewPortManager = viewManager;
         }
 
         public override void Initialize()
         {
+            _titleYOffset = _viewPortManager.ViewPort.Height / 2.0f - 50;
             _menuButtons = _contentChest.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
 
@@ -41,8 +43,8 @@ namespace Application.Menus
             BackButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
                 new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),
-                new Vector2(ViewManager.ViewPort.Bounds.Left + 10 + 78 * _buttonScale / 2f,
-                    ViewManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
+                new Vector2(_viewPortManager.ViewPort.Bounds.Left + 10 + 78 * _buttonScale / 2f,
+                    _viewPortManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
 
             var nineSlice = new NineSlice(_menuButtons, new Dictionary<Segment, Rectangle>
             {
@@ -59,8 +61,8 @@ namespace Application.Menus
 
             _panel = new Panel(nineSlice,
                 new Rectangle(
-                    (int) (ViewManager.ViewPort.Center().X - 250),
-                    (int) (ViewManager.ViewPort.Center().Y - 250), 500,
+                    (int) (_viewPortManager.ViewPort.Center().X - 250),
+                    (int) (_viewPortManager.ViewPort.Center().Y - 250), 500,
                     500), _buttonScale);
 
             _panel.AddChild(BackButton);

@@ -13,6 +13,7 @@ namespace Application.Menus
     public class TitleMenu : Menu
     {
         private readonly IContentChest _contentChest;
+        private readonly IViewPortManager _viewPortManager;
         private Texture2D _menuButtons;
         private IUserInterface _userInterface;
 
@@ -25,9 +26,10 @@ namespace Application.Menus
         private Image NewsPanelImage { get; set; }
         private TextBlock TitleTextBlock { get; set; }
 
-        public TitleMenu(IContentChest contentChest)
+        public TitleMenu(IContentChest contentChest, IViewPortManager viewPortManager)
         {
             _contentChest = contentChest;
+            _viewPortManager = viewPortManager;
             _userInterface = new UserInterface();
         }
 
@@ -49,11 +51,11 @@ namespace Application.Menus
 
             SignTopImage = _userInterface.AddWidget(new Image(
                 new Sprite(_menuButtons, new Rectangle(0, 0, 192, 44)),
-                new Vector2(ViewManager.ViewPort.Center().X,
-                    ViewManager.ViewPort.Center().Y - ViewManager.ViewPort.Height / 6f), _buttonScale));
+                new Vector2(_viewPortManager.ViewPort.Center().X,
+                    _viewPortManager.ViewPort.Center().Y - _viewPortManager.ViewPort.Height / 6f), _buttonScale));
 
             TitleTextBlock = new TextBlock(title,
-                new Vector2(ViewManager.ViewPort.Center().X - font.MeasureString(title).X / 2,
+                new Vector2(_viewPortManager.ViewPort.Center().X - font.MeasureString(title).X / 2,
                     SignTopImage.Bounds.Top -
                     font.MeasureString(title).Y), font, Color.Black, null);
 
@@ -91,8 +93,6 @@ namespace Application.Menus
                     NewGameButton.Height * _buttonScale + LoadGameButton.Height * _buttonScale),
                 _buttonScale);
 
-            ExitGameButton.OnClick += () => { ViewManager.Instance.RequestExit(); };
-
             SignTopImage.AddChild(TitleTextBlock);
             SignTopImage.AddChild(ScrollBox);
             SignTopImage.AddChild(NewGameButton as IWidget);
@@ -117,8 +117,8 @@ namespace Application.Menus
             var size = _contentChest.Get<SpriteFont>("Fonts/InterfaceFont").MeasureString("by YetiFace");
 
             spriteBatch.DrawString(_contentChest.Get<SpriteFont>("Fonts/InterfaceFont"), "by YetiFace",
-                new Vector2(ViewManager.ViewPort.Center().X - size.X / 2f,
-                    ViewManager.ViewPort.Bounds.Bottom - 10 - size.Y),
+                new Vector2(_viewPortManager.ViewPort.Center().X - size.X / 2f,
+                    _viewPortManager.ViewPort.Bounds.Bottom - 10 - size.Y),
                 Color.Black);
             spriteBatch.End();
         }

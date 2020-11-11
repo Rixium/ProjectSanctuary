@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System;
+using Application.Content;
 using Application.Menus;
 using Application.UI;
 using Application.View;
@@ -13,16 +14,19 @@ namespace Application.Scenes
         private readonly TitleMenu _mainTitleMenu;
         private readonly MainOptionsMenu _mainOptionsMenu;
         private readonly IContentChest _contentChest;
+        private readonly IViewPortManager _viewPortManager;
         private readonly CharacterCreationMenu _characterCreationMenu;
 
+        public Action<IScene> RequestNextScene { get; set; }
         public Color BackgroundColor => Color.White;
 
-        public MenuScene(IContentChest contentChest, CharacterCreationMenu characterCreationMenu)
+        public MenuScene(IContentChest contentChest, IViewPortManager viewPortManager, CharacterCreationMenu characterCreationMenu)
         {
-            _mainTitleMenu = new TitleMenu(contentChest);
+            _mainTitleMenu = new TitleMenu(contentChest, viewPortManager);
             _contentChest = contentChest;
+            _viewPortManager = viewPortManager;
             _characterCreationMenu = characterCreationMenu;
-            _mainOptionsMenu = new MainOptionsMenu(contentChest);
+            _mainOptionsMenu = new MainOptionsMenu(contentChest, viewPortManager);
 
             _activeMenu = _mainTitleMenu;
         }
@@ -50,7 +54,7 @@ namespace Application.Scenes
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             spriteBatch.Draw(_contentChest.Get<Texture2D>("background"),
-                new Rectangle(0, 0, ViewManager.ViewPort.Width, ViewManager.ViewPort.Height),
+                new Rectangle(0, 0, _viewPortManager.ViewPort.Width, _viewPortManager.ViewPort.Height),
                 Color.White * 0.2f);
             spriteBatch.End();
 
