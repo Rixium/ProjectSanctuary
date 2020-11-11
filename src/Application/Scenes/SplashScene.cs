@@ -10,15 +10,17 @@ namespace Application.Scenes
     public class SplashScene : IScene
     {
         private readonly IContentChest _contentChest;
+        private readonly ISceneManager _sceneManager;
         private readonly MenuScene _menuScene;
         public Color BackgroundColor => Color.Black;
 
         private const float TimeToShow = 3f;
         private float _timeShown;
 
-        public SplashScene(IContentChest contentChest, MenuScene menuScene)
+        public SplashScene(IContentChest contentChest, ISceneManager sceneManager, MenuScene menuScene)
         {
             _contentChest = contentChest;
+            _sceneManager = sceneManager;
             _menuScene = menuScene;
         }
 
@@ -30,7 +32,7 @@ namespace Application.Scenes
         
         public void Update(float delta)
         {
-            if (SceneManager.Instance.NextScene != null)
+            if (_sceneManager.NextScene != null)
             {
                 return;
             }
@@ -45,8 +47,8 @@ namespace Application.Scenes
             var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
             MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{num}"));
 
-            SceneManager.Instance.AddScene(_menuScene);
-            SceneManager.Instance.SetNextScene<MenuScene>();
+            _sceneManager.AddScene(_menuScene);
+            _sceneManager.SetNextScene<MenuScene>();
         }
 
         public void Draw(SpriteBatch spriteBatch)

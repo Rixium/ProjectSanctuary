@@ -11,12 +11,6 @@ namespace Application.Scenes
         public IScene NextScene { get; private set; }
         public IScene ActiveScene { get; private set; }
         public Color BackgroundColor => ActiveScene?.BackgroundColor ?? Color.Black;
-        public static SceneManager Instance { get; private set; }
-
-        public SceneManager()
-        {
-            Instance = this;
-        }
 
         public IEnumerable<IScene> GetScenes() => _scenes.ToImmutableHashSet();
 

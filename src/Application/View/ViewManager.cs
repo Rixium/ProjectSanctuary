@@ -21,9 +21,10 @@ namespace Application.View
         public GraphicsDeviceManager Graphics { get; set; }
         public static ViewManager Instance { get; private set; } 
         
-        public ViewManager(IContentChest contentChest, SplashScene splashScene)
+        public ViewManager(IContentChest contentChest, ISceneManager sceneManager, SplashScene splashScene)
         {
             _contentChest = contentChest;
+            _sceneManager = sceneManager;
             _splashScene = splashScene;
             Instance = this;
         }
@@ -32,7 +33,6 @@ namespace Application.View
         {
             ViewPort = new Viewport(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
             
-            _sceneManager = new SceneManager();
             _transitionManager = new TransitionManager(_sceneManager, _contentChest);
             _transitionManager.Initialize();
             
