@@ -21,10 +21,11 @@ namespace Application.Menus
         private Panel _panel;
         public Widget BackButton { get; private set; }
 
-        public MainOptionsMenu(IContentChest contentChest, IViewPortManager viewManager)
+        public MainOptionsMenu(IContentChest contentChest, IViewPortManager viewManager, IUserInterface userInterface)
         {
             _contentChest = contentChest;
             _viewPortManager = viewManager;
+            _userInterface = userInterface;
         }
 
         public override void Initialize()
@@ -38,8 +39,6 @@ namespace Application.Menus
 
         private void SetupUserInterface()
         {
-            _userInterface = new UserInterface();
-
             BackButton = new TexturedButton(
                 new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
                 new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),

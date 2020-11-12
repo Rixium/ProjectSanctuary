@@ -20,7 +20,7 @@ namespace Application.Menus
         private readonly IPlayerMaker _playerMaker;
         private readonly IViewPortManager _viewPortPortManager;
         private readonly IKeyboardDispatcher _keyboardDispatcher;
-        private UserInterface _characterCreationInterface;
+        private readonly IUserInterface _userInterface;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -45,12 +45,13 @@ namespace Application.Menus
         private TextBox NameTextBox { get; set; }
 
         public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker,
-            IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher)
+            IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
             _viewPortPortManager = viewPortManager;
             _keyboardDispatcher = keyboardDispatcher;
+            _userInterface = userInterface;
         }
 
 
@@ -64,8 +65,6 @@ namespace Application.Menus
 
         private void SetupUserInterface()
         {
-            _characterCreationInterface = new UserInterface();
-
             var interfaceFont = _contentChest.Get<SpriteFont>("Fonts/InterfaceFont");
             var inputBoxFont = _contentChest.Get<SpriteFont>("Fonts/InputBoxFont");
 
@@ -178,7 +177,7 @@ namespace Application.Menus
             _playerPosition = characterPanel.Center() - new Vector2(_playerEyes.Width * _buttonScale / 2f,
                 _playerEyes.Height * _buttonScale / 2f - 30f);
 
-            _characterCreationInterface.AddWidget(_panel);
+            _userInterface.AddWidget(_panel);
 
             _hairColor = _hairColorPicker.GetColor();
             _bodyColor = _bodyColorPicker.GetColor();
@@ -218,14 +217,14 @@ namespace Application.Menus
 
         public override void Update(float delta)
         {
-            _characterCreationInterface.Update(delta);
+            _userInterface.Update(delta);
             base.Update(delta);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            _characterCreationInterface.Draw(spriteBatch);
+            _userInterface.Draw(spriteBatch);
             DrawCharacter(spriteBatch);
             spriteBatch.End();
         }

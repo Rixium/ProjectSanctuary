@@ -43,7 +43,6 @@ namespace Application.Menus
 
         private void SetupUserInterface()
         {
-            _userInterface = new UserInterface();
             _buttonScale = 3f;
 
             const string title = "Project Sanctuary";
