@@ -6,7 +6,8 @@ namespace Application.Scenes
 {
     public interface IScene
     {
-        Action<IScene> RequestNextScene { get; set; }
+        SceneType SceneType { get; }
+        Action<SceneType> RequestNextScene { get; set; }
         Color BackgroundColor { get; }
         void Update(float delta);
         void Draw(SpriteBatch spriteBatch);

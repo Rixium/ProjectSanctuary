@@ -14,21 +14,32 @@ namespace Application.Scenes
 
         public IEnumerable<IScene> GetScenes() => _scenes.ToImmutableHashSet();
 
-        public SceneManager(SplashScene initialScene)
+        public SceneManager(IReadOnlyCollection<IScene> scenes)
         {
-            AddScene(initialScene);
-            NextScene = initialScene;
+            foreach (var scene in scenes)
+            {
+                AddScene(scene);
+            }
+
+            NextScene = scenes.First();
+        }
+
+        public void Initialize()
+        {
+            foreach (var scene in _scenes)
+            {
+                scene.Initialize();
+            }
+
+            Initialized = true;
         }
         
         public void AddScene(IScene scene)
         {
-            scene.Initialize();
             _scenes.Add(scene);
-
             scene.RequestNextScene = (nextScene) =>
             {
-                AddScene(nextScene);
-                NextScene = nextScene;
+                NextScene = _scenes.FirstOrDefault(x => x.SceneType == nextScene);
                 SwitchToNextScene();
             };
         }
@@ -42,7 +53,7 @@ namespace Application.Scenes
             ActiveScene?.Finish();
             // Ensure that the next scene starts before required.
             NextScene?.Start();
-            
+
             ActiveScene = NextScene;
             NextScene = null;
         }
@@ -52,10 +63,17 @@ namespace Application.Scenes
 
         public void WindowResized()
         {
+            if (!Initialized)
+            {
+                return;
+            }
+            
             foreach (var scene in _scenes)
             {
                 scene?.WindowResized();
             }
         }
+
+        public bool Initialized { get; set; }
     }
 }

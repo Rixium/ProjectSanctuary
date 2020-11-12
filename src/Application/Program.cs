@@ -28,8 +28,9 @@ namespace Application
 
             builder.RegisterType<UserInterface>().As<IUserInterface>().InstancePerDependency();
             builder.RegisterType<PlayerMaker>().As<IPlayerMaker>();
-            builder.RegisterType<MenuScene>();
-            builder.RegisterType<SplashScene>();
+            
+            builder.RegisterType<SplashScene>().As<IScene>();
+            builder.RegisterType<MenuScene>().As<IScene>();
 
             builder.RegisterType<CharacterCreationMenu>();
             builder.RegisterType<TitleMenu>();

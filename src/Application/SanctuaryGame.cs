@@ -142,7 +142,7 @@ namespace Application
 
             OptionsManager = new OptionsManager(_applicationFolder);
             OptionsManager.Initialize();
-
+            
             _viewManager.Initialize();
             _viewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _viewManager.OnExitRequest += OnExit;

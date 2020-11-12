@@ -9,6 +9,7 @@ namespace Application.Scenes
         IScene ActiveScene { get; }
         Color BackgroundColor { get; }
         IEnumerable<IScene> GetScenes();
+        void Initialize();
         void AddScene(IScene scene);
         void SetNextScene<T>() where T : IScene;
         void SwitchToNextScene();

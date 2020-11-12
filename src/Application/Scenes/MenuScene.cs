@@ -10,6 +10,8 @@ namespace Application.Scenes
 {
     public class MenuScene : IScene
     {
+        public SceneType SceneType => SceneType.Menu;
+
         private IMenu _activeMenu;
         private readonly TitleMenu _mainTitleMenu;
         private readonly MainOptionsMenu _mainOptionsMenu;
@@ -17,10 +19,11 @@ namespace Application.Scenes
         private readonly IViewPortManager _viewPortManager;
         private readonly CharacterCreationMenu _characterCreationMenu;
 
-        public Action<IScene> RequestNextScene { get; set; }
+        public Action<SceneType> RequestNextScene { get; set; }
         public Color BackgroundColor => Color.White;
 
-        public MenuScene(IContentChest contentChest, IViewPortManager viewPortManager, CharacterCreationMenu characterCreationMenu,
+        public MenuScene(IContentChest contentChest, IViewPortManager viewPortManager,
+            CharacterCreationMenu characterCreationMenu,
             TitleMenu mainTitleMenu, MainOptionsMenu mainOptionsMenu)
         {
             _contentChest = contentChest;
@@ -37,15 +40,15 @@ namespace Application.Scenes
             _mainOptionsMenu.Initialize();
             _characterCreationMenu.Initialize();
             _mainTitleMenu.Initialize();
-            
-            SetupButtons();   
+
+            SetupButtons();
         }
 
         private void SetupButtons()
         {
             _mainTitleMenu.NewGameButton.OnClick += () => _activeMenu = _characterCreationMenu;
             _mainTitleMenu.LoadGameButton.OnClick += () => _activeMenu = _mainOptionsMenu;
-            ((IClickable)_mainOptionsMenu.BackButton).OnClick += () => _activeMenu = _mainTitleMenu;
+            ((IClickable) _mainOptionsMenu.BackButton).OnClick += () => _activeMenu = _mainTitleMenu;
             _characterCreationMenu.BackButton.OnClick += () => _activeMenu = _mainTitleMenu;
         }
 
@@ -80,7 +83,6 @@ namespace Application.Scenes
 
         public void Start()
         {
-            
         }
     }
 }

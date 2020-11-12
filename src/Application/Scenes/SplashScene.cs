@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Application.Content;
 using Application.View;
 using Microsoft.Xna.Framework;
@@ -10,10 +9,11 @@ namespace Application.Scenes
 {
     public class SplashScene : IScene
     {
+        public SceneType SceneType => SceneType.Splash;
+        
         private readonly IViewPortManager _viewPortManager;
         private readonly IContentChest _contentChest;
-        private readonly MenuScene _menuScene;
-        public Action<IScene> RequestNextScene { get; set; }
+        public Action<SceneType> RequestNextScene { get; set; }
         public Color BackgroundColor => Color.Black;
 
         private const float TimeToShow = 3f;
@@ -22,12 +22,10 @@ namespace Application.Scenes
 
         public SplashScene(
             IViewPortManager viewPortManager,
-            IContentChest contentChest,
-            MenuScene menuScene)
+            IContentChest contentChest)
         {
             _viewPortManager = viewPortManager;
             _contentChest = contentChest;
-            _menuScene = menuScene;
         }
 
 
@@ -48,10 +46,10 @@ namespace Application.Scenes
             {
                 return;
             }
-            
+
             MediaPlayer.Play(_song);
 
-            RequestNextScene?.Invoke(_menuScene);
+            RequestNextScene?.Invoke(SceneType.Menu);
         }
 
         public void Draw(SpriteBatch spriteBatch)

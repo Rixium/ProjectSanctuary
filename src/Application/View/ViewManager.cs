@@ -46,7 +46,9 @@ namespace Application.View
             ViewPort = new Viewport(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
 
             _transitionManager = new TransitionManager(_sceneManager, _contentChest, this);
+            
             _transitionManager.Initialize();
+            _sceneManager.Initialize();
         }
 
         public void Update(float delta)
