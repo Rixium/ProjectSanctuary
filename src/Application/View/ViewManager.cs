@@ -34,19 +34,18 @@ namespace Application.View
         
         public GraphicsDeviceManager Graphics { get; set; }
 
-        public ViewManager(IContentChest contentChest, ISceneManager sceneManager, IViewPortManager viewPortManager)
+        public ViewManager(IContentChest contentChest, ISceneManager sceneManager, IViewPortManager viewPortManager, ITransitionManager transitionManager)
         {
             _contentChest = contentChest;
             _sceneManager = sceneManager;
             _viewPortManager = viewPortManager;
+            _transitionManager = transitionManager;
         }
 
         public void Initialize()
         {
             ViewPort = new Viewport(0, 0, Graphics.PreferredBackBufferWidth, Graphics.PreferredBackBufferHeight);
 
-            _transitionManager = new TransitionManager(_sceneManager, _contentChest, this);
-            
             _transitionManager.Initialize();
             _sceneManager.Initialize();
         }

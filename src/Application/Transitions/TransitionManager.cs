@@ -8,9 +8,9 @@ namespace Application.Transitions
 {
     public class TransitionManager : ITransitionManager
     {
-        private ISceneManager _sceneManager;
+        private readonly ISceneManager _sceneManager;
         private readonly IContentChest _contentChest;
-        private readonly IViewManager _viewManager;
+        private readonly IViewPortManager _viewPortManager;
 
         private bool _fadingToBlack;
         private bool _fadingToTransparent;
@@ -19,11 +19,11 @@ namespace Application.Transitions
         private float _currentFade;
         private Texture2D _pixel;
 
-        public TransitionManager(ISceneManager sceneManager, IContentChest contentChest, IViewManager viewManager)
+        public TransitionManager(ISceneManager sceneManager, IContentChest contentChest, IViewPortManager viewPortManager)
         {
             _sceneManager = sceneManager;
             _contentChest = contentChest;
-            _viewManager = viewManager;
+            _viewPortManager = viewPortManager;
         }
 
         public void Initialize()
@@ -83,7 +83,7 @@ namespace Application.Transitions
 
             spriteBatch.Begin();
 
-            spriteBatch.Draw(_pixel, _viewManager.ViewPort.Bounds, Color.Black * _currentFade);
+            spriteBatch.Draw(_pixel, _viewPortManager.ViewPort.Bounds, Color.Black * _currentFade);
 
             spriteBatch.End();
         }

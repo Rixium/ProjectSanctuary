@@ -5,6 +5,7 @@ using Application.Input;
 using Application.Menus;
 using Application.Player;
 using Application.Scenes;
+using Application.Transitions;
 using Application.UI;
 using Application.View;
 using Autofac;
@@ -24,11 +25,13 @@ namespace Application
             builder.RegisterType<ViewManager>().As<IViewManager>().SingleInstance();
             builder.RegisterType<KeyboardDispatcher>().As<IKeyboardDispatcher>().SingleInstance();
             builder.RegisterType<MonoGameMouseManager>().As<IMouseManager>().SingleInstance();
+            builder.RegisterType<TransitionManager>().As<ITransitionManager>().SingleInstance();
+            
             builder.RegisterType<Cursor>();
 
             builder.RegisterType<UserInterface>().As<IUserInterface>().InstancePerDependency();
             builder.RegisterType<PlayerMaker>().As<IPlayerMaker>();
-            
+
             builder.RegisterType<SplashScene>().As<IScene>();
             builder.RegisterType<MenuScene>().As<IScene>();
 
