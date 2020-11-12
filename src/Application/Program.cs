@@ -1,4 +1,5 @@
 ﻿using System;
+using Application.Configuration;
 using Application.Content;
 using Application.FileSystem;
 using Application.Input;
@@ -26,8 +27,11 @@ namespace Application
             builder.RegisterType<KeyboardDispatcher>().As<IKeyboardDispatcher>().SingleInstance();
             builder.RegisterType<MonoGameMouseManager>().As<IMouseManager>().SingleInstance();
             builder.RegisterType<TransitionManager>().As<ITransitionManager>().SingleInstance();
+            builder.RegisterType<OptionsManager>().As<IOptionsManager>().SingleInstance();
             
             builder.RegisterType<Cursor>();
+            builder.RegisterType<ControlOptions>();
+            builder.RegisterType<PronounOptions>();
 
             builder.RegisterType<UserInterface>().As<IUserInterface>().InstancePerDependency();
             builder.RegisterType<PlayerMaker>().As<IPlayerMaker>();

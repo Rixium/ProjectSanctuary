@@ -5,5 +5,6 @@
         ControlOptions ControlOptions { get; }
         PronounOptions PronounOptions { get; }
         void Initialize();
+        void Save(bool overwrite);
     }
 }

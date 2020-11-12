@@ -9,9 +9,12 @@ namespace Application.Configuration
         public ControlOptions ControlOptions { get; private set; }
         public PronounOptions PronounOptions { get; private set; }
 
-        public OptionsManager(IApplicationFolder applicationFolder)
+        public OptionsManager(IApplicationFolder applicationFolder, ControlOptions controlOptions, PronounOptions pronounOptions)
         {
             _applicationFolder = applicationFolder;
+            
+            ControlOptions = controlOptions;
+            PronounOptions = pronounOptions;
         }
 
         public void Initialize()
@@ -19,6 +22,11 @@ namespace Application.Configuration
             ControlOptions = ControlOptions.Load(_applicationFolder);
             PronounOptions = PronounOptions.Load(_applicationFolder);
         }
-        
+
+        public void Save(bool overwrite)
+        {
+            ControlOptions.Save(_applicationFolder, overwrite);
+            PronounOptions.Save(_applicationFolder, overwrite);
+        }
     }
 }

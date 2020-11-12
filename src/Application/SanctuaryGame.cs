@@ -24,20 +24,21 @@ namespace Application
 
         public static IKeyboardDispatcher KeyboardDispatcher;
         public static IMouseManager MouseManager;
-        public static IOptionsManager OptionsManager;
 
         private readonly GraphicsDeviceManager _graphics;
-        private IApplicationFolder _applicationFolder;
         private readonly IKeyboardDispatcher _keyboardDispatcher;
         private readonly IMouseManager _mouseManager;
         private readonly Cursor _cursor;
+        private readonly IOptionsManager _optionsManager;
+        
+        private IApplicationFolder _applicationFolder;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
         private SpriteBatch _spriteBatch;
 
         public SanctuaryGame(IContentChest contentChest, IViewManager viewManager, IApplicationFolder applicationFolder,
-            IKeyboardDispatcher keyboardDispatcher, IMouseManager mouseManager, Cursor cursor)
+            IKeyboardDispatcher keyboardDispatcher, IMouseManager mouseManager, Cursor cursor, IOptionsManager optionsManager)
         {
             _contentChest = contentChest;
             _viewManager = viewManager;
@@ -45,6 +46,7 @@ namespace Application
             _keyboardDispatcher = keyboardDispatcher;
             _mouseManager = mouseManager;
             _cursor = cursor;
+            _optionsManager = optionsManager;
 
             _graphics = new GraphicsDeviceManager(this)
             {
@@ -140,8 +142,7 @@ namespace Application
 
             ShapeHelpers.ContentChest = _contentChest;
 
-            OptionsManager = new OptionsManager(_applicationFolder);
-            OptionsManager.Initialize();
+            _optionsManager.Initialize();
             
             _viewManager.Initialize();
             _viewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
@@ -165,12 +166,7 @@ namespace Application
             // Also create the default file for settings files if they don't exist.
             _applicationFolder.SetDirectoryName(GameName);
             _applicationFolder.Create();
-
-            var controlOptions = new ControlOptions();
-            controlOptions.Save(_applicationFolder, false);
-
-            var pronounOptions = new PronounOptions();
-            pronounOptions.Save(_applicationFolder, false);
+            _optionsManager.Save(false);
         }
 
         private void UpdateWindowTitle() => Window.Title = $"{GameName} - {GameVersion()}";

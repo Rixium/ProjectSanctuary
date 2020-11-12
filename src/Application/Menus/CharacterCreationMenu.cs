@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Configuration;
 using Application.Content;
 using Application.Graphics;
 using Application.Input;
@@ -21,6 +22,7 @@ namespace Application.Menus
         private readonly IViewPortManager _viewPortPortManager;
         private readonly IKeyboardDispatcher _keyboardDispatcher;
         private readonly IUserInterface _userInterface;
+        private readonly IOptionsManager _optionsManager;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -45,13 +47,15 @@ namespace Application.Menus
         private TextBox NameTextBox { get; set; }
 
         public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker,
-            IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface)
+            IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface,
+            IOptionsManager optionsManager)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
             _viewPortPortManager = viewPortManager;
             _keyboardDispatcher = keyboardDispatcher;
             _userInterface = userInterface;
+            _optionsManager = optionsManager;
         }
 
 
@@ -118,7 +122,7 @@ namespace Application.Menus
                 new TextBlock("Pronouns", pronounSectionPosition, interfaceFont, Color.White, Color.Black);
             PronounDropDown = new DropDownBox(_contentChest, inputBoxFont,
                 pronounSectionPosition + new Vector2(0, interfaceFont.MeasureString("Pronouns").Y + 10),
-                SanctuaryGame.OptionsManager.PronounOptions.Pronouns.Select(x =>
+                _optionsManager.PronounOptions.Pronouns.Select(x =>
                     $"{x.Subjective}/{x.Objective}").ToArray(), 200);
             PronounDropDown.Hover += OnPronounSelect;
             PronounDropDown.SelectedIndex = _playerMaker.Pronouns;
