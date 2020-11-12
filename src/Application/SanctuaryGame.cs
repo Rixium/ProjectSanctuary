@@ -25,20 +25,26 @@ namespace Application
         public static IKeyboardDispatcher KeyboardDispatcher;
         public static IMouseManager MouseManager;
         public static IOptionsManager OptionsManager;
-        public static Cursor Cursor;
 
         private readonly GraphicsDeviceManager _graphics;
         private IApplicationFolder _applicationFolder;
+        private readonly IKeyboardDispatcher _keyboardDispatcher;
+        private readonly IMouseManager _mouseManager;
+        private readonly Cursor _cursor;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
 
         private SpriteBatch _spriteBatch;
 
-        public SanctuaryGame(IContentChest contentChest, IViewManager viewManager, IApplicationFolder applicationFolder)
+        public SanctuaryGame(IContentChest contentChest, IViewManager viewManager, IApplicationFolder applicationFolder,
+            IKeyboardDispatcher keyboardDispatcher, IMouseManager mouseManager, Cursor cursor)
         {
             _contentChest = contentChest;
             _viewManager = viewManager;
             _applicationFolder = applicationFolder;
+            _keyboardDispatcher = keyboardDispatcher;
+            _mouseManager = mouseManager;
+            _cursor = cursor;
 
             _graphics = new GraphicsDeviceManager(this)
             {
@@ -124,18 +130,15 @@ namespace Application
 
             InitializeApplicationFolder();
 
-            KeyboardDispatcher = new KeyboardDispatcher();
-            MouseManager = new MonoGameMouseManager();
-
             Content.RootDirectory = "assets";
             _contentChest.Content = new MonoGameContentManager
             {
                 ContentManager = Content
             };
+            
+            _cursor.Initialize();
 
             ShapeHelpers.ContentChest = _contentChest;
-
-            Cursor = new Cursor(_contentChest);
 
             OptionsManager = new OptionsManager(_applicationFolder);
             OptionsManager.Initialize();
@@ -145,7 +148,7 @@ namespace Application
             _viewManager.OnExitRequest += OnExit;
             _viewManager.RequestControls += () => Enum.GetNames(typeof(InputAction));
 
-            KeyboardDispatcher.SubscribeToKeyPress(Keys.OemTilde, () => { Debug = !Debug; });
+            _keyboardDispatcher.SubscribeToKeyPress(Keys.OemTilde, () => { Debug = !Debug; });
 
             base.Initialize();
         }
@@ -176,8 +179,8 @@ namespace Application
         {
             var delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds / 1000.0f;
 
-            KeyboardDispatcher.Update(delta);
-            MouseManager.Update(delta);
+            _keyboardDispatcher.Update(delta);
+            _mouseManager.Update(delta);
 
             _viewManager.Update(delta);
 
@@ -188,7 +191,7 @@ namespace Application
         {
             GraphicsDevice.Clear(Color.White);
             _viewManager.Draw(_spriteBatch);
-            Cursor.Draw(_spriteBatch);
+            _cursor.Draw(_spriteBatch);
             base.Draw(gameTime);
         }
 

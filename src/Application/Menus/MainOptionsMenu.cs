@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Application.Menus
 {
-    internal class MainOptionsMenu : Menu
+    public class MainOptionsMenu : Menu
     {
         private readonly IContentChest _contentChest;
         private readonly IViewPortManager _viewPortManager;

@@ -20,13 +20,14 @@ namespace Application.Scenes
         public Action<IScene> RequestNextScene { get; set; }
         public Color BackgroundColor => Color.White;
 
-        public MenuScene(IContentChest contentChest, IViewPortManager viewPortManager, CharacterCreationMenu characterCreationMenu)
+        public MenuScene(IContentChest contentChest, IViewPortManager viewPortManager, CharacterCreationMenu characterCreationMenu,
+            TitleMenu mainTitleMenu, MainOptionsMenu mainOptionsMenu)
         {
-            _mainTitleMenu = new TitleMenu(contentChest, viewPortManager);
             _contentChest = contentChest;
             _viewPortManager = viewPortManager;
             _characterCreationMenu = characterCreationMenu;
-            _mainOptionsMenu = new MainOptionsMenu(contentChest, viewPortManager);
+            _mainTitleMenu = mainTitleMenu;
+            _mainOptionsMenu = mainOptionsMenu;
 
             _activeMenu = _mainTitleMenu;
         }

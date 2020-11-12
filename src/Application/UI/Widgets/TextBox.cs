@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.Content;
+using Application.Input;
 using Application.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,7 @@ namespace Application.UI.Widgets
 {
     public class TextBox : Widget
     {
+        private readonly IKeyboardDispatcher _keyboardDispatcher;
         private readonly SpriteFont _font;
         private readonly NineSlice _nineSlice;
         private bool Selected { get; set; }
@@ -18,14 +20,16 @@ namespace Application.UI.Widgets
         public string Value { get; set; } = "";
 
 
-        public TextBox(IContentChest contentChest, Vector2 position, SpriteFont font, int width)
+        public TextBox(IContentChest contentChest, IKeyboardDispatcher keyboardDispatcher, Vector2 position,
+            SpriteFont font, int width)
         {
+            _keyboardDispatcher = keyboardDispatcher;
             _font = font;
 
             var (x, y) = position;
             Bounds = new Rectangle((int) x, (int) y, width, 30);
 
-            SanctuaryGame.KeyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
+            _keyboardDispatcher.SubscribeToAnyKeyPress(OnKeyPressed);
 
 
             _nineSlice = new NineSlice(contentChest.Get<Texture2D>("UI/title_menu_buttons"),

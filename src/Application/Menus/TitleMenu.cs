@@ -26,11 +26,11 @@ namespace Application.Menus
         private Image NewsPanelImage { get; set; }
         private TextBlock TitleTextBlock { get; set; }
 
-        public TitleMenu(IContentChest contentChest, IViewPortManager viewPortManager)
+        public TitleMenu(IContentChest contentChest, IViewPortManager viewPortManager, IUserInterface userInterface)
         {
             _contentChest = contentChest;
             _viewPortManager = viewPortManager;
-            _userInterface = new UserInterface();
+            _userInterface = userInterface;
         }
 
         public override void Initialize()

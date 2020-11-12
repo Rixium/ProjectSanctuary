@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Content;
 using Application.Graphics;
+using Application.Input;
 using Application.Player;
 using Application.UI;
 using Application.UI.Widgets;
@@ -18,6 +19,7 @@ namespace Application.Menus
         private readonly IContentChest _contentChest;
         private readonly IPlayerMaker _playerMaker;
         private readonly IViewPortManager _viewPortPortManager;
+        private readonly IKeyboardDispatcher _keyboardDispatcher;
         private UserInterface _characterCreationInterface;
 
         private Texture2D _menuButtons;
@@ -42,14 +44,16 @@ namespace Application.Menus
         private DropDownBox PlayerHairDropDown { get; set; }
         private TextBox NameTextBox { get; set; }
 
-        public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker, IViewPortManager viewPortManager)
+        public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker,
+            IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
             _viewPortPortManager = viewPortManager;
+            _keyboardDispatcher = keyboardDispatcher;
         }
-        
-        
+
+
         public override void Initialize()
         {
             _menuButtons = _contentChest.Get<Texture2D>("UI/title_menu_buttons");
@@ -102,7 +106,8 @@ namespace Application.Menus
             var nameSectionPosition = new Vector2(_panel.Left() + 30,
                 _panel.Top() + 30);
             var nameTextBoxTitle = new TextBlock("Name", nameSectionPosition, interfaceFont, Color.White, Color.Black);
-            NameTextBox = new TextBox(_contentChest, nameSectionPosition + new Vector2(0, interfaceFont.MeasureString("Name").Y + 10),
+            NameTextBox = new TextBox(_contentChest, _keyboardDispatcher,
+                nameSectionPosition + new Vector2(0, interfaceFont.MeasureString("Name").Y + 10),
                 inputBoxFont, 200)
             {
                 Value = _playerMaker.Name
@@ -138,7 +143,7 @@ namespace Application.Menus
                 new Vector2(PlayerHairDropDown.Left(), PlayerHairDropDown.BottomLeft().Y + 40), interfaceFont,
                 Color.White,
                 Color.Black);
-            
+
             _panel.AddChild(pronounTextBoxTitle);
             _panel.AddChild(nameTextBoxTitle);
             _panel.AddChild(NameTextBox);
@@ -147,7 +152,7 @@ namespace Application.Menus
             _panel.AddChild(DoneButton);
             _panel.AddChild(hairText);
             _panel.AddChild(hairColor);
-            
+
             _hairColorPicker = _panel.AddChild(
                 new ColorPicker(_contentChest, new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
                     PronounDropDown.Bounds.Width, 25, _buttonScale));
