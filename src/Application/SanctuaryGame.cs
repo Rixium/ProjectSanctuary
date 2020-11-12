@@ -30,7 +30,7 @@ namespace Application
         private readonly IMouseManager _mouseManager;
         private readonly Cursor _cursor;
         private readonly IOptionsManager _optionsManager;
-        
+
         private IApplicationFolder _applicationFolder;
         private IViewManager _viewManager;
         private IContentChest _contentChest;
@@ -38,7 +38,8 @@ namespace Application
         private SpriteBatch _spriteBatch;
 
         public SanctuaryGame(IContentChest contentChest, IViewManager viewManager, IApplicationFolder applicationFolder,
-            IKeyboardDispatcher keyboardDispatcher, IMouseManager mouseManager, Cursor cursor, IOptionsManager optionsManager)
+            IKeyboardDispatcher keyboardDispatcher, IMouseManager mouseManager, Cursor cursor,
+            IOptionsManager optionsManager)
         {
             _contentChest = contentChest;
             _viewManager = viewManager;
@@ -137,13 +138,13 @@ namespace Application
             {
                 ContentManager = Content
             };
-            
+
             _cursor.Initialize();
 
             ShapeHelpers.ContentChest = _contentChest;
 
             _optionsManager.Initialize();
-            
+
             _viewManager.Initialize();
             _viewManager.ViewPort = _graphics.GraphicsDevice.Viewport;
             _viewManager.OnExitRequest += OnExit;
