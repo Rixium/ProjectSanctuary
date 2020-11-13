@@ -40,7 +40,6 @@ namespace Application.Scenes
             scene.RequestNextScene = (nextScene) =>
             {
                 NextScene = _scenes.FirstOrDefault(x => x.SceneType == nextScene);
-                SwitchToNextScene();
             };
         }
 
@@ -53,7 +52,7 @@ namespace Application.Scenes
             ActiveScene?.Finish();
             // Ensure that the next scene starts before required.
             NextScene?.Start();
-
+            
             ActiveScene = NextScene;
             NextScene = null;
         }

@@ -41,7 +41,7 @@ namespace Application.Menus
         private Vector2 _playerPosition;
 
         public TexturedButton BackButton { get; private set; }
-        private TexturedButton DoneButton { get; set; }
+        public TexturedButton DoneButton { get; set; }
         private DropDownBox PronounDropDown { get; set; }
         private DropDownBox PlayerHairDropDown { get; set; }
         private TextBox NameTextBox { get; set; }

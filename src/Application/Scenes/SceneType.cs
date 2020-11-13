@@ -3,6 +3,7 @@
     public enum SceneType
     {
         Splash,
-        Menu
+        Menu,
+        Game
     }
 }

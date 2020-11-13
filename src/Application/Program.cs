@@ -38,6 +38,7 @@ namespace Application
 
             builder.RegisterType<SplashScene>().As<IScene>();
             builder.RegisterType<MenuScene>().As<IScene>();
+            builder.RegisterType<GameScene>().As<IScene>();
 
             builder.RegisterType<CharacterCreationMenu>();
             builder.RegisterType<TitleMenu>();

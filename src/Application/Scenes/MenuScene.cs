@@ -50,7 +50,11 @@ namespace Application.Scenes
             _mainTitleMenu.LoadGameButton.OnClick += () => _activeMenu = _mainOptionsMenu;
             ((IClickable) _mainOptionsMenu.BackButton).OnClick += () => _activeMenu = _mainTitleMenu;
             _characterCreationMenu.BackButton.OnClick += () => _activeMenu = _mainTitleMenu;
+            _characterCreationMenu.DoneButton.OnClick += StartGame;
         }
+
+        private void StartGame() => 
+            RequestNextScene?.Invoke(SceneType.Game);
 
         public void Update(float delta) => _activeMenu.Update(delta);
 
