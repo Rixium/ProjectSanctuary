@@ -7,7 +7,7 @@ namespace Application.UI.Widgets
 {
     public abstract class Widget : IWidget
     {
-        private readonly IList<IWidget> _children = new();
+        private readonly IList<IWidget> _children = new List<IWidget>();
 
         public Rectangle Bounds { get; protected set; }
 
