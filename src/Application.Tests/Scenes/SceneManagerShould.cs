@@ -15,7 +15,7 @@ namespace ProjectSanctuary.Application.Tests.Scenes
         [SetUp]
         public void SetUp()
         {
-            _sceneManager = new SceneManager(Arg.Any<SplashScene>());
+            _sceneManager = new SceneManager(Array.Empty<IScene>());
         }
 
         [Test]
@@ -64,7 +64,15 @@ namespace ProjectSanctuary.Application.Tests.Scenes
         
         private class MockScene : IScene
         {
-            public Action<IScene> RequestNextScene { get; set; }
+            private Action<SceneType> _requestNextScene;
+            public SceneType SceneType { get; }
+
+            Action<SceneType> IScene.RequestNextScene
+            {
+                get => _requestNextScene;
+                set => _requestNextScene = value;
+            }
+
             public Color BackgroundColor { get; }
 
             public void Update(float delta)

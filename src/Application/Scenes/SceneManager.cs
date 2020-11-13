@@ -21,7 +21,7 @@ namespace Application.Scenes
                 AddScene(scene);
             }
 
-            NextScene = scenes.First();
+            NextScene = scenes.FirstOrDefault();
         }
 
         public void Initialize()
