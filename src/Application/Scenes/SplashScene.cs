@@ -78,14 +78,6 @@ namespace Application.Scenes
                 SpriteEffects.None,
                 0.2f);
 
-            var x = 0;
-            
-            foreach (var hair in _hairs)
-            {
-                spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_hair"), new Vector2(200, 200) + new Vector2(x, 0), hair.Source, Color.Red,0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
-                x += 32 * 3;
-            }
-
             spriteBatch.End();
         }
 
