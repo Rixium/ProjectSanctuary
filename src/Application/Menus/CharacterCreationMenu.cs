@@ -250,6 +250,10 @@ namespace Application.Menus
                 new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
                 _buttonScale,
                 SpriteEffects.None, 0f);
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_eyes"), _playerPosition,
+                new Rectangle(0, 0, 16, 32), Color.White, 0f, Vector2.Zero,
+                _buttonScale,
+                SpriteEffects.None, 0f);
             spriteBatch.Draw(_playerHair, _playerPosition - new Vector2(32 / 2f + 8, 32 / 2f + 8), _hairSource, _hairColor, 0f,
                 Vector2.Zero,
                 _buttonScale, SpriteEffects.None, 0f);

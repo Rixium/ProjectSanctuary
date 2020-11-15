@@ -24,7 +24,8 @@
   "slices": [
    { "name": "Long", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 0, "w": 32, "h": 96 } }] },
    { "name": "Short", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 32, "y": 0, "w": 32, "h": 96 } }] },
-   { "name": "Bald", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 64, "y": 0, "w": 32, "h": 96 } }] }
+   { "name": "Bald", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 64, "y": 0, "w": 32, "h": 96 } }] },
+   { "name": "Mohawk", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 96, "y": 0, "w": 32, "h": 96 } }] }
   ]
  }
 }
