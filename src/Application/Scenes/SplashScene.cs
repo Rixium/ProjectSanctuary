@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Application.Content;
 using Application.Content.ContentTypes;
 using Application.View;
@@ -20,10 +21,7 @@ namespace Application.Scenes
 
         private const float TimeToShow = 3f;
         private float _timeShown;
-        private Song _song;
-        private Vector2 _playerHeadPosition;
-        private Rectangle _hairSource;
-        private Vector2 _hairPosition;
+        private IReadOnlyCollection<Hair> _hairs;
 
         public SplashScene(
             IViewPortManager viewPortManager,
@@ -36,13 +34,20 @@ namespace Application.Scenes
         }
 
 
-        public void Initialize()
+        public async void Initialize()
         {
-            var hair = _hairContentLoader.GetContent("assets/characters/player_hair.json");
-            _playerHeadPosition = new Vector2(200, 200);
+             _hairs = _hairContentLoader.GetContent("assets/characters/player_hair.json");
+            var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
 
-            _hairSource = new Rectangle(0, 0, 32, 32);
-            _hairPosition = _playerHeadPosition - new Vector2(16 - 16 / 2f, 16 - 16 / 2f);
+            try
+            {
+                await _contentChest.Preload<Song>($"Music/MenuSong{num}");
+                MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{num}"));
+            }
+            catch (Exception x)
+            {
+                // ignored
+            }
         }
 
         public void Update(float delta)
@@ -54,14 +59,7 @@ namespace Application.Scenes
                 return;
             }
 
-            if (_song == null)
-            {
-                return;
-            }
-
-            MediaPlayer.Play(_song);
-
-            RequestNextScene?.Invoke(SceneType.Menu);
+            // RequestNextScene?.Invoke(SceneType.Menu);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -80,10 +78,13 @@ namespace Application.Scenes
                 SpriteEffects.None,
                 0.2f);
 
-            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_heads"), _playerHeadPosition,
-                new Rectangle(0, 0, 16, 32), Color.Yellow);
-            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_hair"), _hairPosition, _hairSource,
-                Color.Red);
+            var x = 0;
+            
+            foreach (var hair in _hairs)
+            {
+                spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_hair"), new Vector2(200, 200) + new Vector2(x, 0), hair.Source, Color.Red,0f, Vector2.Zero, 3f, SpriteEffects.None, 1f);
+                x += 32 * 3;
+            }
 
             spriteBatch.End();
         }
@@ -96,11 +97,8 @@ namespace Application.Scenes
         {
         }
 
-        public async void Start()
+        public void Start()
         {
-            var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
-            await _contentChest.Preload<Song>($"Music/MenuSong{num}");
-            _song = _contentChest.Get<Song>($"Music/MenuSong{num}");
         }
     }
 }
