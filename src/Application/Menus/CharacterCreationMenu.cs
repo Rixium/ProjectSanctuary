@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Configuration;
 using Application.Content;
+using Application.Content.ContentTypes;
 using Application.Graphics;
 using Application.Input;
 using Application.Player;
@@ -23,6 +24,7 @@ namespace Application.Menus
         private readonly IKeyboardDispatcher _keyboardDispatcher;
         private readonly IUserInterface _userInterface;
         private readonly IOptionsManager _optionsManager;
+        private readonly IContentLoader<Hair> _hairContentLoader;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -40,6 +42,8 @@ namespace Application.Menus
         private Texture2D _playerBody;
         private Vector2 _playerPosition;
 
+        private Hair[] _hair;
+
         public TexturedButton BackButton { get; private set; }
         public TexturedButton DoneButton { get; set; }
         private DropDownBox PronounDropDown { get; set; }
@@ -48,7 +52,7 @@ namespace Application.Menus
 
         public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker,
             IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface,
-            IOptionsManager optionsManager)
+            IOptionsManager optionsManager, IContentLoader<Hair> hairContentLoader)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
@@ -56,6 +60,7 @@ namespace Application.Menus
             _keyboardDispatcher = keyboardDispatcher;
             _userInterface = userInterface;
             _optionsManager = optionsManager;
+            _hairContentLoader = hairContentLoader;
         }
 
 
@@ -63,6 +68,7 @@ namespace Application.Menus
         {
             _menuButtons = _contentChest.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
+            _hair = _hairContentLoader.GetContent("assets/characters/player_hair.json").ToArray();
 
             SetupUserInterface();
         }
@@ -139,7 +145,7 @@ namespace Application.Menus
                 Color.Black);
             PlayerHairDropDown = new DropDownBox(_contentChest, inputBoxFont,
                 new Vector2(hairText.Left(), hairText.BottomLeft().Y + 10),
-                new[] {"Long", "Short"}, 200);
+                _hair.Select(x => x.Name).ToArray(), 200);
             PlayerHairDropDown.Hover += OnHairSelect;
             PlayerHairDropDown.SelectedIndex = _playerMaker.Hair;
             var hairColor = new TextBlock("Hair Color",
@@ -215,7 +221,9 @@ namespace Application.Menus
 
         private void OnHairSelect(int index)
         {
-            _hairSource = index == 0 ? new Rectangle(7, 8, 18, 16) : new Rectangle(23, 0, 23, 33);
+            _hairSource = _hair[index].Source;
+            _hairSource.Width = 32;
+            _hairSource.Height = 32;
             _playerMaker.SetHair(index);
         }
 
@@ -238,10 +246,12 @@ namespace Application.Menus
             spriteBatch.Draw(_playerBody, _playerPosition, new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
                 _buttonScale,
                 SpriteEffects.None, 0f);
-            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_heads"), _playerPosition, new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_heads"), _playerPosition,
+                new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
                 _buttonScale,
                 SpriteEffects.None, 0f);
-            spriteBatch.Draw(_playerHair, _playerPosition - new Vector2(3, 2), _hairSource, _hairColor, 0f, Vector2.Zero,
+            spriteBatch.Draw(_playerHair, _playerPosition - new Vector2(32 / 2f + 8, 32 / 2f + 8), _hairSource, _hairColor, 0f,
+                Vector2.Zero,
                 _buttonScale, SpriteEffects.None, 0f);
         }
 

@@ -22,6 +22,7 @@ namespace Application.Scenes
         private const float TimeToShow = 3f;
         private float _timeShown;
         private IReadOnlyCollection<Hair> _hairs;
+        private int _songNum;
 
         public SplashScene(
             IViewPortManager viewPortManager,
@@ -36,13 +37,11 @@ namespace Application.Scenes
 
         public async void Initialize()
         {
-             _hairs = _hairContentLoader.GetContent("assets/characters/player_hair.json");
-            var num = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
+            _songNum = new Random((int) DateTime.Now.Ticks).Next(0, 2) + 1;
 
             try
             {
-                await _contentChest.Preload<Song>($"Music/MenuSong{num}");
-                MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{num}"));
+                await _contentChest.Preload<Song>($"Music/MenuSong{_songNum}");
             }
             catch (Exception x)
             {
@@ -58,8 +57,9 @@ namespace Application.Scenes
             {
                 return;
             }
-
-            // RequestNextScene?.Invoke(SceneType.Menu);
+            
+            MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{_songNum}"));
+            RequestNextScene?.Invoke(SceneType.Menu);
         }
 
         public void Draw(SpriteBatch spriteBatch)
