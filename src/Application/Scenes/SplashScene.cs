@@ -1,9 +1,13 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using Application.Content;
+using Application.Content.Aseprite;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Newtonsoft.Json;
 
 namespace Application.Scenes
 {
@@ -19,6 +23,9 @@ namespace Application.Scenes
         private const float TimeToShow = 3f;
         private float _timeShown;
         private Song _song;
+        private Vector2 _playerHeadPosition;
+        private Rectangle _hairSource;
+        private Vector2 _hairPosition;
 
         public SplashScene(
             IViewPortManager viewPortManager,
@@ -31,6 +38,14 @@ namespace Application.Scenes
 
         public void Initialize()
         {
+            _playerHeadPosition = new Vector2(200, 200);
+            var data = File.ReadAllText("assets/characters/player_hair.json");
+            var aseprite = JsonConvert.DeserializeObject<AsepriteData>(data);
+
+            _hairSource = new Rectangle(64, 0, 32, 32);
+            var hair = aseprite.Meta.Slices.First(x => x.Name.Equals("Bald_Down", StringComparison.OrdinalIgnoreCase));
+            var hairBounds = hair.Keys.First().Bounds;
+            _hairPosition = _playerHeadPosition - new Vector2(hairBounds.X - 64, hairBounds.Y);
         }
 
         public void Update(float delta)
@@ -49,7 +64,7 @@ namespace Application.Scenes
 
             MediaPlayer.Play(_song);
 
-            RequestNextScene?.Invoke(SceneType.Menu);
+            // RequestNextScene?.Invoke(SceneType.Menu);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -67,6 +82,11 @@ namespace Application.Scenes
                 1,
                 SpriteEffects.None,
                 0.2f);
+
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_heads"), _playerHeadPosition,
+                new Rectangle(0, 0, 16, 32), Color.Yellow);
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_hair"), _hairPosition, _hairSource,
+                Color.Red);
 
             spriteBatch.End();
         }
