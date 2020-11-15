@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "player_hair.png",
+    "filename": "player_hair.aseprite",
     "frame": { "x": 0, "y": 0, "w": 320, "h": 320 },
     "rotated": false,
     "trimmed": false,
@@ -22,9 +22,9 @@
    { "name": "Layer", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
-   { "name": "Long_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 8, "y": 9, "w": 16, "h": 16 } }] },
-   { "name": "Short_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 40, "y": 8, "w": 16, "h": 17 } }] },
-   { "name": "Bald_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 72, "y": 9, "w": 16, "h": 16 } }] }
+   { "name": "Long_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 8, "y": 8, "w": 16, "h": 16 } }] },
+   { "name": "Short_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 40, "y": 8, "w": 16, "h": 16 } }] },
+   { "name": "Bald_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 72, "y": 8, "w": 16, "h": 16 } }] }
   ]
  }
 }

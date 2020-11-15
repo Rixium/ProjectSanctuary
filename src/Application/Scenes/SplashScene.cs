@@ -42,10 +42,8 @@ namespace Application.Scenes
             var data = File.ReadAllText("assets/characters/player_hair.json");
             var aseprite = JsonConvert.DeserializeObject<AsepriteData>(data);
 
-            _hairSource = new Rectangle(64, 0, 32, 32);
-            var hair = aseprite.Meta.Slices.First(x => x.Name.Equals("Bald_Down", StringComparison.OrdinalIgnoreCase));
-            var hairBounds = hair.Keys.First().Bounds;
-            _hairPosition = _playerHeadPosition - new Vector2(hairBounds.X - 64, hairBounds.Y);
+            _hairSource = new Rectangle(0, 0, 32, 32);
+            _hairPosition = _playerHeadPosition - new Vector2(16 - 16 / 2f, 16 - 16 / 2f);
         }
 
         public void Update(float delta)
