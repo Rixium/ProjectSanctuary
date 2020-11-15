@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
         public string Color { get; set; }
-        public AsepriteKey Keys { get; set; }
+        public AsepriteKey[] Keys { get; set; }
     }
 }
