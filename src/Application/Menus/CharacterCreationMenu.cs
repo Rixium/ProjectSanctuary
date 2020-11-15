@@ -178,8 +178,8 @@ namespace Application.Menus
             _playerEyes = _contentChest.Get<Texture2D>("Characters/player_eyes");
             _playerHair = _contentChest.Get<Texture2D>("Characters/player_hair");
             _playerBody = _contentChest.Get<Texture2D>("Characters/player_body");
-            _playerPosition = characterPanel.Center() - new Vector2(_playerEyes.Width * _buttonScale / 2f,
-                _playerEyes.Height * _buttonScale / 2f - 30f);
+            _playerPosition = characterPanel.Center() - new Vector2(16 * _buttonScale / 2f,
+                32 * _buttonScale / 2f - 30f);
 
             _userInterface.AddWidget(_panel);
 
@@ -215,7 +215,7 @@ namespace Application.Menus
 
         private void OnHairSelect(int index)
         {
-            _hairSource = index == 0 ? new Rectangle(0, 0, 23, 33) : new Rectangle(23, 0, 23, 33);
+            _hairSource = index == 0 ? new Rectangle(7, 8, 18, 16) : new Rectangle(23, 0, 23, 33);
             _playerMaker.SetHair(index);
         }
 
@@ -235,12 +235,13 @@ namespace Application.Menus
 
         private void DrawCharacter(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_playerBody, _playerPosition, null, _bodyColor, 0f, Vector2.Zero,
+            spriteBatch.Draw(_playerBody, _playerPosition, new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
                 _buttonScale,
                 SpriteEffects.None, 0f);
-            spriteBatch.Draw(_playerEyes, _playerPosition, null, Color.White, 0f, Vector2.Zero, _buttonScale,
+            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_heads"), _playerPosition, new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
+                _buttonScale,
                 SpriteEffects.None, 0f);
-            spriteBatch.Draw(_playerHair, _playerPosition, _hairSource, _hairColor, 0f, Vector2.Zero,
+            spriteBatch.Draw(_playerHair, _playerPosition - new Vector2(3, 2), _hairSource, _hairColor, 0f, Vector2.Zero,
                 _buttonScale, SpriteEffects.None, 0f);
         }
 
