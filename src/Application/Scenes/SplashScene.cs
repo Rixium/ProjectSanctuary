@@ -1,12 +1,10 @@
 ﻿using System;
-using System.IO;
 using Application.Content;
-using Application.Content.Aseprite;
+using Application.Content.ContentTypes;
 using Application.View;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using Newtonsoft.Json;
 
 namespace Application.Scenes
 {
@@ -16,6 +14,7 @@ namespace Application.Scenes
         
         private readonly IViewPortManager _viewPortManager;
         private readonly IContentChest _contentChest;
+        private readonly IContentLoader<Hair> _hairContentLoader;
         public Action<SceneType> RequestNextScene { get; set; }
         public Color BackgroundColor => Color.Black;
 
@@ -28,18 +27,19 @@ namespace Application.Scenes
 
         public SplashScene(
             IViewPortManager viewPortManager,
-            IContentChest contentChest)
+            IContentChest contentChest,
+            IContentLoader<Hair> hairContentLoader)
         {
             _viewPortManager = viewPortManager;
             _contentChest = contentChest;
+            _hairContentLoader = hairContentLoader;
         }
 
 
         public void Initialize()
         {
+            var hair = _hairContentLoader.GetContent("assets/characters/player_hair.json");
             _playerHeadPosition = new Vector2(200, 200);
-            var data = File.ReadAllText("assets/characters/player_hair.json");
-            var aseprite = JsonConvert.DeserializeObject<AsepriteData>(data);
 
             _hairSource = new Rectangle(0, 0, 32, 32);
             _hairPosition = _playerHeadPosition - new Vector2(16 - 16 / 2f, 16 - 16 / 2f);

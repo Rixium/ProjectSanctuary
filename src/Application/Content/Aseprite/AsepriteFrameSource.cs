@@ -1,4 +1,6 @@
-﻿namespace Application.Content.Aseprite
+﻿using System.Drawing;
+
+namespace Application.Content.Aseprite
 {
     public class AsepriteFrameSource
     {
@@ -6,5 +8,7 @@
         public int Y { get; set; }
         public int W { get; set; }
         public int H { get; set; }
+
+        public Rectangle ToRectangle() => new Rectangle(X, Y, W, H);
     }
 }

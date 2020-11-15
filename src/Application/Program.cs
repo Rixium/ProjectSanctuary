@@ -1,11 +1,13 @@
 ﻿using System;
 using Application.Configuration;
 using Application.Content;
+using Application.Content.ContentTypes;
 using Application.FileSystem;
 using Application.Input;
 using Application.Menus;
 using Application.Player;
 using Application.Scenes;
+using Application.System;
 using Application.Transitions;
 using Application.UI;
 using Application.View;
@@ -28,6 +30,9 @@ namespace Application
             builder.RegisterType<MonoGameMouseManager>().As<IMouseManager>().SingleInstance();
             builder.RegisterType<TransitionManager>().As<ITransitionManager>().SingleInstance();
             builder.RegisterType<OptionsManager>().As<IOptionsManager>().SingleInstance();
+            
+            builder.RegisterType<HairContentLoader>().As<IContentLoader<Hair>>().SingleInstance();
+            builder.RegisterType<System.FileSystem>().As<IFileSystem>().SingleInstance();
             
             builder.RegisterType<Cursor>();
             builder.RegisterType<ControlOptions>();

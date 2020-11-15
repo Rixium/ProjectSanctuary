@@ -22,9 +22,9 @@
    { "name": "Layer", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
-   { "name": "Long_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 8, "y": 8, "w": 16, "h": 16 } }] },
-   { "name": "Short_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 40, "y": 8, "w": 16, "h": 16 } }] },
-   { "name": "Bald_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 72, "y": 8, "w": 16, "h": 16 } }] }
+   { "name": "Long", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 0, "w": 32, "h": 96 } }] },
+   { "name": "Short", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 32, "y": 0, "w": 32, "h": 96 } }] },
+   { "name": "Bald", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 64, "y": 0, "w": 32, "h": 96 } }] }
   ]
  }
 }
