@@ -48,6 +48,7 @@ namespace Application.View
 
             _transitionManager.Initialize();
             _sceneManager.Initialize();
+            _sceneManager.SetNextScene<GameScene>();
         }
 
         public void Update(float delta)
