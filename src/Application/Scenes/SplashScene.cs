@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using Application.Content;
 using Application.Content.Aseprite;
 using Application.View;
@@ -62,7 +61,7 @@ namespace Application.Scenes
 
             MediaPlayer.Play(_song);
 
-            // RequestNextScene?.Invoke(SceneType.Menu);
+            RequestNextScene?.Invoke(SceneType.Menu);
         }
 
         public void Draw(SpriteBatch spriteBatch)

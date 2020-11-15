@@ -7,7 +7,7 @@ namespace Application.Scenes
 {
     public class SceneManager : ISceneManager
     {
-        private readonly HashSet<IScene> _scenes = new();
+        private readonly HashSet<IScene> _scenes = new HashSet<IScene>();
         public IScene NextScene { get; private set; }
         public IScene ActiveScene { get; private set; }
         public Color BackgroundColor => ActiveScene?.BackgroundColor ?? Color.Black;
