@@ -25,7 +25,7 @@ namespace Application.Menus
         private readonly IKeyboardDispatcher _keyboardDispatcher;
         private readonly IUserInterface _userInterface;
         private readonly IOptionsManager _optionsManager;
-        
+
         private readonly IContentLoader<Hair> _hairContentLoader;
         private readonly IContentLoader<Head> _headContentLoader;
 
@@ -56,7 +56,9 @@ namespace Application.Menus
 
         public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker,
             IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface,
-            IOptionsManager optionsManager, IContentLoader<Hair> hairContentLoader, IContentLoader<Head> headContentLoader)
+            IOptionsManager optionsManager, IContentLoader<Hair> hairContentLoader,
+            IContentLoader<Head> headContentLoader,
+            IContentLoader<Eyes> eyeContentLoader)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
@@ -75,6 +77,7 @@ namespace Application.Menus
             _buttonScale = 3f;
             _hair = _hairContentLoader.GetContent("assets/characters/player_hair.json").ToArray();
             _heads = _headContentLoader.GetContent("assets/characters/player_heads.json").ToArray();
+            _eyes = _eyeContentLoader.GetContent("assets/characters/player_eyes.json").ToArray();
 
             SetupUserInterface();
         }
@@ -260,7 +263,8 @@ namespace Application.Menus
                 new Rectangle(0, 0, 16, 32), Color.White, 0f, Vector2.Zero,
                 _buttonScale,
                 SpriteEffects.None, 0f);
-            spriteBatch.Draw(_playerHair, _playerPosition - new Vector2(32 / 2f + 8, 32 / 2f + 8), _hairSource, _hairColor, 0f,
+            spriteBatch.Draw(_playerHair, _playerPosition - new Vector2(32 / 2f + 8, 32 / 2f + 8), _hairSource,
+                _hairColor, 0f,
                 Vector2.Zero,
                 _buttonScale, SpriteEffects.None, 0f);
         }
