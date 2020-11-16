@@ -5,23 +5,21 @@ using Application.Content.ContentTypes;
 using Application.System;
 using Newtonsoft.Json;
 
-namespace Application.Content
+namespace Application.Content.ContentLoader
 {
     public class HairContentLoader : IContentLoader<Hair>
     {
-        private readonly IFileSystem _fileSystem;
+        private readonly IContentDeserializer _contentDeserializer;
 
-        public HairContentLoader(IFileSystem fileSystem)
+        public HairContentLoader(IContentDeserializer contentDeserializer)
         {
-            _fileSystem = fileSystem;
+            _contentDeserializer = contentDeserializer;
         }
 
         public IReadOnlyCollection<Hair> GetContent(string hairPath)
         {
-            var hairData = _fileSystem.ReadAllText(hairPath);
-            var asepriteData = JsonConvert.DeserializeObject<AsepriteData>(hairData);
-            var hairs = asepriteData.Meta.Slices;
-            return hairs.Select(ProcessHairType).ToArray();
+            var data = _contentDeserializer.Get<AsepriteData>(hairPath);
+            return data.Meta.Slices.Select(ProcessHairType).ToArray();
         }
 
         private static Hair ProcessHairType(AsepriteSlice asepriteSlice)

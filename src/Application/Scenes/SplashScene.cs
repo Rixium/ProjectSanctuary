@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.Content;
+using Application.Content.ContentLoader;
 using Application.Content.ContentTypes;
 using Application.View;
 using Microsoft.Xna.Framework;

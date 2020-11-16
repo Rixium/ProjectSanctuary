@@ -1,6 +1,7 @@
 ﻿using System;
 using Application.Configuration;
 using Application.Content;
+using Application.Content.ContentLoader;
 using Application.Content.ContentTypes;
 using Application.FileSystem;
 using Application.Input;
@@ -50,6 +51,7 @@ namespace Application
             builder.RegisterType<MainOptionsMenu>();
 
 
+            builder.RegisterType<ContentDeserializer>().As<IContentDeserializer>();
             base.Load(builder);
         }
     }
