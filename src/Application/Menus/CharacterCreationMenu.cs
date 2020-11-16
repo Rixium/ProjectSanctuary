@@ -25,7 +25,9 @@ namespace Application.Menus
         private readonly IKeyboardDispatcher _keyboardDispatcher;
         private readonly IUserInterface _userInterface;
         private readonly IOptionsManager _optionsManager;
+        
         private readonly IContentLoader<Hair> _hairContentLoader;
+        private readonly IContentLoader<Head> _headContentLoader;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -44,6 +46,7 @@ namespace Application.Menus
         private Vector2 _playerPosition;
 
         private Hair[] _hair;
+        private Head[] _heads;
 
         public TexturedButton BackButton { get; private set; }
         public TexturedButton DoneButton { get; set; }
@@ -53,7 +56,7 @@ namespace Application.Menus
 
         public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker,
             IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface,
-            IOptionsManager optionsManager, IContentLoader<Hair> hairContentLoader)
+            IOptionsManager optionsManager, IContentLoader<Hair> hairContentLoader, IContentLoader<Head> headContentLoader)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
@@ -62,6 +65,7 @@ namespace Application.Menus
             _userInterface = userInterface;
             _optionsManager = optionsManager;
             _hairContentLoader = hairContentLoader;
+            _headContentLoader = headContentLoader;
         }
 
 
@@ -70,6 +74,7 @@ namespace Application.Menus
             _menuButtons = _contentChest.Get<Texture2D>("UI/title_menu_buttons");
             _buttonScale = 3f;
             _hair = _hairContentLoader.GetContent("assets/characters/player_hair.json").ToArray();
+            _heads = _headContentLoader.GetContent("assets/characters/player_heads.json").ToArray();
 
             SetupUserInterface();
         }

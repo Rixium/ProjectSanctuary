@@ -33,6 +33,8 @@ namespace Application
             builder.RegisterType<OptionsManager>().As<IOptionsManager>().SingleInstance();
             
             builder.RegisterType<HairContentLoader>().As<IContentLoader<Hair>>().SingleInstance();
+            builder.RegisterType<HeadContentLoader>().As<IContentLoader<Head>>().SingleInstance();
+            
             builder.RegisterType<System.FileSystem>().As<IFileSystem>().SingleInstance();
             
             builder.RegisterType<Cursor>();
