@@ -1,11 +1,11 @@
 { "frames": [
    {
-    "filename": "player_eyes.png",
-    "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
+    "filename": "player_eyes.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 320, "h": 320 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 32 },
-    "sourceSize": { "w": 32, "h": 32 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 320, "h": 320 },
+    "sourceSize": { "w": 320, "h": 320 },
     "duration": 100
    }
  ],
@@ -14,7 +14,7 @@
   "version": "1.2.25-x64",
   "image": "player_eyes.png",
   "format": "RGBA8888",
-  "size": { "w": 32, "h": 32 },
+  "size": { "w": 320, "h": 320 },
   "scale": "1",
   "frameTags": [
   ],
@@ -22,7 +22,9 @@
    { "name": "Layer", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
-   { "name": "Open", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 0, "w": 32, "h": 32 } }] }
+   { "name": "Open", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 0, "w": 32, "h": 64 } }] },
+   { "name": "Closed", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 32, "y": 0, "w": 32, "h": 64 } }] },
+   { "name": "Wink", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 64, "y": 0, "w": 32, "h": 64 } }] }
   ]
  }
 }

@@ -28,6 +28,7 @@ namespace Application.Menus
 
         private readonly IContentLoader<Hair> _hairContentLoader;
         private readonly IContentLoader<Head> _headContentLoader;
+        private readonly IContentLoader<Eyes> _eyeContentLoader;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -47,6 +48,7 @@ namespace Application.Menus
 
         private Hair[] _hair;
         private Head[] _heads;
+        private Eyes[] _eyes;
 
         public TexturedButton BackButton { get; private set; }
         public TexturedButton DoneButton { get; set; }
@@ -68,6 +70,7 @@ namespace Application.Menus
             _optionsManager = optionsManager;
             _hairContentLoader = hairContentLoader;
             _headContentLoader = headContentLoader;
+            _eyeContentLoader = eyeContentLoader;
         }
 
 
