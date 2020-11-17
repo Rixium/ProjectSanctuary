@@ -34,6 +34,7 @@ namespace Application
             
             builder.RegisterType<HairContentLoader>().As<IContentLoader<Hair>>().SingleInstance();
             builder.RegisterType<HeadContentLoader>().As<IContentLoader<Head>>().SingleInstance();
+            builder.RegisterType<EyesContentLoader>().As<IContentLoader<Eyes>>().SingleInstance();
             
             builder.RegisterType<System.FileSystem>().As<IFileSystem>().SingleInstance();
             
