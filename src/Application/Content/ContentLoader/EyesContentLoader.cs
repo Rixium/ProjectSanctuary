@@ -2,8 +2,6 @@
 using System.Linq;
 using Application.Content.Aseprite;
 using Application.Content.ContentTypes;
-using Application.System;
-using Newtonsoft.Json;
 
 namespace Application.Content.ContentLoader
 {
