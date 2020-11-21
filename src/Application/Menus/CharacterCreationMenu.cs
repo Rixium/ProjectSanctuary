@@ -160,11 +160,7 @@ namespace Application.Menus
                 _hair.Select(x => x.Name).ToArray(), 200);
             PlayerHairDropDown.Hover += OnHairSelect;
             PlayerHairDropDown.SelectedIndex = _playerMaker.Hair;
-            var hairColor = new TextBlock("Hair Color",
-                new Vector2(PlayerHairDropDown.Left(), PlayerHairDropDown.BottomLeft().Y + 40), interfaceFont,
-                Color.White,
-                Color.Black);
-
+            
             _panel.AddChild(pronounTextBoxTitle);
             _panel.AddChild(nameTextBoxTitle);
             _panel.AddChild(NameTextBox);
@@ -172,24 +168,7 @@ namespace Application.Menus
             _panel.AddChild(BackButton);
             _panel.AddChild(DoneButton);
             _panel.AddChild(hairText);
-            _panel.AddChild(hairColor);
 
-            _hairColorPicker = _panel.AddChild(
-                new ColorPicker(_contentChest, new Vector2(hairColor.BottomLeft().X, hairColor.BottomLeft().Y + 10),
-                    PronounDropDown.Bounds.Width, 25, _buttonScale));
-            _hairColorPicker.SetValues(9.5f, 70.5f, 38.5f);
-            _hairColorPicker.Changed += OnHairColorChanged;
-
-            var bodyColor = new TextBlock("Body Color",
-                new Vector2(_hairColorPicker.Right() + 30, hairColor.Top()), interfaceFont, Color.White,
-                Color.Black);
-            _bodyColorPicker = _panel.AddChild(
-                new ColorPicker(_contentChest, new Vector2(bodyColor.BottomLeft().X, bodyColor.BottomLeft().Y + 10),
-                    PronounDropDown.Bounds.Width, 25, _buttonScale));
-            _bodyColorPicker.SetValues(5f, 21.5f, 100f);
-            _bodyColorPicker.Changed += OnBodyColorChanged;
-
-            _panel.AddChild(bodyColor);
             _panel.AddChild(PlayerHairDropDown);
             _panel.AddChild(PronounDropDown);
 
@@ -200,37 +179,20 @@ namespace Application.Menus
                 32 * _buttonScale / 2f - 30f);
 
             _userInterface.AddWidget(_panel);
-
-            _hairColor = _hairColorPicker.GetColor();
-            _bodyColor = _bodyColorPicker.GetColor();
-
+            
             DoneButton.OnClick += () =>
             {
                 Console.WriteLine("Saving Settings");
                 _playerMaker.SetHair(PlayerHairDropDown.SelectedIndex);
                 _playerMaker.SetName(NameTextBox.GetValue());
                 _playerMaker.SetPronouns(PronounDropDown.SelectedIndex);
-                _playerMaker.SetBodyColor(_bodyColorPicker.GetColor());
-                _playerMaker.SetHairColor(_hairColorPicker.GetColor());
             };
         }
 
         private void OnPronounSelect(int index) => _playerMaker.SetPronouns(index);
 
         private void OnPlayerNameSet(string name) => _playerMaker.SetName(name);
-
-        private void OnBodyColorChanged()
-        {
-            _bodyColor = _bodyColorPicker.GetColor();
-            _playerMaker.SetBodyColor(_bodyColor);
-        }
-
-        private void OnHairColorChanged()
-        {
-            _hairColor = _hairColorPicker.GetColor();
-            _playerMaker.SetHairColor(_hairColor);
-        }
-
+        
         private void OnHairSelect(int index)
         {
             _hairSource = _hair[index].Source;
