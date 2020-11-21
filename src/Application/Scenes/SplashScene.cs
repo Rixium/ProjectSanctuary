@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Application.Content;
+using Application.Content.Aseprite;
 using Application.Content.ContentLoader;
 using Application.Content.ContentTypes;
 using Application.View;
@@ -16,7 +17,7 @@ namespace Application.Scenes
         
         private readonly IViewPortManager _viewPortManager;
         private readonly IContentChest _contentChest;
-        private readonly IContentLoader<Hair> _hairContentLoader;
+        private readonly IContentLoader<AsepriteSpriteMap> _spriteMapLoader;
         public Action<SceneType> RequestNextScene { get; set; }
         public Color BackgroundColor => Color.Black;
 
@@ -28,11 +29,11 @@ namespace Application.Scenes
         public SplashScene(
             IViewPortManager viewPortManager,
             IContentChest contentChest,
-            IContentLoader<Hair> hairContentLoader)
+            IContentLoader<AsepriteSpriteMap> spriteMapLoader)
         {
             _viewPortManager = viewPortManager;
             _contentChest = contentChest;
-            _hairContentLoader = hairContentLoader;
+            _spriteMapLoader = spriteMapLoader;
         }
 
 
@@ -48,15 +49,18 @@ namespace Application.Scenes
             {
                 // ignored
             }
+            
+            var titleButtons = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
         }
 
         public void Update(float delta)
         {
             _timeShown += delta;
 
+
+            return;
             if (_timeShown < TimeToShow)
             {
-                return;
             }
             
             MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{_songNum}"));

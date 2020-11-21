@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Application.Configuration;
 using Application.Content;
+using Application.Content.Aseprite;
 using Application.Content.ContentLoader;
 using Application.Content.ContentTypes;
 using Application.FileSystem;
@@ -32,9 +34,10 @@ namespace Application
             builder.RegisterType<TransitionManager>().As<ITransitionManager>().SingleInstance();
             builder.RegisterType<OptionsManager>().As<IOptionsManager>().SingleInstance();
             
-            builder.RegisterType<HairContentLoader>().As<IContentLoader<Hair>>().SingleInstance();
-            builder.RegisterType<HeadContentLoader>().As<IContentLoader<Head>>().SingleInstance();
-            builder.RegisterType<EyesContentLoader>().As<IContentLoader<Eyes>>().SingleInstance();
+            builder.RegisterType<HairContentLoader>().As<IContentLoader<IReadOnlyCollection<Hair>>>().SingleInstance();
+            builder.RegisterType<HeadContentLoader>().As<IContentLoader<IReadOnlyCollection<Head>>>().SingleInstance();
+            builder.RegisterType<EyesContentLoader>().As<IContentLoader<IReadOnlyCollection<Eyes>>>().SingleInstance();
+            builder.RegisterType<AsepriteSpriteMapLoader>().As<IContentLoader<AsepriteSpriteMap>>().SingleInstance();
             
             builder.RegisterType<System.FileSystem>().As<IFileSystem>().SingleInstance();
             

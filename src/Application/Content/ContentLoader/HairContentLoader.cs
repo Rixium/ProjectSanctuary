@@ -5,7 +5,7 @@ using Application.Content.ContentTypes;
 
 namespace Application.Content.ContentLoader
 {
-    public class HairContentLoader : IContentLoader<Hair>
+    public class HairContentLoader : IContentLoader<IReadOnlyCollection<Hair>>
     {
         private readonly IContentDeserializer _contentDeserializer;
 

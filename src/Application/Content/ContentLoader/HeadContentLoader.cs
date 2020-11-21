@@ -6,7 +6,7 @@ using Application.Content.ContentTypes;
 
 namespace Application.Content.ContentLoader
 {
-    internal class HeadContentLoader : IContentLoader<Head>
+    internal class HeadContentLoader : IContentLoader<IReadOnlyCollection<Head>>
     {
         private readonly IContentDeserializer _contentDeserializer;
 

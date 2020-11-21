@@ -26,9 +26,9 @@ namespace Application.Menus
         private readonly IUserInterface _userInterface;
         private readonly IOptionsManager _optionsManager;
 
-        private readonly IContentLoader<Hair> _hairContentLoader;
-        private readonly IContentLoader<Head> _headContentLoader;
-        private readonly IContentLoader<Eyes> _eyeContentLoader;
+        private readonly IContentLoader<IReadOnlyCollection<Hair>> _hairContentLoader;
+        private readonly IContentLoader<IReadOnlyCollection<Head>> _headContentLoader;
+        private readonly IContentLoader<IReadOnlyCollection<Eyes>> _eyeContentLoader;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -58,9 +58,9 @@ namespace Application.Menus
 
         public CharacterCreationMenu(IContentChest contentChest, IPlayerMaker playerMaker,
             IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface,
-            IOptionsManager optionsManager, IContentLoader<Hair> hairContentLoader,
-            IContentLoader<Head> headContentLoader,
-            IContentLoader<Eyes> eyeContentLoader)
+            IOptionsManager optionsManager, IContentLoader<IReadOnlyCollection<Hair>> hairContentLoader,
+            IContentLoader<IReadOnlyCollection<Head>> headContentLoader,
+            IContentLoader<IReadOnlyCollection<Eyes>> eyeContentLoader)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;

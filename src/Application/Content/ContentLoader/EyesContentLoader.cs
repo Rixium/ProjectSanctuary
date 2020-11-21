@@ -5,7 +5,7 @@ using Application.Content.ContentTypes;
 
 namespace Application.Content.ContentLoader
 {
-    public class EyesContentLoader : IContentLoader<Eyes>
+    public class EyesContentLoader : IContentLoader<IReadOnlyCollection<Eyes>>
     {
         private readonly IContentDeserializer _contentDeserializer;
 

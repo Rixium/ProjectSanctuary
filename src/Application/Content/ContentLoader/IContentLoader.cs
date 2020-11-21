@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Application.Content.ContentLoader
+﻿namespace Application.Content.ContentLoader
 {
     public interface IContentLoader<T>
     {
-        IReadOnlyCollection<T> GetContent(string data);
+        T GetContent(string data);
     }
 }
