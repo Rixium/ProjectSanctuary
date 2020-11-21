@@ -31,9 +31,9 @@ namespace Application
         private readonly Cursor _cursor;
         private readonly IOptionsManager _optionsManager;
 
-        private IApplicationFolder _applicationFolder;
-        private IViewManager _viewManager;
-        private IContentChest _contentChest;
+        private readonly IApplicationFolder _applicationFolder;
+        private readonly IViewManager _viewManager;
+        private readonly IContentChest _contentChest;
 
         private SpriteBatch _spriteBatch;
 
