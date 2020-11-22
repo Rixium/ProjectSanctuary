@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Application.Content;
+using Application.Content.Aseprite;
+using Application.Content.ContentLoader;
 using Application.Graphics;
 using Application.UI;
 using Application.UI.Widgets;
@@ -15,17 +17,19 @@ namespace Application.Menus
         private readonly IContentChest _contentChest;
         private readonly IViewPortManager _viewPortManager;
         private IUserInterface _userInterface;
+        private readonly IContentLoader<AsepriteSpriteMap> _spriteMapLoader;
         private float _titleYOffset;
         private float _buttonScale;
         private Texture2D _menuButtons;
         private Panel _panel;
         public Widget BackButton { get; private set; }
 
-        public MainOptionsMenu(IContentChest contentChest, IViewPortManager viewManager, IUserInterface userInterface)
+        public MainOptionsMenu(IContentChest contentChest, IViewPortManager viewManager, IUserInterface userInterface, IContentLoader<AsepriteSpriteMap> spriteMapLoader)
         {
             _contentChest = contentChest;
             _viewPortManager = viewManager;
             _userInterface = userInterface;
+            _spriteMapLoader = spriteMapLoader;
         }
 
         public override void Initialize()
@@ -39,12 +43,8 @@ namespace Application.Menus
 
         private void SetupUserInterface()
         {
-            BackButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
-                new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),
-                new Vector2(_viewPortManager.ViewPort.Bounds.Left + 10 + 78 * _buttonScale / 2f,
-                    _viewPortManager.ViewPort.Bounds.Bottom - (22 / 2f * _buttonScale) - 10), _buttonScale);
-
+            var mainMenuSpriteMap = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
+            
             var nineSlice = new NineSlice(_menuButtons, new Dictionary<Segment, Rectangle>
             {
                 {Segment.TopLeft, new Rectangle(1, 189, 8, 9)},
@@ -63,6 +63,11 @@ namespace Application.Menus
                     (int) (_viewPortManager.ViewPort.Center().X - 250),
                     (int) (_viewPortManager.ViewPort.Center().Y - 250), 500,
                     500), _buttonScale);
+
+            BackButton = new TexturedButton(
+                mainMenuSpriteMap.CreateSpriteFromRegion("Back_Off"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Back_On"),
+                _panel.BottomLeft().Add(0, 10), _buttonScale);
 
             _panel.AddChild(BackButton);
 

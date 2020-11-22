@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Application.Configuration;
 using Application.Content;
+using Application.Content.Aseprite;
 using Application.Content.ContentLoader;
 using Application.Content.ContentTypes;
 using Application.Graphics;
@@ -29,6 +30,7 @@ namespace Application.Menus
         private readonly IContentLoader<IReadOnlyCollection<Hair>> _hairContentLoader;
         private readonly IContentLoader<IReadOnlyCollection<Head>> _headContentLoader;
         private readonly IContentLoader<IReadOnlyCollection<Eyes>> _eyeContentLoader;
+        private readonly IContentLoader<AsepriteSpriteMap> _spriteMapLoader;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -60,7 +62,8 @@ namespace Application.Menus
             IViewPortManager viewPortManager, IKeyboardDispatcher keyboardDispatcher, IUserInterface userInterface,
             IOptionsManager optionsManager, IContentLoader<IReadOnlyCollection<Hair>> hairContentLoader,
             IContentLoader<IReadOnlyCollection<Head>> headContentLoader,
-            IContentLoader<IReadOnlyCollection<Eyes>> eyeContentLoader)
+            IContentLoader<IReadOnlyCollection<Eyes>> eyeContentLoader,
+            IContentLoader<AsepriteSpriteMap> spriteMapLoader)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
@@ -71,6 +74,7 @@ namespace Application.Menus
             _hairContentLoader = hairContentLoader;
             _headContentLoader = headContentLoader;
             _eyeContentLoader = eyeContentLoader;
+            _spriteMapLoader = spriteMapLoader;
         }
 
 
@@ -87,6 +91,7 @@ namespace Application.Menus
 
         private void SetupUserInterface()
         {
+            var mainMenuSpriteMap = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
             var interfaceFont = _contentChest.Get<SpriteFont>("Fonts/InterfaceFont");
             var inputBoxFont = _contentChest.Get<SpriteFont>("Fonts/InputBoxFont");
 
@@ -113,17 +118,21 @@ namespace Application.Menus
                     (int) (_viewPortPortManager.ViewPort.Center().Y - (500 + 30 + 22 * _buttonScale) / 2f), panelWidth,
                     500), _buttonScale);
 
+            // Back Button
             BackButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 162, 78, 22)),
-                new Sprite(_menuButtons, new Rectangle(78, 162, 78, 22)),
-                new Vector2(_panel.BottomLeft().X + 78 * _buttonScale / 2f,
-                    _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
-            DoneButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 140, 78, 22)),
-                new Sprite(_menuButtons, new Rectangle(78, 140, 78, 22)),
-                new Vector2(_panel.BottomRight().X - 78 * _buttonScale / 2f,
-                    _panel.BottomLeft().Y + (22 / 2f * _buttonScale) + 10), _buttonScale);
+                mainMenuSpriteMap.CreateSpriteFromRegion("Back_Off"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Back_On"),
+                new Vector2(_panel.BottomLeft().X,
+                    _panel.BottomLeft().Y + 10), _buttonScale);
 
+            // Done Button
+            var doneOffSprite = mainMenuSpriteMap.CreateSpriteFromRegion("Done_Off");
+            DoneButton = new TexturedButton(doneOffSprite,
+                mainMenuSpriteMap.CreateSpriteFromRegion("Done_On"),
+                new Vector2(_panel.BottomRight().X - doneOffSprite.Source.Width * _buttonScale,
+                    _panel.BottomLeft().Y + 10), _buttonScale);
+
+            // Name
             var nameSectionPosition = new Vector2(_panel.Left() + 30,
                 _panel.Top() + 30);
             var nameTextBoxTitle = new TextBlock("Name", nameSectionPosition, interfaceFont, Color.White, Color.Black);
@@ -135,6 +144,7 @@ namespace Application.Menus
             };
             NameTextBox.Changed += OnPlayerNameSet;
 
+            // Pronouns
             var pronounSectionPosition = new Vector2(_panel.Left() + 30, NameTextBox.Bounds.Bottom + 10);
             var pronounTextBoxTitle =
                 new TextBlock("Pronouns", pronounSectionPosition, interfaceFont, Color.White, Color.Black);
@@ -152,6 +162,7 @@ namespace Application.Menus
                     portraitImage.Center.X * _buttonScale,
                     nameTextBoxTitle.Top()), _buttonScale);
 
+            // Hair
             var hairText = new TextBlock("Hair Style",
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
                 Color.Black);
@@ -160,7 +171,17 @@ namespace Application.Menus
                 _hair.Select(x => x.Name).ToArray(), 200);
             PlayerHairDropDown.Hover += OnHairSelect;
             PlayerHairDropDown.SelectedIndex = _playerMaker.Hair;
-            
+
+            // Head
+            var headText = new TextBlock("Head Shape",
+                PlayerHairDropDown.BottomLeft().Add(0, 10), interfaceFont, Color.White,
+                Color.Black);
+            var horizontalSelector = new HorizontalSelector(headText.BottomLeft().Add(0, 10),
+                _heads.Select(x => x.Name).ToArray(), 200,
+                mainMenuSpriteMap.CreateSpriteFromRegion("Arrow_Left"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Arrow_Right"),
+                interfaceFont, _buttonScale);
+
             _panel.AddChild(pronounTextBoxTitle);
             _panel.AddChild(nameTextBoxTitle);
             _panel.AddChild(NameTextBox);
@@ -168,6 +189,8 @@ namespace Application.Menus
             _panel.AddChild(BackButton);
             _panel.AddChild(DoneButton);
             _panel.AddChild(hairText);
+            _panel.AddChild(headText);
+            _panel.AddChild(horizontalSelector);
 
             _panel.AddChild(PlayerHairDropDown);
             _panel.AddChild(PronounDropDown);
@@ -179,7 +202,7 @@ namespace Application.Menus
                 32 * _buttonScale / 2f - 30f);
 
             _userInterface.AddWidget(_panel);
-            
+
             DoneButton.OnClick += () =>
             {
                 Console.WriteLine("Saving Settings");
@@ -192,7 +215,7 @@ namespace Application.Menus
         private void OnPronounSelect(int index) => _playerMaker.SetPronouns(index);
 
         private void OnPlayerNameSet(string name) => _playerMaker.SetName(name);
-        
+
         private void OnHairSelect(int index)
         {
             _hairSource = _hair[index].Source;

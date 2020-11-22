@@ -1,4 +1,5 @@
-﻿using Application.Content;
+﻿using System;
+using Application.Content;
 using Application.Content.Aseprite;
 using Application.Content.ContentLoader;
 using Application.Graphics;
@@ -14,10 +15,11 @@ namespace Application.Menus
 {
     public class TitleMenu : Menu
     {
+        private const string Title = "Project Sanctuary";
+
         private readonly IContentChest _contentChest;
         private readonly IViewPortManager _viewPortManager;
-        private Texture2D _menuButtons;
-        private IUserInterface _userInterface;
+        private readonly IUserInterface _userInterface;
         private readonly IContentLoader<AsepriteSpriteMap> _spriteMapLoader;
 
         private float _buttonScale;
@@ -40,74 +42,70 @@ namespace Application.Menus
 
         public override void Initialize()
         {
-            _menuButtons = _contentChest.Get<Texture2D>("UI/title_menu_buttons");
             _contentChest.Preload<SoundEffect>("Sounds/menuHover");
-
             SetupUserInterface();
         }
 
         private void SetupUserInterface()
         {
             var mainMenuSpriteMap = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
-
-
             _buttonScale = 3f;
-
-            const string title = "Project Sanctuary";
             var font = _contentChest.Get<SpriteFont>("Fonts/TitleFont");
 
-
+            // Main Menu Heading
             var signTopSprite = mainMenuSpriteMap.CreateSpriteFromRegion("Title_Button_Heading");
             SignTopImage = _userInterface.AddWidget(new Image(signTopSprite,
                 new Vector2(_viewPortManager.ViewPort.Center().X - signTopSprite.Source.Width * _buttonScale / 2f,
                     _viewPortManager.ViewPort.Center().Y - _viewPortManager.ViewPort.Height / 6f), _buttonScale));
 
-            TitleTextBlock = new TextBlock(title,
-                new Vector2(_viewPortManager.ViewPort.Center().X - font.MeasureString(title).X / 2,
+            // Title Text
+            TitleTextBlock = new TextBlock(Title,
+                new Vector2(_viewPortManager.ViewPort.Center().X - font.MeasureString(Title).X / 2,
                     SignTopImage.Bounds.Top -
-                    font.MeasureString(title).Y), font, Color.Black, null);
+                    font.MeasureString(Title).Y), font, Color.Black, null);
 
-            var newButtonPosition = new Vector2(SignTopImage.Bounds.Left,
-                SignTopImage.Bounds.Bottom);
-
-
+            // News Section
             var newsPanelSprite = mainMenuSpriteMap.CreateSpriteFromRegion("Main_Menu_Empty");
             var newsPanelPosition = new Vector2(SignTopImage.Bounds.Right - newsPanelSprite.Source.Width * _buttonScale,
                 SignTopImage.Bounds.Bottom);
             NewsPanelImage = SignTopImage.AddChild(new Image(newsPanelSprite,
                 newsPanelPosition, _buttonScale));
-
             ScrollBox = new ScrollBox(_contentChest,
                 "{line} Welcome to Project Sanctuary! {line} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi congue finibus maximus. Maecenas rhoncus malesuada eros vitae tincidunt. Nam suscipit, justo ac gravida rhoncus, ante neque auctor urna, a egestas dui odio eget ante. Aenean nec eros nisi. Nam bibendum viverra tincidunt. Phasellus elementum urna nibh, ac egestas nibh pellentesque vitae. Nulla in mollis nisl. Vivamus nec mauris rutrum magna sollicitudin venenatis et a enim. Phasellus quis mi ex. {line} ",
                 NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -11 * _buttonScale, -20 * _buttonScale));
 
+            // New Game Button
+            var newButtonPosition = new Vector2(SignTopImage.Bounds.Left,
+                SignTopImage.Bounds.Bottom);
             NewGameButton = new TexturedButton(
                 mainMenuSpriteMap.CreateSpriteFromRegion("New_Off"),
                 mainMenuSpriteMap.CreateSpriteFromRegion("New_On"),
                 newButtonPosition, _buttonScale);
-
             NewGameButton.OnClick += () => { };
 
+            // Load Game Button
             LoadGameButton = new TexturedButton(
                 mainMenuSpriteMap.CreateSpriteFromRegion("Load_Off"),
                 mainMenuSpriteMap.CreateSpriteFromRegion("Load_On"),
                 newButtonPosition + new Vector2(0, NewGameButton.Height * _buttonScale), _buttonScale);
-
             LoadGameButton.OnClick += () => { };
 
+            // Exit Game Button
             ExitGameButton = new TexturedButton(
                 mainMenuSpriteMap.CreateSpriteFromRegion("Exit_Off"),
                 mainMenuSpriteMap.CreateSpriteFromRegion("Exit_On"),
                 newButtonPosition + new Vector2(0,
                     NewGameButton.Height * _buttonScale + LoadGameButton.Height * _buttonScale),
                 _buttonScale);
+            ExitGameButton.OnClick += () => Console.WriteLine("Closing Game...");
 
+            // Add all elements to the parent.
             SignTopImage.AddChild(TitleTextBlock);
             SignTopImage.AddChild(ScrollBox);
             SignTopImage.AddChild(NewGameButton as IWidget);
             SignTopImage.AddChild(LoadGameButton as IWidget);
             SignTopImage.AddChild(ExitGameButton as IWidget);
-
+            
             _userInterface.AddWidget(SignTopImage);
         }
 

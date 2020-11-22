@@ -25,7 +25,7 @@
    { "name": "Back_Off", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 162, "w": 78, "h": 22 } }] },
    { "name": "Back_On", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 78, "y": 162, "w": 78, "h": 22 } }] },
    { "name": "Done_Off", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 140, "w": 78, "h": 22 } }] },
-   { "name": "Done_Hover", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 78, "y": 140, "w": 78, "h": 22 } }] },
+   { "name": "Done_On", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 78, "y": 140, "w": 78, "h": 22 } }] },
    { "name": "New_On", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 96, "y": 44, "w": 96, "h": 32 } }] },
    { "name": "Load_Off", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 76, "w": 96, "h": 32 } }] },
    { "name": "Load_On", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 96, "y": 76, "w": 96, "h": 32 } }] },
