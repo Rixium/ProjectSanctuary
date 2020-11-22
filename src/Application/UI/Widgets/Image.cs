@@ -8,15 +8,17 @@ namespace Application.UI.Widgets
     public class Image : Widget
     {
         private readonly Sprite _texture;
+        private readonly float _scale;
 
         public Image(Sprite texture, Vector2 position, float scale)
         {
             _texture = texture;
-            
+            _scale = scale;
+
             Bounds =
                 new Rectangle(
-                    (int) (position.X - _texture.Origin.X * scale),
-                    (int) (position.Y - _texture.Origin.Y * scale),
+                    (int) (position.X),
+                    (int) (position.Y),
                     (int) (_texture.Source.Width * scale),
                     (int) (_texture.Source.Height * scale)
                 );

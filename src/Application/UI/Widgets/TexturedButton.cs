@@ -10,16 +10,18 @@ namespace Application.UI.Widgets
     {
         private readonly Sprite _texture;
         private readonly Sprite _hoverTexture;
+        private readonly float _scale;
 
         public TexturedButton(Sprite texture, Sprite hoverTexture, Vector2 position, float scale)
         {
             _texture = texture;
             _hoverTexture = hoverTexture;
+            _scale = scale;
 
             Bounds =
                 new Rectangle(
-                    (int) (position.X - _texture.Origin.X * scale),
-                    (int) (position.Y - _texture.Origin.Y * scale),
+                    (int) position.X,
+                    (int) position.Y,
                     (int) (_texture.Source.Width * scale),
                     (int) (_texture.Source.Height * scale)
                 );
@@ -71,7 +73,7 @@ namespace Application.UI.Widgets
             }
 
             Hovering = false;
-            
+
             return base.MouseMove(mouseBounds);
         }
 

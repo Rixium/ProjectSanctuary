@@ -56,9 +56,10 @@ namespace Application.Menus
             const string title = "Project Sanctuary";
             var font = _contentChest.Get<SpriteFont>("Fonts/TitleFont");
 
-            SignTopImage = _userInterface.AddWidget(new Image(
-                mainMenuSpriteMap.CreateSpriteFromRegion("Title_Button_Heading"),
-                new Vector2(_viewPortManager.ViewPort.Center().X,
+
+            var signTopSprite = mainMenuSpriteMap.CreateSpriteFromRegion("Title_Button_Heading");
+            SignTopImage = _userInterface.AddWidget(new Image(signTopSprite,
+                new Vector2(_viewPortManager.ViewPort.Center().X - signTopSprite.Source.Width * _buttonScale / 2f,
                     _viewPortManager.ViewPort.Center().Y - _viewPortManager.ViewPort.Height / 6f), _buttonScale));
 
             TitleTextBlock = new TextBlock(title,
@@ -66,13 +67,14 @@ namespace Application.Menus
                     SignTopImage.Bounds.Top -
                     font.MeasureString(title).Y), font, Color.Black, null);
 
-            var newButtonPosition = new Vector2(SignTopImage.Bounds.Left + 96 / 2f * _buttonScale,
-                SignTopImage.Bounds.Bottom + 32 / 2f * _buttonScale);
-            var newsPanelPosition = new Vector2(SignTopImage.Bounds.Right - 96 / 2f * _buttonScale,
-                SignTopImage.Bounds.Bottom + 96 / 2f * _buttonScale);
+            var newButtonPosition = new Vector2(SignTopImage.Bounds.Left,
+                SignTopImage.Bounds.Bottom);
 
-            NewsPanelImage = SignTopImage.AddChild(new Image(
-                mainMenuSpriteMap.CreateSpriteFromRegion("Main_Menu_Empty"),
+
+            var newsPanelSprite = mainMenuSpriteMap.CreateSpriteFromRegion("Main_Menu_Empty");
+            var newsPanelPosition = new Vector2(SignTopImage.Bounds.Right - newsPanelSprite.Source.Width * _buttonScale,
+                SignTopImage.Bounds.Bottom);
+            NewsPanelImage = SignTopImage.AddChild(new Image(newsPanelSprite,
                 newsPanelPosition, _buttonScale));
 
             ScrollBox = new ScrollBox(_contentChest,
