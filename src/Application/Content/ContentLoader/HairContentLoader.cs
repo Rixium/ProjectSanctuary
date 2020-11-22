@@ -14,9 +14,9 @@ namespace Application.Content.ContentLoader
             _contentDeserializer = contentDeserializer;
         }
 
-        public IReadOnlyCollection<Hair> GetContent(string hairPath)
+        public IReadOnlyCollection<Hair> GetContent(string path)
         {
-            var data = _contentDeserializer.Get<AsepriteData>(hairPath);
+            var data = _contentDeserializer.Get<AsepriteData>(path);
             return data.Meta.Slices.Select(ProcessHairType).ToArray();
         }
 

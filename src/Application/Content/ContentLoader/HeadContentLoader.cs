@@ -15,9 +15,9 @@ namespace Application.Content.ContentLoader
             _contentDeserializer = contentDeserializer;
         }
 
-        public IReadOnlyCollection<Head> GetContent(string data)
+        public IReadOnlyCollection<Head> GetContent(string path)
         {
-            var heads = _contentDeserializer.Get<AsepriteData>(data);
+            var heads = _contentDeserializer.Get<AsepriteData>(path);
             return heads.Meta.Slices.Select(ProcessHeadType).ToArray();
         }
 

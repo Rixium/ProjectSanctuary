@@ -2,6 +2,6 @@
 {
     public interface IContentLoader<T>
     {
-        T GetContent(string data);
+        T GetContent(string path);
     }
 }

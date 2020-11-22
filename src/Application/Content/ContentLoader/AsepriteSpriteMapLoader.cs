@@ -15,12 +15,12 @@ namespace Application.Content.ContentLoader
             _contentDeserializer = contentDeserializer;
         }
 
-        public AsepriteSpriteMap GetContent(string data)
+        public AsepriteSpriteMap GetContent(string path)
         {
-            var asepriteData = _contentDeserializer.Get<AsepriteData>(data);
+            var asepriteData = _contentDeserializer.Get<AsepriteData>(path);
             var name = Path.GetFileNameWithoutExtension(asepriteData.Meta.Image);
-            var image = _contentChest.Get<Texture2D>(Path.Combine(Path.GetDirectoryName(data) ?? "",
-                Path.GetFileNameWithoutExtension(data)));
+            var image = _contentChest.Get<Texture2D>(Path.Combine(Path.GetDirectoryName(path) ?? "",
+                Path.GetFileNameWithoutExtension(path)));
 
             return new AsepriteSpriteMap(name, image, asepriteData.Meta.Slices);
         }
