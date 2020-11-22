@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Application.Content
 {
@@ -16,6 +17,7 @@ namespace Application.Content
 
         public void Unload() => Content.Unload();
 
-        public T Get<T>(string assetName) => Content.Load<T>(assetName);
+        public T Get<T>(string assetName) =>
+            Content.Load<T>(assetName);
     }
 }

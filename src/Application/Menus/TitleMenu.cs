@@ -1,4 +1,6 @@
 ﻿using Application.Content;
+using Application.Content.Aseprite;
+using Application.Content.ContentLoader;
 using Application.Graphics;
 using Application.UI;
 using Application.UI.Widgets;
@@ -16,6 +18,7 @@ namespace Application.Menus
         private readonly IViewPortManager _viewPortManager;
         private Texture2D _menuButtons;
         private IUserInterface _userInterface;
+        private readonly IContentLoader<AsepriteSpriteMap> _spriteMapLoader;
 
         private float _buttonScale;
         public IClickable NewGameButton { get; private set; }
@@ -26,11 +29,13 @@ namespace Application.Menus
         private Image NewsPanelImage { get; set; }
         private TextBlock TitleTextBlock { get; set; }
 
-        public TitleMenu(IContentChest contentChest, IViewPortManager viewPortManager, IUserInterface userInterface)
+        public TitleMenu(IContentChest contentChest, IViewPortManager viewPortManager, IUserInterface userInterface,
+            IContentLoader<AsepriteSpriteMap> spriteMapLoader)
         {
             _contentChest = contentChest;
             _viewPortManager = viewPortManager;
             _userInterface = userInterface;
+            _spriteMapLoader = spriteMapLoader;
         }
 
         public override void Initialize()
@@ -43,13 +48,16 @@ namespace Application.Menus
 
         private void SetupUserInterface()
         {
+            var asepriteSpriteMap = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
+
+
             _buttonScale = 3f;
 
             const string title = "Project Sanctuary";
             var font = _contentChest.Get<SpriteFont>("Fonts/TitleFont");
 
             SignTopImage = _userInterface.AddWidget(new Image(
-                new Sprite(_menuButtons, new Rectangle(0, 0, 192, 44)),
+                asepriteSpriteMap.CreateSpriteFromRegion("Title_Button_Heading"),
                 new Vector2(_viewPortManager.ViewPort.Center().X,
                     _viewPortManager.ViewPort.Center().Y - _viewPortManager.ViewPort.Height / 6f), _buttonScale));
 
@@ -64,7 +72,7 @@ namespace Application.Menus
                 SignTopImage.Bounds.Bottom + 96 / 2f * _buttonScale);
 
             NewsPanelImage = SignTopImage.AddChild(new Image(
-                new Sprite(_menuButtons, new Rectangle(192, 45, 96, 96)),
+                asepriteSpriteMap.CreateSpriteFromRegion("Main_Menu_Empty"),
                 newsPanelPosition, _buttonScale));
 
             ScrollBox = new ScrollBox(_contentChest,
@@ -72,22 +80,22 @@ namespace Application.Menus
                 NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -11 * _buttonScale, -20 * _buttonScale));
 
             NewGameButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 44, 96, 32)),
-                new Sprite(_menuButtons, new Rectangle(96, 44, 96, 32)),
+                asepriteSpriteMap.CreateSpriteFromRegion("New_Off"),
+                asepriteSpriteMap.CreateSpriteFromRegion("New_On"),
                 newButtonPosition, _buttonScale);
 
             NewGameButton.OnClick += () => { };
 
             LoadGameButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 44 + 32, 96, 32)),
-                new Sprite(_menuButtons, new Rectangle(96, 44 + 32, 96, 32)),
+                asepriteSpriteMap.CreateSpriteFromRegion("Load_Off"),
+                asepriteSpriteMap.CreateSpriteFromRegion("Load_On"),
                 newButtonPosition + new Vector2(0, NewGameButton.Height * _buttonScale), _buttonScale);
 
             LoadGameButton.OnClick += () => { };
 
             ExitGameButton = new TexturedButton(
-                new Sprite(_menuButtons, new Rectangle(0, 44 + 32 + 32, 96, 32)),
-                new Sprite(_menuButtons, new Rectangle(96, 44 + 32 + 32, 96, 32)),
+                asepriteSpriteMap.CreateSpriteFromRegion("Exit_Off"),
+                asepriteSpriteMap.CreateSpriteFromRegion("Exit_On"),
                 newButtonPosition + new Vector2(0,
                     NewGameButton.Height * _buttonScale + LoadGameButton.Height * _buttonScale),
                 _buttonScale);
@@ -129,7 +137,6 @@ namespace Application.Menus
 
         public override void Finish()
         {
-            
         }
     }
 }

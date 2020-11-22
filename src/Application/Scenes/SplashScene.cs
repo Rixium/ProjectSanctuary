@@ -49,18 +49,15 @@ namespace Application.Scenes
             {
                 // ignored
             }
-            
-            var titleButtons = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
         }
 
         public void Update(float delta)
         {
             _timeShown += delta;
-
-
-            return;
+            
             if (_timeShown < TimeToShow)
             {
+                return;
             }
             
             MediaPlayer.Play(_contentChest.Get<Song>($"Music/MenuSong{_songNum}"));
