@@ -48,7 +48,7 @@ namespace Application.Menus
 
         private void SetupUserInterface()
         {
-            var asepriteSpriteMap = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
+            var mainMenuSpriteMap = _spriteMapLoader.GetContent("assets/UI/title_menu_buttons.json");
 
 
             _buttonScale = 3f;
@@ -57,7 +57,7 @@ namespace Application.Menus
             var font = _contentChest.Get<SpriteFont>("Fonts/TitleFont");
 
             SignTopImage = _userInterface.AddWidget(new Image(
-                asepriteSpriteMap.CreateSpriteFromRegion("Title_Button_Heading"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Title_Button_Heading"),
                 new Vector2(_viewPortManager.ViewPort.Center().X,
                     _viewPortManager.ViewPort.Center().Y - _viewPortManager.ViewPort.Height / 6f), _buttonScale));
 
@@ -72,7 +72,7 @@ namespace Application.Menus
                 SignTopImage.Bounds.Bottom + 96 / 2f * _buttonScale);
 
             NewsPanelImage = SignTopImage.AddChild(new Image(
-                asepriteSpriteMap.CreateSpriteFromRegion("Main_Menu_Empty"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Main_Menu_Empty"),
                 newsPanelPosition, _buttonScale));
 
             ScrollBox = new ScrollBox(_contentChest,
@@ -80,22 +80,22 @@ namespace Application.Menus
                 NewsPanelImage.Bounds.Add(5 * _buttonScale, 14 * _buttonScale, -11 * _buttonScale, -20 * _buttonScale));
 
             NewGameButton = new TexturedButton(
-                asepriteSpriteMap.CreateSpriteFromRegion("New_Off"),
-                asepriteSpriteMap.CreateSpriteFromRegion("New_On"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("New_Off"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("New_On"),
                 newButtonPosition, _buttonScale);
 
             NewGameButton.OnClick += () => { };
 
             LoadGameButton = new TexturedButton(
-                asepriteSpriteMap.CreateSpriteFromRegion("Load_Off"),
-                asepriteSpriteMap.CreateSpriteFromRegion("Load_On"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Load_Off"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Load_On"),
                 newButtonPosition + new Vector2(0, NewGameButton.Height * _buttonScale), _buttonScale);
 
             LoadGameButton.OnClick += () => { };
 
             ExitGameButton = new TexturedButton(
-                asepriteSpriteMap.CreateSpriteFromRegion("Exit_Off"),
-                asepriteSpriteMap.CreateSpriteFromRegion("Exit_On"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Exit_Off"),
+                mainMenuSpriteMap.CreateSpriteFromRegion("Exit_On"),
                 newButtonPosition + new Vector2(0,
                     NewGameButton.Height * _buttonScale + LoadGameButton.Height * _buttonScale),
                 _buttonScale);
