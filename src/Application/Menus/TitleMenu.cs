@@ -99,13 +99,20 @@ namespace Application.Menus
                 _buttonScale);
             ExitGameButton.OnClick += () => Console.WriteLine("Closing Game...");
 
+            var settingsSprite = mainMenuSpriteMap.CreateSpriteFromRegion("Settings_On");
+            var settingsButton = new TexturedButton(
+                mainMenuSpriteMap.CreateSpriteFromRegion("Settings_Off"), settingsSprite,
+                new Vector2(_viewPortManager.ViewPort.Width - settingsSprite.Source.Width * _buttonScale - 10,
+                    _viewPortManager.ViewPort.Height - settingsSprite.Source.Height * _buttonScale - 10), _buttonScale);
+            
             // Add all elements to the parent.
             SignTopImage.AddChild(TitleTextBlock);
             SignTopImage.AddChild(ScrollBox);
             SignTopImage.AddChild(NewGameButton as IWidget);
             SignTopImage.AddChild(LoadGameButton as IWidget);
             SignTopImage.AddChild(ExitGameButton as IWidget);
-            
+            SignTopImage.AddChild(settingsButton);
+
             _userInterface.AddWidget(SignTopImage);
         }
 

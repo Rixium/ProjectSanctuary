@@ -31,7 +31,7 @@
    { "name": "Load_On", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 96, "y": 76, "w": 96, "h": 32 } }] },
    { "name": "Exit_Off", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 108, "w": 96, "h": 31 } }] },
    { "name": "Exit_On", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 96, "y": 108, "w": 96, "h": 31 } }] },
-   { "name": "Title_Button_Heading", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": -1, "w": 192, "h": 44 } }] },
+   { "name": "Title_Button_Heading", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": -1, "w": 192, "h": 45 } }] },
    { "name": "Scrollbar", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 192, "y": 15, "w": 10, "h": 29 } }] },
    { "name": "Arrow_Up", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 192, "y": 4, "w": 10, "h": 10 } }] },
    { "name": "Arrow_Down", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 202, "y": 4, "w": 10, "h": 10 } }] },
@@ -39,7 +39,9 @@
    { "name": "Arrow_Right", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 222, "y": 4, "w": 10, "h": 10 } }] },
    { "name": "Basic_9_Slice", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 233, "y": 4, "w": 3, "h": 3 } }] },
    { "name": "Main_Menu_Empty", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 192, "y": 44, "w": 96, "h": 95 } }] },
-   { "name": "New_Off", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 44, "w": 96, "h": 32 } }] }
+   { "name": "New_Off", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 0, "y": 44, "w": 96, "h": 32 } }] },
+   { "name": "Settings_On", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 312, "y": 53, "w": 23, "h": 22 } }] },
+   { "name": "Settings_Off", "color": "#0000ffff", "keys": [{ "frame": 0, "bounds": {"x": 288, "y": 53, "w": 23, "h": 22 } }] }
   ]
  }
 }
