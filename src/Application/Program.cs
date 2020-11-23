@@ -9,6 +9,7 @@ using Application.FileSystem;
 using Application.Input;
 using Application.Menus;
 using Application.Player;
+using Application.Renderers;
 using Application.Scenes;
 using Application.System;
 using Application.Transitions;
@@ -33,14 +34,15 @@ namespace Application
             builder.RegisterType<MonoGameMouseManager>().As<IMouseManager>().SingleInstance();
             builder.RegisterType<TransitionManager>().As<ITransitionManager>().SingleInstance();
             builder.RegisterType<OptionsManager>().As<IOptionsManager>().SingleInstance();
-            
+
             builder.RegisterType<HairContentLoader>().As<IContentLoader<IReadOnlyCollection<Hair>>>().SingleInstance();
             builder.RegisterType<HeadContentLoader>().As<IContentLoader<IReadOnlyCollection<Head>>>().SingleInstance();
             builder.RegisterType<EyesContentLoader>().As<IContentLoader<IReadOnlyCollection<Eyes>>>().SingleInstance();
             builder.RegisterType<AsepriteSpriteMapLoader>().As<IContentLoader<AsepriteSpriteMap>>().SingleInstance();
-            
+            builder.RegisterType<CharacterRenderer>().As<ICharacterRenderer>().SingleInstance();
+
             builder.RegisterType<System.FileSystem>().As<IFileSystem>().SingleInstance();
-            
+
             builder.RegisterType<Cursor>();
             builder.RegisterType<ControlOptions>();
             builder.RegisterType<PronounOptions>();

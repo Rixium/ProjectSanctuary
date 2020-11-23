@@ -9,6 +9,7 @@ using Application.Content.ContentTypes;
 using Application.Graphics;
 using Application.Input;
 using Application.Player;
+using Application.Renderers;
 using Application.UI;
 using Application.UI.Widgets;
 using Application.Utils;
@@ -31,6 +32,7 @@ namespace Application.Menus
         private readonly IContentLoader<IReadOnlyCollection<Head>> _headContentLoader;
         private readonly IContentLoader<IReadOnlyCollection<Eyes>> _eyeContentLoader;
         private readonly IContentLoader<AsepriteSpriteMap> _spriteMapLoader;
+        private readonly ICharacterRenderer _characterRenderer;
 
         private Texture2D _menuButtons;
         private float _buttonScale;
@@ -63,7 +65,8 @@ namespace Application.Menus
             IOptionsManager optionsManager, IContentLoader<IReadOnlyCollection<Hair>> hairContentLoader,
             IContentLoader<IReadOnlyCollection<Head>> headContentLoader,
             IContentLoader<IReadOnlyCollection<Eyes>> eyeContentLoader,
-            IContentLoader<AsepriteSpriteMap> spriteMapLoader)
+            IContentLoader<AsepriteSpriteMap> spriteMapLoader,
+            ICharacterRenderer characterRenderer)
         {
             _contentChest = contentChest;
             _playerMaker = playerMaker;
@@ -75,6 +78,7 @@ namespace Application.Menus
             _headContentLoader = headContentLoader;
             _eyeContentLoader = eyeContentLoader;
             _spriteMapLoader = spriteMapLoader;
+            _characterRenderer = characterRenderer;
         }
 
 
@@ -162,6 +166,9 @@ namespace Application.Menus
                     portraitImage.Center.X * _buttonScale,
                     nameTextBoxTitle.Top()), _buttonScale);
 
+            // Character Preview
+            var characterPreview = new CharacterPreview(_characterRenderer, characterPanel.Center());
+
             // Hair
             var hairText = new TextBlock("Hair Style",
                 new Vector2(PronounDropDown.Left(), PronounDropDown.BottomLeft().Y + 10), interfaceFont, Color.White,
@@ -171,7 +178,8 @@ namespace Application.Menus
                 _hair.Select(x => x.Name).ToArray(), 200);
             PlayerHairDropDown.Hover += OnHairSelect;
             PlayerHairDropDown.SelectedIndex = _playerMaker.Hair;
-
+            PlayerHairDropDown.Hover += (newIndex) => { characterPreview.Hair = _hair[newIndex]; };
+            
             // Head
             var headText = new TextBlock("Head Shape",
                 PlayerHairDropDown.BottomLeft().Add(0, 10), interfaceFont, Color.White,
@@ -181,6 +189,7 @@ namespace Application.Menus
                 mainMenuSpriteMap.CreateSpriteFromRegion("Arrow_Left"),
                 mainMenuSpriteMap.CreateSpriteFromRegion("Arrow_Right"),
                 interfaceFont, _buttonScale);
+            horizontalSelector.SelectionChanged += (newIndex) => { characterPreview.Head = _heads[newIndex]; };
 
             _panel.AddChild(pronounTextBoxTitle);
             _panel.AddChild(nameTextBoxTitle);
@@ -191,6 +200,7 @@ namespace Application.Menus
             _panel.AddChild(hairText);
             _panel.AddChild(headText);
             _panel.AddChild(horizontalSelector);
+            _panel.AddChild(characterPreview);
 
             _panel.AddChild(PlayerHairDropDown);
             _panel.AddChild(PronounDropDown);
@@ -234,27 +244,7 @@ namespace Application.Menus
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _userInterface.Draw(spriteBatch);
-            DrawCharacter(spriteBatch);
             spriteBatch.End();
-        }
-
-        private void DrawCharacter(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(_playerBody, _playerPosition, new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
-                _buttonScale,
-                SpriteEffects.None, 0f);
-            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_heads"), _playerPosition,
-                new Rectangle(0, 0, 16, 32), _bodyColor, 0f, Vector2.Zero,
-                _buttonScale,
-                SpriteEffects.None, 0f);
-            spriteBatch.Draw(_contentChest.Get<Texture2D>("characters/player_eyes"), _playerPosition,
-                new Rectangle(0, 0, 16, 32), Color.White, 0f, Vector2.Zero,
-                _buttonScale,
-                SpriteEffects.None, 0f);
-            spriteBatch.Draw(_playerHair, _playerPosition - new Vector2(32 / 2f + 8, 32 / 2f + 8), _hairSource,
-                _hairColor, 0f,
-                Vector2.Zero,
-                _buttonScale, SpriteEffects.None, 0f);
         }
 
         public override void WindowResized()

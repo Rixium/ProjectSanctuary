@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Application.Graphics;
 using Application.Utils;
 using Microsoft.Xna.Framework;
@@ -22,6 +23,8 @@ namespace Application.UI.Widgets
             get => _selectedIndex;
             set
             {
+                var oldOption = _selectedIndex;
+                
                 if (value > _options.Length - 1)
                 {
                     _selectedIndex = 0;
@@ -34,8 +37,15 @@ namespace Application.UI.Widgets
                 {
                     _selectedIndex = value;
                 }
+
+                if (oldOption != _selectedIndex)
+                {
+                    SelectionChanged?.Invoke(_selectedIndex);
+                }
             }
         }
+
+        public Action<int> SelectionChanged { get; set; }
 
         public HorizontalSelector(Vector2 position, string[] options, int width, Sprite leftArrow, Sprite rightArrow,
             SpriteFont font, float scale)
