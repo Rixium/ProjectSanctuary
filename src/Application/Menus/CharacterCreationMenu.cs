@@ -38,18 +38,6 @@ namespace Application.Menus
         private float _buttonScale;
         private Panel _panel;
 
-        private ColorPicker _hairColorPicker;
-        private Rectangle _hairSource;
-        private Color _hairColor;
-
-        private ColorPicker _bodyColorPicker;
-        private Color _bodyColor;
-
-        private Texture2D _playerEyes;
-        private Texture2D _playerHair;
-        private Texture2D _playerBody;
-        private Vector2 _playerPosition;
-
         private Hair[] _hair;
         private Head[] _heads;
         private Eyes[] _eyes;
@@ -176,10 +164,9 @@ namespace Application.Menus
             PlayerHairDropDown = new DropDownBox(_contentChest, inputBoxFont,
                 new Vector2(hairText.Left(), hairText.BottomLeft().Y + 10),
                 _hair.Select(x => x.Name).ToArray(), 200);
-            PlayerHairDropDown.Hover += OnHairSelect;
-            PlayerHairDropDown.SelectedIndex = _playerMaker.Hair;
             PlayerHairDropDown.Hover += (newIndex) => { characterPreview.Hair = _hair[newIndex]; };
-            
+            PlayerHairDropDown.SelectedIndex = _playerMaker.Hair;
+
             // Head
             var headText = new TextBlock("Head Shape",
                 PlayerHairDropDown.BottomLeft().Add(0, 10), interfaceFont, Color.White,
@@ -190,6 +177,7 @@ namespace Application.Menus
                 mainMenuSpriteMap.CreateSpriteFromRegion("Arrow_Right"),
                 interfaceFont, _buttonScale);
             horizontalSelector.SelectionChanged += (newIndex) => { characterPreview.Head = _heads[newIndex]; };
+            horizontalSelector.SelectedIndex = _playerMaker.Head;
 
             _panel.AddChild(pronounTextBoxTitle);
             _panel.AddChild(nameTextBoxTitle);
@@ -205,12 +193,6 @@ namespace Application.Menus
             _panel.AddChild(PlayerHairDropDown);
             _panel.AddChild(PronounDropDown);
 
-            _playerEyes = _contentChest.Get<Texture2D>("Characters/player_eyes");
-            _playerHair = _contentChest.Get<Texture2D>("Characters/player_hair");
-            _playerBody = _contentChest.Get<Texture2D>("Characters/player_body");
-            _playerPosition = characterPanel.Center() - new Vector2(16 * _buttonScale / 2f,
-                32 * _buttonScale / 2f - 30f);
-
             _userInterface.AddWidget(_panel);
 
             DoneButton.OnClick += () =>
@@ -225,14 +207,6 @@ namespace Application.Menus
         private void OnPronounSelect(int index) => _playerMaker.SetPronouns(index);
 
         private void OnPlayerNameSet(string name) => _playerMaker.SetName(name);
-
-        private void OnHairSelect(int index)
-        {
-            _hairSource = _hair[index].Source;
-            _hairSource.Width = 32;
-            _hairSource.Height = 32;
-            _playerMaker.SetHair(index);
-        }
 
         public override void Update(float delta)
         {
@@ -251,12 +225,6 @@ namespace Application.Menus
         {
             SetupUserInterface();
             base.WindowResized();
-        }
-
-        public override void Finish()
-        {
-            PlayerHairDropDown.Hover -= OnHairSelect;
-            base.Finish();
         }
     }
 }

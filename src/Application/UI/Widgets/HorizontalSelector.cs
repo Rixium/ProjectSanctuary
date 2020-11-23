@@ -10,13 +10,13 @@ namespace Application.UI.Widgets
     internal class HorizontalSelector : Widget
     {
         private readonly Vector2 _position;
-        private string[] _options;
+        private readonly string[] _options;
         private readonly int _width;
         private readonly SpriteFont _font;
         private readonly int _height;
-        private Rectangle _backgroundBounds;
+        private readonly Rectangle _backgroundBounds;
 
-        private int _selectedIndex = 0;
+        private int _selectedIndex = -1;
 
         public int SelectedIndex
         {
@@ -24,7 +24,7 @@ namespace Application.UI.Widgets
             set
             {
                 var oldOption = _selectedIndex;
-                
+
                 if (value > _options.Length - 1)
                 {
                     _selectedIndex = 0;

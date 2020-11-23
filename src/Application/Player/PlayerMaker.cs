@@ -8,6 +8,7 @@ namespace Application.Player
         public string Name { get; private set; } = string.Empty;
         public int Pronouns { get; private set; }
         public int Hair { get; private set; }
+        public int Head { get; set; }
         public Color BodyColor { get; private set; }
         public Color HairColor { get; private set; }
 
@@ -16,6 +17,7 @@ namespace Application.Player
         public void SetPronouns(int pronoun) => Pronouns = pronoun;
 
         public void SetHair(int hair) => Hair = hair;
+        public void SetHead(int head) => Head = head;
 
         public void SetBodyColor(Color color) => BodyColor = color;
 
